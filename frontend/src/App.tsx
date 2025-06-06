@@ -57,9 +57,9 @@ function App() {
 
 
   return (
-    <div className="min-h-screen bg-neutral-900">
+    <div className="min-h-screen bg-neutral-900 text-neutral-100">
       {/* Navigation */}
-      <nav className="border-b border-border/50 backdrop-blur-md bg-background/80 sticky top-0 z-50">
+      <nav className="border-b border-primary/40 backdrop-blur-md bg-neutral-900/40 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="text-2xl font-bold tracking-tight">
@@ -67,13 +67,13 @@ function App() {
             </div>
 
             <div className="hidden md:flex items-center space-x-8 text-sm">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Products</a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Build</a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Support</a>
+              <a href="#" className="hover:text-primary">Products</a>
+              <a href="#" className="hover:text-primary">Build</a>
+              <a href="#" className="hover:text-primary">Support</a>
             </div>
 
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" className="hidden md:flex hover:bg-primary/10">
+              <Button variant="ghost" size="sm" className="hidden md:flex hover:bg-primary/60">
                 <ShoppingCart className="h-4 w-4" />
               </Button>
               <Button
@@ -88,11 +88,11 @@ function App() {
           </div>
 
           {isMenuOpen && (
-            <div className="md:hidden mt-4 pt-4 border-t border-border/50">
-              <div className="space-y-4 text-sm">
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">Products</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">Build</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">Support</a>
+            <div className="md:hidden mt-4 pt-4 border-t border-primary/50">
+              <div className="space-y-4 text-sm pr-4">
+                <a href="#" className="block hover:text-primary text-right">Products</a>
+                <a href="#" className="block hover:text-primary text-right">Build</a>
+                <a href="#" className="block hover:text-primary text-right">Support</a>
               </div>
             </div>
           )}
