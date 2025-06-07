@@ -51,13 +51,7 @@ function App() {
     { name: "CPU", icon: Cpu, count: "150+", color: "from-purple-500 to-pink-500" },
     { name: "GPU", icon: Monitor, count: "89+", color: "from-blue-500 to-purple-500" },
     { name: "RAM", icon: HardDrive, count: "200+", color: "from-purple-500 to-indigo-500" },
-    { name: "SSD", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
-    { name: "HDD", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
-    { name: "PSU", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
-    { name: "Case", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
-    { name: "Cooler", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
     { name: "Motherboard", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
-    { name: "Cooler", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
   ];
 
 
@@ -107,7 +101,7 @@ function App() {
 
       {/* Hero Section */}
       <section className="py-24 md:py-32 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-800/20 to-neutral-700/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-800/20 to-neutral-700/20"></div>
         <div className="max-w-7xl mx-auto px-6 relative">
           <div className="max-w-3xl">
             <div className="flex items-center space-x-2 mb-6">
@@ -139,10 +133,14 @@ function App() {
       {/* Categories */}
       <section className="py-16 border-t border-primary/50">
         <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold tracking-tight mb-2">Featured Categories</h2>
+            <p className="text-muted-foreground">This may interest you</p>
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {categories.map((category, index) => (
               <div key={index} className="group cursor-pointer">
-                <div className="bg-card border border-border/50 rounded-xl p-6 hover:border-primary/30 transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.1)]">
+                <div className="hover:bg-primary/5 border border-primary/30 rounded-xl p-6 hover:border-primary/30 transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.1)]">
                   <div className={`inline-flex p-3 rounded-lg bg-gradient-to-br ${category.color} mb-4`}>
                     <category.icon className="h-6 w-6 text-white" />
                   </div>
