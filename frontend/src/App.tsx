@@ -48,10 +48,16 @@ function App() {
   ];
 
   const categories = [
-    { name: "Processors", icon: Cpu, count: "150+", color: "from-purple-500 to-pink-500" },
-    { name: "Graphics", icon: Monitor, count: "89+", color: "from-blue-500 to-purple-500" },
-    { name: "Storage", icon: HardDrive, count: "200+", color: "from-purple-500 to-indigo-500" },
-    { name: "Gaming", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
+    { name: "CPU", icon: Cpu, count: "150+", color: "from-purple-500 to-pink-500" },
+    { name: "GPU", icon: Monitor, count: "89+", color: "from-blue-500 to-purple-500" },
+    { name: "RAM", icon: HardDrive, count: "200+", color: "from-purple-500 to-indigo-500" },
+    { name: "SSD", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
+    { name: "HDD", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
+    { name: "PSU", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
+    { name: "Case", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
+    { name: "Cooler", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
+    { name: "Motherboard", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
+    { name: "Cooler", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
   ];
 
 
@@ -67,9 +73,9 @@ function App() {
             </div>
 
             <div className="hidden md:flex items-center space-x-8 text-sm">
-              <a href="#" className="hover:text-primary">Products</a>
-              <a href="#" className="hover:text-primary">Build</a>
-              <a href="#" className="hover:text-primary">Support</a>
+              <a href="#" className="hover:text-primary font-medium">Products</a>
+              <a href="#" className="hover:text-primary font-medium">Build</a>
+              <a href="#" className="hover:text-primary font-medium">Support</a>
             </div>
 
             <div className="flex items-center space-x-4">
@@ -90,9 +96,9 @@ function App() {
           {isMenuOpen && (
             <div className="md:hidden mt-4 pt-4 border-t border-primary/50">
               <div className="space-y-4 text-sm pr-4">
-                <a href="#" className="block hover:text-primary text-right">Products</a>
-                <a href="#" className="block hover:text-primary text-right">Build</a>
-                <a href="#" className="block hover:text-primary text-right">Support</a>
+                <a href="#" className="block hover:text-primary text-right font-medium text-xl">Products</a>
+                <a href="#" className="block hover:text-primary text-right font-medium text-xl">Build</a>
+                <a href="#" className="block hover:text-primary text-right font-medium text-xl">Support</a>
               </div>
             </div>
           )}
@@ -101,7 +107,7 @@ function App() {
 
       {/* Hero Section */}
       <section className="py-24 md:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-violet-800/20 to-neutral-700/20"></div>
         <div className="max-w-7xl mx-auto px-6 relative">
           <div className="max-w-3xl">
             <div className="flex items-center space-x-2 mb-6">
@@ -131,7 +137,7 @@ function App() {
       </section>
 
       {/* Categories */}
-      <section className="py-16 border-t border-border/50">
+      <section className="py-16 border-t border-primary/50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {categories.map((category, index) => (
