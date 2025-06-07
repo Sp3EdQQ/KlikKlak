@@ -163,9 +163,9 @@ function App() {
             <p className="text-muted-foreground">Handpicked components for your ultimate build</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex flex-wrap gap-4 justify-center">
             {featuredProducts.map((product) => (
-              <Card key={product.id} className={`group pt-0 border-primary/30 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 overflow-hidden ${product.special ? 'ring-1 ring-primary/20' : ''}`}>
+              <Card key={product.id} className={`w-60 lg:w-70 group pt-0 border-primary/30 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 overflow-hidden ${product.special ? 'ring-1 ring-primary/20' : ''}`}>
                 <div className="aspect-square overflow-hidden relative">
                   {product.special && (
                     <div className="absolute top-3 left-3 z-10">
@@ -206,7 +206,7 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 py-12 bg-card/30">
+      <footer className="border-t border-primary/50 py-12 bg-primary/2">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
@@ -233,7 +233,7 @@ function App() {
               </ul>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-border/50 text-center text-sm text-muted-foreground">
+          <div className="mt-8 pt-8 border-t border-primary/50 text-center text-sm text-muted-foreground">
             <p>&copy; 2024 KlikKlak. All rights reserved.</p>
           </div>
         </div>
