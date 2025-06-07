@@ -11,8 +11,7 @@
   "arrowParens": "avoid",
   "htmlWhitespaceSensitivity": "strict",
   "quoteProps": "preserve",
-  "tailwindConfig": "./tailwind.config.ts",
-  "tailwindFunctions": ["clsx"],
+  "tailwindFunctions": ["clsx", "twMerge"],
   "plugins": ["prettier-plugin-tailwindcss"],
   "endOfLine": "lf"
 }
