@@ -3,7 +3,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Cpu, HardDrive, Monitor, Gamepad2, Menu, X, ArrowRight, Star, Zap } from "lucide-react";
+import { ShoppingCart, Cpu, Gpu, MemoryStick, Microchip, Menu, X, ArrowRight, Star, Zap } from "lucide-react";
+
+
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -49,9 +51,9 @@ function App() {
 
   const categories = [
     { name: "CPU", icon: Cpu, count: "150+", color: "from-purple-500 to-pink-500" },
-    { name: "GPU", icon: Monitor, count: "89+", color: "from-blue-500 to-purple-500" },
-    { name: "RAM", icon: HardDrive, count: "200+", color: "from-purple-500 to-indigo-500" },
-    { name: "Motherboard", icon: Gamepad2, count: "75+", color: "from-pink-500 to-purple-500" },
+    { name: "GPU", icon: Gpu, count: "89+", color: "from-blue-500 to-purple-500" },
+    { name: "RAM", icon: MemoryStick, count: "200+", color: "from-purple-500 to-indigo-500" },
+    { name: "Motherboard", icon: Microchip, count: "75+", color: "from-pink-500 to-purple-500" },
   ];
 
 
@@ -163,7 +165,7 @@ function App() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts.map((product) => (
-              <Card key={product.id} className={`group bg-card border-border/50 hover:border-primary/30 transition-all duration-300 overflow-hidden ${product.special ? 'ring-1 ring-primary/20' : ''}`}>
+              <Card key={product.id} className={`group pt-0 border-primary/30 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 overflow-hidden ${product.special ? 'ring-1 ring-primary/20' : ''}`}>
                 <div className="aspect-square overflow-hidden relative">
                   {product.special && (
                     <div className="absolute top-3 left-3 z-10">
@@ -176,7 +178,7 @@ function App() {
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-t-xl"
                   />
                 </div>
                 <CardHeader className="pb-2">
