@@ -139,9 +139,9 @@ function App() {
             <h2 className="text-3xl font-bold tracking-tight mb-2">Featured Categories</h2>
             <p className="text-muted-foreground">This may interest you</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="flex flex-wrap gap-4 justify-center">
             {categories.map((category, index) => (
-              <div key={index} className="group cursor-pointer">
+              <div key={index} className="group cursor-pointer w-60">
                 <div className="hover:bg-primary/5 border border-primary/30 rounded-xl p-6 hover:border-primary/30 transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.1)]">
                   <div className={`inline-flex p-3 rounded-lg bg-gradient-to-br ${category.color} mb-4`}>
                     <category.icon className="h-6 w-6 text-white" />
