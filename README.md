@@ -3,6 +3,21 @@
 **klikklak** to nowoczesny projekt fullstackowy sklepu internetowego zintegrowany z chatbotem opartym na GPT-4o. Projekt wykorzystuje najnowsze technologie frontendowe i backendowe, stawiając na wydajność, estetykę i skalowalność.
 
 ---
+## 📚 Spis treści
+
+- [🎯 Opis projektu](#-klikklak)
+- [🧩 Stack technologiczny](#-stack-technologiczny)
+- [🚀 Jak uruchomić projekt](#-jak-uruchomić-projekt)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+- [📦 Struktura katalogów](#-struktura-katalogów)
+- [✅ Wymagania funkcjonalne](#-wymagania-funkcjonalne)
+- [⚙️ Wymagania niefunkcjonalne](#️-wymagania-niefunkcjonalne)
+- [🗃️ Struktura bazy danych](#️-struktura-bazy-danych)
+- [🧠 Integracja z GPT-4o](#-integracja-z-gpt-4o)
+- [📈 Przyszłe możliwości rozwoju](#-przyszłe-możliwości-rozwoju)
+- [📄 Licencja](#-licencja)
+---
 
 ## 🚀 Stack technologiczny
 
