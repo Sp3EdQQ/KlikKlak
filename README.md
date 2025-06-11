@@ -7,16 +7,9 @@
 
 - [🎯 Opis projektu](#-klikklak)
 - [🧩 Stack technologiczny](#-stack-technologiczny)
-- [🚀 Jak uruchomić projekt](#-jak-uruchomić-projekt)
-  - [Backend](#backend)
-  - [Frontend](#frontend)
-- [📦 Struktura katalogów](#-struktura-katalogów)
 - [✅ Wymagania funkcjonalne](#-wymagania-funkcjonalne)
 - [⚙️ Wymagania niefunkcjonalne](#️-wymagania-niefunkcjonalne)
-- [🗃️ Struktura bazy danych](#️-struktura-bazy-danych)
-- [🧠 Integracja z GPT-4o](#-integracja-z-gpt-4o)
-- [📈 Przyszłe możliwości rozwoju](#-przyszłe-możliwości-rozwoju)
-- [📄 Licencja](#-licencja)
+- [📸 Zrzuty ekranu](#-zrzuty-ekranu)
 ---
 
 ## 🚀 Stack technologiczny
