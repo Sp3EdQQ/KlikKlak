@@ -1,15 +1,18 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ShoppingCart, Menu, X, Moon, Sun } from "lucide-react"
-import { useTheme } from "@/lib/theme"
+import { ShoppingCart, Menu, X} from "lucide-react"
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { theme, toggleTheme } = useTheme()
 
   return (
     <nav className="border-primary/40 dark:border-red-500 sticky top-0 z-50 border-b bg-neutral-900/40 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-6 py-4">
+        <button className="bg-red-500" onClick={()=>{
+          document.documentElement.classList.toggle("dark")
+        }}>
+          sdfasd
+        </button>
         <div className="flex items-center justify-between">
           <div className="text-2xl font-bold tracking-tight">
             <span className="from-primary via-accent bg-gradient-to-r to-pink-400 bg-clip-text text-transparent">
@@ -30,14 +33,7 @@ export function Navigation() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="hover:bg-primary/60 hidden md:flex"
-              onClick={toggleTheme}
-            >
-              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
+
             <Button
               variant="ghost"
               size="sm"
@@ -77,14 +73,7 @@ export function Navigation() {
               >
                 Support
               </a>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full justify-end"
-                onClick={toggleTheme}
-              >
-                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              </Button>
+
             </div>
           </div>
         )}

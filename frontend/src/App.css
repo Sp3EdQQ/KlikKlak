@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* for darkmode */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme{
   --color-primary: oklch(62.7% 0.265 303.9);
 }
