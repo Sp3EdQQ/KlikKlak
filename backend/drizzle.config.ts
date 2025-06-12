@@ -1,11 +1,15 @@
 import { defineConfig } from 'drizzle-kit';
 import { ConfigService } from '@nestjs/config';
-import 'dotenv/config';
+import dotenv from 'dotenv';
 
 const configService = new ConfigService();
 
+dotenv.config({
+  path: '.env',
+});
+
 export default defineConfig({
-  schema: './src/db/index.ts',
+  schema: './src/database/index.ts',
   out: './drizzle',
   dialect: 'postgresql',
   dbCredentials: {
