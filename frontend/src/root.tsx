@@ -1,4 +1,5 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
+import { ThemeProvider } from "@/lib/theme"
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -21,5 +22,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function Root() {
-  return <Outlet />
+  return (
+    <ThemeProvider>
+      <Outlet />
+    </ThemeProvider>
+  )
 }

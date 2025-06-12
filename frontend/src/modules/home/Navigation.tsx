@@ -1,12 +1,14 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ShoppingCart, Menu, X } from "lucide-react"
+import { ShoppingCart, Menu, X, Moon, Sun } from "lucide-react"
+import { useTheme } from "@/lib/theme"
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { theme, toggleTheme } = useTheme()
 
   return (
-    <nav className="border-primary/40 sticky top-0 z-50 border-b bg-neutral-900/40 backdrop-blur-md">
+    <nav className="border-primary/40 dark:border-red-500 sticky top-0 z-50 border-b bg-neutral-900/40 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="text-2xl font-bold tracking-tight">
@@ -15,7 +17,7 @@ export function Navigation() {
             </span>
           </div>
 
-          <div className="hidden items-center space-x-8 text-sm md:flex">
+          <div className="hidden md:flex items-center space-x-6">
             <a href="#" className="hover:text-primary font-medium">
               Products
             </a>
@@ -28,6 +30,14 @@ export function Navigation() {
           </div>
 
           <div className="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="hover:bg-primary/60 hidden md:flex"
+              onClick={toggleTheme}
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
             <Button
               variant="ghost"
               size="sm"
@@ -67,6 +77,14 @@ export function Navigation() {
               >
                 Support
               </a>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full justify-end"
+                onClick={toggleTheme}
+              >
+                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              </Button>
             </div>
           </div>
         )}
