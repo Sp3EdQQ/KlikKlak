@@ -81,6 +81,12 @@
 - [ ] Możliwość łatwego wdrożenia (np. Vercel / Railway / Docker)
 - [x] Repozytorium kodu w systemie kontroli wersji (GitHub)
 
+## 🛢 Baza danych
+
+![image](https://github.com/user-attachments/assets/d9cf194f-24fa-4ff4-97fd-c081e255d221)
+
+
+
 ## 📸 Zrzuty ekranu
 
 ### Strona główna
