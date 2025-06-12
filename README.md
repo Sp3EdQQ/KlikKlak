@@ -9,6 +9,7 @@
 - [🧩 Stack technologiczny](#-stack-technologiczny)
 - [✅ Wymagania funkcjonalne](#-wymagania-funkcjonalne)
 - [⚙️ Wymagania niefunkcjonalne](#️-wymagania-niefunkcjonalne)
+- [🛢 Baza danych](#-baza-danych)
 - [📸 Zrzuty ekranu](#-zrzuty-ekranu)
 ---
 
