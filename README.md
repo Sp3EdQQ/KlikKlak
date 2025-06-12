@@ -48,7 +48,6 @@
 - [ ] Rejestracja konta z walidacją danych
 - [ ] Logowanie i wylogowanie
 - [ ] Edycja danych profilu użytkownika
-- [ ] Resetowanie hasła (na podstawie e-maila)
 
 #### 🛠️ Panel administracyjny
 - [ ] Zarządzanie produktami (dodawanie, edycja, usuwanie)
@@ -58,8 +57,6 @@
 #### 🤖 Chatbot GPT-4o
 - [ ] Integracja z chatbotem wspieranym przez GPT-4o
 - [ ] Możliwość zadawania pytań nt. produktów
-- [ ] Obsługa podstawowych komend zakupowych (np. "Dodaj do koszyka", "Znajdź laptop")
-
 ---
 
 ### 🛠️ Wymagania niefunkcjonalne
@@ -69,13 +66,11 @@
 - [x] Backend: NestJS, PostgreSQL, Drizzle ORM, pnpm
 
 #### ⚙️ Wydajność i jakość
-- [ ] Szybki czas odpowiedzi — poniżej 1 sekundy
 - [ ] Responsywność interfejsu (mobile + desktop)
 - [ ] Skalowalna architektura (łatwość rozbudowy)
 
 #### 🔒 Bezpieczeństwo
 - [ ] Bezpieczne przechowywanie danych użytkowników (hashowanie haseł)
-- [ ] Autoryzacja i uwierzytelnianie API
 - [ ] Ograniczenie dostępu do panelu admina (rola `admin`)
 
 #### 🧪 Testowalność i jakość kodu
