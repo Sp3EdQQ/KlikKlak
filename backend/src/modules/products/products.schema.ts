@@ -4,10 +4,10 @@ import {
   varchar,
   decimal,
   numeric,
-  timestamp,
   integer,
 } from 'drizzle-orm/pg-core';
 import { categories } from '../../database/index';
+import { timestamps } from 'src/database/utils';
 
 export const products = pgTable('products', {
   id: varchar('id')
@@ -18,11 +18,6 @@ export const products = pgTable('products', {
   price: decimal('price').notNull(),
   stock: numeric('stock').notNull(),
   imageUrl: varchar('image_url', { length: 512 }),
-  createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' })
-    .defaultNow()
-    .notNull(),
+  ...timestamps,
   categoryId: integer('category_id').references(() => categories.id),
 });
