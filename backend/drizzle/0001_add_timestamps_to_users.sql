@@ -1,0 +1,2 @@
+ALTER TABLE "users" ADD COLUMN "created_at" timestamp(3) with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL;--> statement-breakpoint
+ALTER TABLE "users" ADD COLUMN "updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL;

@@ -1,30 +1,15 @@
-version: '3.8'
-
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
+  klikklakdb-db:
+    image: postgres:16-alpine
+    restart: always
     environment:
-      - NODE_ENV=development
+      POSTGRES_PASSWORD: adminadmin
+      POSTGRES_DB: klikklakdb
     volumes:
-      - ./backend:/usr/src/app
-      - /usr/src/app/node_modules
-    restart: unless-stopped
+      - klikklakdb-db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "5173:5173"
-    environment:
-      - NODE_ENV=development
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    depends_on:
-      - backend
-    restart: unless-stopped
+volumes:
+  klikklakdb-db-data:
+    driver: local
