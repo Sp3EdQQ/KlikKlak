@@ -14,7 +14,7 @@ export function Navigation() {
   }
 
   return (
-    <nav className="border-primary/40 dark:border-primary/40 sticky top-0 z-50 border-b bg-neutral-900/40 backdrop-blur-md">
+    <nav className="border-primary/40 sticky top-0 z-50 border-b bg-neutral-100 backdrop-blur-md dark:bg-neutral-900/40">
       <div className="mx-auto max-w-7xl px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="text-2xl font-bold tracking-tight">

@@ -5,7 +5,7 @@ import { Logo } from "@/assets/svgs"
 export function Hero() {
   return (
     <section className="relative overflow-hidden py-24 md:py-32">
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-800/20 to-neutral-700/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-violet-800/20 to-white dark:from-violet-800/20 dark:to-neutral-700/20"></div>
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="flex items-center justify-between">
           <div className="max-w-3xl">
@@ -24,7 +24,7 @@ export function Hero() {
               cutting-edge technology.
             </p>
             <div className="flex items-center space-x-4">
-              <Button className="bg-primary hover:bg-primary/90 shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+              <Button className="bg-primary hover:bg-primary/90 text-white shadow-[0_0_20px_rgba(168,85,247,0.3)]">
                 Shop Now
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
