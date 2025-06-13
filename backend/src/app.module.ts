@@ -8,6 +8,8 @@ import { DrizzlePostgresModule } from '@knaadh/nestjs-drizzle-postgres';
 import { ProductsModule } from './modules/products/products.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { TagsModule } from './modules/tags/tags.module';
+import { ProductTagsModule } from './modules/product-tags/product-tags.module';
+import { ProductTagsModule } from './modules/product-tags/product-tags.module';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { TagsModule } from './modules/tags/tags.module';
     CategoriesModule,
 
     TagsModule,
+
+    ProductTagsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
