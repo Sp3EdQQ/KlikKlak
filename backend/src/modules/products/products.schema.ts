@@ -7,6 +7,7 @@ import {
   timestamp,
   integer,
 } from 'drizzle-orm/pg-core';
+import { categories } from '../categories/categories.schema';
 
 export const products = pgTable('products', {
   id: varchar('id')
