@@ -85,7 +85,7 @@
 ## 🛢 Baza danych
 
 ![image](https://github.com/user-attachments/assets/d9cf194f-24fa-4ff4-97fd-c081e255d221)
-
+🔗 [Zobacz interaktywną wersję](https://dbdiagram.io/d/684c95503cc77757c8d6cc1c)
 
 
 ## 📸 Zrzuty ekranu
