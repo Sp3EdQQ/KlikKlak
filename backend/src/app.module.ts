@@ -9,6 +9,7 @@ import { ProductsModule } from './modules/products/products.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { ProductTagsModule } from './modules/product-tags/product-tags.module';
+import { CartItemsModule } from './modules/cart-items/cart-items.module';
 import { CartsModule } from './modules/carts/carts.module';
 import { ProductTagsModule } from './modules/product-tags/product-tags.module';
 
@@ -40,6 +41,8 @@ import { ProductTagsModule } from './modules/product-tags/product-tags.module';
     ProductTagsModule,
 
     CartsModule,
+
+    CartItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
