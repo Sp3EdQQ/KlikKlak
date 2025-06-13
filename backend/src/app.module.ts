@@ -6,6 +6,7 @@ import database from './database/database';
 import * as schema from './database/index';
 import { DrizzlePostgresModule } from '@knaadh/nestjs-drizzle-postgres';
 import { ProductsModule } from './modules/products/products.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 @Module({
   imports: [
@@ -27,6 +28,8 @@ import { ProductsModule } from './modules/products/products.module';
     }),
 
     ProductsModule,
+
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
