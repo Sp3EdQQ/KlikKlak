@@ -4,3 +4,4 @@ export * from '../modules/categories/categories.schema';
 export * from '../modules/tags/tags.schema';
 export * from '../modules/carts/carts.schema';
 export * from '../modules/addresses/addresses.schema';
+export * from '../modules/orders/orders.schema';
