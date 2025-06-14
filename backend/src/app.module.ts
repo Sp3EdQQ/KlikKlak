@@ -12,6 +12,7 @@ import { ProductTagsModule } from './modules/product-tags/product-tags.module';
 import { AddressesModule } from './modules/addresses/addresses.module';
 import { CartItemsModule } from './modules/cart-items/cart-items.module';
 import { CartsModule } from './modules/carts/carts.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [
@@ -45,6 +46,8 @@ import { CartsModule } from './modules/carts/carts.module';
     CartItemsModule,
 
     AddressesModule,
+
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
