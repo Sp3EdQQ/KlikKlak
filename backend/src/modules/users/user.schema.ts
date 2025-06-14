@@ -11,12 +11,4 @@ export const users = pgTable('users', {
   firstName: varchar('first_name', { length: 100 }),
   lastName: varchar('last_name', { length: 100 }),
   ...timestamps,
-
-  // phone: varchar('phone', { length: 100 }),
-  // address: varchar('address', { length: 100 }),
-  // city: varchar('city', { length: 100 }),
-  // state: varchar('state', { length: 100 }),
-  // zip: varchar('zip', { length: 100 }),
-  // country: varchar('country', { length: 100 }),
-  // role: varchar('role', { length: 20 }).default('user').notNull(),
 });

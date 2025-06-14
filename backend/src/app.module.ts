@@ -5,6 +5,18 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import database from './database/database';
 import * as schema from './database/index';
 import { DrizzlePostgresModule } from '@knaadh/nestjs-drizzle-postgres';
+import { ProductsModule } from './modules/products/products.module';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { TagsModule } from './modules/tags/tags.module';
+import { ProductTagsModule } from './modules/product-tags/product-tags.module';
+import { AddressesModule } from './modules/addresses/addresses.module';
+import { CartItemsModule } from './modules/cart-items/cart-items.module';
+import { CartsModule } from './modules/carts/carts.module';
+import { OrdersModule } from './modules/orders/orders.module';
+import { OrderItemsModule } from './modules/order-items/order-items.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
+import { WishlistModule } from './modules/wishlists/wishlists.module';
+import { WistlistItemsModule } from './modules/wistlist-items/wistlist-items.module';
 
 @Module({
   imports: [
@@ -24,6 +36,30 @@ import { DrizzlePostgresModule } from '@knaadh/nestjs-drizzle-postgres';
       },
       inject: [ConfigService],
     }),
+
+    ProductsModule,
+
+    CategoriesModule,
+
+    TagsModule,
+
+    ProductTagsModule,
+
+    CartsModule,
+
+    CartItemsModule,
+
+    AddressesModule,
+
+    OrdersModule,
+
+    OrderItemsModule,
+
+    ReviewsModule,
+
+    WishlistModule,
+
+    WistlistItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
