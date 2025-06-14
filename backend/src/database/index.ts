@@ -5,3 +5,8 @@ export * from '../modules/tags/tags.schema';
 export * from '../modules/carts/carts.schema';
 export * from '../modules/addresses/addresses.schema';
 export * from '../modules/orders/orders.schema';
+export * from '../modules/wishlists/wishlists.schema';
+export * from '../modules/reviews/reviews.schema';
+export * from '../modules/order-items/order-items.schema';
+export * from '../modules/cart-items/cart-items.schema';
+export * from '../modules/product-tags/product-tags.schema';
