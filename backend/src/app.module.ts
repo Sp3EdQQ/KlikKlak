@@ -16,7 +16,7 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { OrderItemsModule } from './modules/order-items/order-items.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { WishlistModule } from './modules/wishlists/wishlists.module';
-import { WistlistItemsModule } from './modules/wistlist-items/wistlist-items.module';
+import { WishlistItemsModule } from './modules/wishlist-items/wishlist-items.module';
 
 @Module({
   imports: [
@@ -59,7 +59,7 @@ import { WistlistItemsModule } from './modules/wistlist-items/wistlist-items.mod
 
     WishlistModule,
 
-    WistlistItemsModule,
+    WishlistItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

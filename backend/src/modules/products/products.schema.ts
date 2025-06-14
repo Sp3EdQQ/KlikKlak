@@ -1,11 +1,5 @@
 import { sql } from 'drizzle-orm';
-import {
-  pgTable,
-  varchar,
-  decimal,
-  numeric,
-  integer,
-} from 'drizzle-orm/pg-core';
+import { pgTable, varchar, decimal, numeric } from 'drizzle-orm/pg-core';
 import { categories } from '../../database/index';
 import { timestamps } from 'src/database/utils';
 
@@ -19,5 +13,5 @@ export const products = pgTable('products', {
   stock: numeric('stock').notNull(),
   imageUrl: varchar('image_url', { length: 512 }),
   ...timestamps,
-  categoryId: integer('category_id').references(() => categories.id),
+  categoryId: varchar('category_id').references(() => categories.id),
 });

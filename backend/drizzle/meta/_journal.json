@@ -15,6 +15,13 @@
       "when": 1749752360746,
       "tag": "0001_add_timestamps_to_users",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1749905365542,
+      "tag": "0002_whole_database_tables",
+      "breakpoints": true
     }
   ]
 }
