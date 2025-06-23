@@ -71,7 +71,6 @@ export class UsersController {
     if (!result.success) {
       throw new BadRequestException(result.error.format());
     }
-    // Na razie tylko wyszukuje użytkownika po emailu
-    return this.usersService.findByEmail(result.data.email);
+    return this.usersService.login(result.data.email, result.data.password);
   }
 }
