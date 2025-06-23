@@ -14,64 +14,64 @@ import {
   loginUserSchema,
   idSchema,
 } from './user.zod';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
   @Get()
-  findAll() {
-    // Zwraca listę wszystkich użytkowników
+  async findAll() {
+    return this.usersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     const result = idSchema.safeParse(id);
     if (!result.success) {
       throw new BadRequestException('Invalid user id');
     }
-    // Tu powinna być logika pobierania użytkownika z bazy
-    // Jeśli użytkownik nie istnieje:
-    // throw new NotFoundException('User not found');
-    // Tymczasowo:
-    return { id };
+    return this.usersService.findOne(id);
   }
 
   @Post()
-  create(@Body() body: any) {
+  async create(@Body() body: any) {
     const result = createUserSchema.safeParse(body);
     if (!result.success) {
       throw new BadRequestException(result.error.format());
     }
-    return result.data;
+    return this.usersService.create(result.data);
   }
 
   @Put(':id')
-  update(@Body() body: any) {
+  async update(@Param('id') id: string, @Body() body: any) {
+    const idResult = idSchema.safeParse(id);
+    if (!idResult.success) {
+      throw new BadRequestException('Invalid user id');
+    }
     const result = updateUserSchema.safeParse(body);
     if (!result.success) {
       throw new BadRequestException(result.error.format());
     }
-    return result.data;
+    return this.usersService.update(id, result.data);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     const result = idSchema.safeParse(id);
     if (!result.success) {
       throw new BadRequestException('Invalid user id');
     }
-    // Tu powinna być logika usuwania użytkownika z bazy
-    // Jeśli użytkownik nie istnieje:
-    // throw new NotFoundException('User not found');
-    // Tymczasowo:
-    return { id };
+    return this.usersService.remove(id);
   }
 
   @Post('login')
-  login(@Body() body: any) {
+  async login(@Body() body: any) {
     const result = loginUserSchema.safeParse(body);
     if (!result.success) {
       throw new BadRequestException(result.error.format());
     }
-    return result.data;
+    // Na razie tylko wyszukuje użytkownika po emailu
+    return this.usersService.findByEmail(result.data.email);
   }
 }
