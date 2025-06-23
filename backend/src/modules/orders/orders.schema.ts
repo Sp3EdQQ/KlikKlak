@@ -1,10 +1,10 @@
 import { addresses, users } from '../../database/index';
 import { sql } from 'drizzle-orm';
-import { pgTable, varchar, decimal } from 'drizzle-orm/pg-core';
+import { pgTable, varchar, decimal, uuid } from 'drizzle-orm/pg-core';
 import { timestamps } from 'src/database/utils';
 
 export const orders = pgTable('orders', {
-  id: varchar('id')
+  id: uuid('id')
     .primaryKey()
     .default(sql`gen_random_uuid()`),
   userId: varchar('user_id').references(() => users.id),

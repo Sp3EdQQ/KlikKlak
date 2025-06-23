@@ -1,10 +1,10 @@
 import { sql } from 'drizzle-orm';
-import { pgTable, varchar, decimal, numeric } from 'drizzle-orm/pg-core';
+import { pgTable, varchar, decimal, numeric, uuid } from 'drizzle-orm/pg-core';
 import { categories } from '../../database/index';
 import { timestamps } from 'src/database/utils';
 
 export const products = pgTable('products', {
-  id: varchar('id')
+  id: uuid('id')
     .primaryKey()
     .default(sql`gen_random_uuid()`),
   name: varchar('name', { length: 255 }).notNull(),
