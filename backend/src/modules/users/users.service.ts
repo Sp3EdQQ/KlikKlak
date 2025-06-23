@@ -90,6 +90,7 @@ export class UsersService {
   async login(email: string, plainPassword: string) {
     const user = await this.validateUser(email, plainPassword);
     //For error bellow: Remove password from userData because we shouldn't send it to the frontend.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userData } = user;
     const token = await this.jwtService.signAsync({
       sub: user.id,
