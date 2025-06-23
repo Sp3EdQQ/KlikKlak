@@ -4,6 +4,7 @@ import {
   Post,
   Put,
   Delete,
+  Param,
   Body,
   BadRequestException,
 } from '@nestjs/common';
@@ -11,6 +12,7 @@ import {
   createUserSchema,
   updateUserSchema,
   loginUserSchema,
+  idSchema,
 } from './user.zod';
 
 @Controller('users')
@@ -21,8 +23,16 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne() {
-    // Zwraca szczegóły użytkownika o podanym id
+  findOne(@Param('id') id: string) {
+    const result = idSchema.safeParse(id);
+    if (!result.success) {
+      throw new BadRequestException('Invalid user id');
+    }
+    // Tu powinna być logika pobierania użytkownika z bazy
+    // Jeśli użytkownik nie istnieje:
+    // throw new NotFoundException('User not found');
+    // Tymczasowo:
+    return { id };
   }
 
   @Post()
@@ -44,8 +54,16 @@ export class UsersController {
   }
 
   @Delete(':id')
-  remove() {
-    // Usuwa użytkownika
+  remove(@Param('id') id: string) {
+    const result = idSchema.safeParse(id);
+    if (!result.success) {
+      throw new BadRequestException('Invalid user id');
+    }
+    // Tu powinna być logika usuwania użytkownika z bazy
+    // Jeśli użytkownik nie istnieje:
+    // throw new NotFoundException('User not found');
+    // Tymczasowo:
+    return { id };
   }
 
   @Post('login')

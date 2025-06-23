@@ -18,3 +18,5 @@ export const loginUserSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
 });
+
+export const idSchema = z.string().uuid();
