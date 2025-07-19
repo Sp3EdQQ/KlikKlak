@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart, Menu, X, Sun, Moon } from "lucide-react"
+import { NavLink } from "react-router"
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -18,21 +19,24 @@ export function Navigation() {
       <div className="mx-auto max-w-7xl px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="text-2xl font-bold tracking-tight">
-            <span className="from-primary via-accent bg-gradient-to-r to-pink-400 bg-clip-text text-transparent">
+            <NavLink
+              to="/"
+              className="from-primary via-accent bg-gradient-to-r to-pink-400 bg-clip-text text-transparent"
+            >
               KlikKlak
-            </span>
+            </NavLink>
           </div>
 
           <div className="hidden items-center space-x-6 md:flex">
-            <a href="#" className="hover:text-primary font-medium">
+            <NavLink to="/products" className="hover:text-primary font-medium">
               Products
-            </a>
-            <a href="#" className="hover:text-primary font-medium">
+            </NavLink>
+            <NavLink to="/build" className="hover:text-primary font-medium">
               Build
-            </a>
-            <a href="#" className="hover:text-primary font-medium">
+            </NavLink>
+            <NavLink to="/support" className="hover:text-primary font-medium">
               Support
-            </a>
+            </NavLink>
           </div>
 
           <div className="flex items-center space-x-4">
@@ -65,24 +69,24 @@ export function Navigation() {
         {isMenuOpen && (
           <div className="border-primary/50 mt-4 border-t pt-4 md:hidden">
             <div className="space-y-4 pr-4 text-sm">
-              <a
-                href="#"
+              <NavLink
+                to="/products"
                 className="hover:text-primary block text-right text-xl font-medium"
               >
                 Products
-              </a>
-              <a
-                href="#"
+              </NavLink>
+              <NavLink
+                to="/build"
                 className="hover:text-primary block text-right text-xl font-medium"
               >
                 Build
-              </a>
-              <a
-                href="#"
+              </NavLink>
+              <NavLink
+                to="/support"
                 className="hover:text-primary block text-right text-xl font-medium"
               >
                 Support
-              </a>
+              </NavLink>
             </div>
           </div>
         )}
