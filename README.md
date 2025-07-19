@@ -91,11 +91,7 @@
 ## 📸 Zrzuty ekranu
 
 ### Strona główna
-wkrótce
-
-
-
-
+<img width="1840" height="871" alt="image" src="https://github.com/user-attachments/assets/8d239342-fd01-413f-990c-7ec6f2b780e7" />
 
 ![MIT License](https://img.shields.io/badge/license-MIT-green)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)
