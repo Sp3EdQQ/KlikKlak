@@ -2,18 +2,12 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart, Menu, X, Sun, Moon, User } from "lucide-react"
 import { NavLink } from "react-router"
+import { useDarkMode } from "@/hooks/useDarkMode"
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isDark, setIsDark] = useState(
-    document.documentElement.classList.contains("dark")
-  )
+  const { isDark, toggleTheme } = useDarkMode()
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
-
-  const toggleTheme = () => {
-    document.documentElement.classList.toggle("dark")
-    setIsDark(!isDark)
-  }
 
   return (
     <nav className="border-primary/40 sticky top-0 z-50 border-b bg-neutral-100 backdrop-blur-md dark:bg-neutral-900/40">
