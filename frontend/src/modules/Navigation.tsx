@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ShoppingCart, Menu, X, Sun, Moon } from "lucide-react"
+import { ShoppingCart, Menu, X, Sun, Moon, User } from "lucide-react"
 import { NavLink } from "react-router"
 
 export function Navigation() {
@@ -8,6 +8,7 @@ export function Navigation() {
   const [isDark, setIsDark] = useState(
     document.documentElement.classList.contains("dark")
   )
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 
   const toggleTheme = () => {
     document.documentElement.classList.toggle("dark")
@@ -55,6 +56,37 @@ export function Navigation() {
             >
               {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
+            <div className="relative">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="hover:bg-primary/60"
+                onClick={() => setIsUserMenuOpen(open => !open)}
+              >
+                <User className="h-4 w-4" />
+              </Button>
+              {isUserMenuOpen && (
+                <div className="absolute right-0 z-50 mt-2 flex w-46 flex-col items-center rounded-xl bg-white py-6 text-center shadow-lg dark:bg-neutral-800">
+                  <NavLink
+                    to="/login"
+                    className="mb-4 w-36 rounded-md px-6 py-2 text-sm font-medium transition hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                    onClick={() => setIsUserMenuOpen(false)}
+                  >
+                    Zaloguj
+                  </NavLink>
+                  <div className="mb-1 text-xs text-neutral-500 dark:text-neutral-300">
+                    Nie masz konta?
+                  </div>
+                  <NavLink
+                    to="/register"
+                    className="bg-primary hover:bg-primary/80 w-36 rounded-md px-6 py-2 text-sm font-medium text-white transition"
+                    onClick={() => setIsUserMenuOpen(false)}
+                  >
+                    Zarejestruj się
+                  </NavLink>
+                </div>
+              )}
+            </div>
             <Button
               variant="ghost"
               size="sm"
