@@ -1,5 +1,5 @@
-import { Navigation } from "@/modules/Navigation"
-import { Footer } from "@/modules/Footer"
+import { Header } from "@/components/layout/Header"
+import { Footer } from "@/components/layout/Footer"
 import { Cpu, Gpu, MemoryStick, Microchip, HardDrive, Power, Square } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
@@ -64,8 +64,8 @@ const categories = [
 
 export default function Products() {
   return (
-    <div className="flex min-h-screen flex-col bg-white text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
-      <Navigation />
+    <div className="min-h-screen flex flex-col">
+      <Header />
       <main className="flex-1">
         <section className="mx-auto max-w-7xl px-6 py-16">
           <div className="mb-12 text-center">
