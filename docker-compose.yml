@@ -10,6 +10,16 @@ services:
     ports:
       - 5432:5432
 
+  backend:
+    image: klikklak-backend:latest
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: postgresql://postgres:adminadmin@klikklakdb-db:5432/klikklakdb
+    depends_on:
+      - klikklakdb-db
+    restart: always
+
 volumes:
   klikklakdb-db-data:
     driver: local

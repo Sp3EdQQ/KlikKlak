@@ -1,22 +1,42 @@
-# Base image
-FROM node:22
+# Build stage
+FROM node:22-alpine AS builder
 
-# Create app directory
-WORKDIR /usr/src/app
+# Install pnpm
+RUN npm install -g pnpm
 
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY package*.json ./
+WORKDIR /app
 
-# Install app dependencies
-RUN npm install
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
 
-# Bundle app source
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
 COPY . .
 
-# Creates a "dist" folder with the production build
-RUN npm run build
+# Build the application
+RUN pnpm run build
 
-# Start the server using the production build
-CMD [ "node", "dist/main.js" ]
+# Production stage
+FROM node:22-alpine AS production
 
+# Install pnpm
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+
+# Install only production dependencies
+RUN pnpm install --frozen-lockfile --prod
+
+# Copy built application from builder stage
+COPY --from=builder /app/dist ./dist
+
+# Expose the application port
 EXPOSE 3000
+
+# Start the application
+CMD ["node", "dist/src/main.js"]
