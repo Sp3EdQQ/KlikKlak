@@ -2,8 +2,7 @@ import { ShoppingCart, ArrowRight, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
-import { Header } from '@/components/layout/Header';
+import { BannerCarousel } from '@/components/BannerCarousel';
 import { Footer } from '@/components/layout/Footer';
 
 // Hero Component
@@ -51,7 +50,7 @@ function Hero() {
           {/* Image */}
           <div className="relative">
             <div className="aspect-[4/3] overflow-hidden rounded-lg">
-              <ImageWithFallback
+              <img
                 src="https://images.unsplash.com/photo-1733945761533-727f49908d70?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBjb21wdXRlciUyMHNldHVwfGVufDF8fHx8MTc2MTI3MzE3M3ww&ixlib=rb-4.1.0&q=80&w=1080"
                 alt="Gaming PC Setup"
                 className="h-full w-full object-cover"
@@ -85,7 +84,7 @@ function CategoryCard({ title, description, imageUrl, productsCount }: CategoryC
       className="group relative overflow-hidden rounded-lg border border-gray-200 bg-white transition-all hover:shadow-lg hover:-translate-y-1"
     >
       <div className="aspect-square overflow-hidden bg-gray-100">
-        <ImageWithFallback
+        <img
           src={imageUrl}
           alt={title}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -138,7 +137,7 @@ function ProductCard({
 
       {/* Image */}
       <div className="aspect-square overflow-hidden bg-gray-100">
-        <ImageWithFallback
+        <img
           src={imageUrl}
           alt={name}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -156,8 +155,8 @@ function ProductCard({
               <Star
                 key={i}
                 className={`h-3 w-3 ${i < Math.floor(rating)
-                    ? 'fill-yellow-400 text-yellow-400'
-                    : 'fill-gray-100 text-gray-100'
+                  ? 'fill-yellow-400 text-yellow-400'
+                  : 'fill-gray-100 text-gray-100'
                   }`}
               />
             ))}
@@ -199,6 +198,37 @@ function ProductCard({
 
 // Main App Component
 export default function Home() {
+  const banners = [
+    {
+      imageUrl: "https://images.unsplash.com/photo-1603481588273-2f908a9a7a1b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBwYyUyMHNldHVwfGVufDF8fHx8MTc2MTQwMDc3N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      title: "Premium Gaming PCs",
+      subtitle: "Experience ultimate performance with our custom-built gaming rigs",
+      ctaText: "Shop Gaming PCs",
+      gradient: "from-black/80 via-black/60 to-transparent"
+    },
+    {
+      imageUrl: "https://images.unsplash.com/photo-1662830857519-2f9b28e3b4ac?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb21wdXRlciUyMGhhcmR3YXJlJTIwY29tcG9uZW50c3xlbnwxfHx8fDE3NjEzODE4MzZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      title: "PC Components & Upgrades",
+      subtitle: "High-quality parts from top brands - Build your dream setup",
+      ctaText: "Browse Components",
+      gradient: "from-blue-900/80 via-blue-900/50 to-transparent"
+    },
+    {
+      imageUrl: "https://images.unsplash.com/photo-1759668358660-0d06064f0f84?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBsYXB0b3AlMjB3b3Jrc3BhY2V8ZW58MXx8fHwxNzYxNDUyMDU2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      title: "Laptops & Workstations",
+      subtitle: "Powerful portable solutions for work and creative professionals",
+      ctaText: "View Laptops",
+      gradient: "from-gray-900/80 via-gray-900/50 to-transparent"
+    },
+    {
+      imageUrl: "https://images.unsplash.com/photo-1613442986373-af81e5c618d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyZ2IlMjBjb21wdXRlcnxlbnwxfHx8fDE3NjE0ODI2MzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      title: "RGB & Peripherals",
+      subtitle: "Customize your setup with premium keyboards, mice, and lighting",
+      ctaText: "Shop Accessories",
+      gradient: "from-purple-900/80 via-purple-900/50 to-transparent"
+    }
+  ];
+
   const categories = [
     {
       title: 'Processors',
@@ -326,7 +356,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+      <BannerCarousel banners={banners} autoPlayInterval={5000} />
 
       <main className="flex-1">
         <Hero />
