@@ -94,12 +94,14 @@ export function Header() {
                             </Button>
 
                             {/* Account */}
-                            <Button variant="ghost" className="hidden md:flex gap-2" title="Konto użytkownika">
-                                <User className="h-5 w-5" />
-                                <div className="hidden xl:flex flex-col items-start">
-                                    <span className="text-xs text-gray-500">Moje konto</span>
-                                    <span className="text-sm font-medium">Zaloguj się</span>
-                                </div>
+                            <Button variant="ghost" className="hidden md:flex gap-2" title="Konto użytkownika" asChild>
+                                <a href="/logowanie">
+                                    <User className="h-5 w-5" />
+                                    <div className="hidden xl:flex flex-col items-start">
+                                        <span className="text-xs text-gray-500">Moje konto</span>
+                                        <span className="text-sm font-medium">Zaloguj się</span>
+                                    </div>
+                                </a>
                             </Button>
 
                             {/* Cart */}
@@ -182,7 +184,7 @@ export function Header() {
                                 </a>
                             ))}
                             <div className="border-t border-gray-200 my-2 pt-2">
-                                <a href="/account" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">
+                                <a href="/logowanie" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">
                                     <User className="h-5 w-5" />
                                     Moje konto
                                 </a>
