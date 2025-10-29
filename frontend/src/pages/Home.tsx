@@ -1,17 +1,22 @@
-import { Navigation } from "@/modules/Navigation"
-import { Hero } from "@/modules/home/Hero"
-import { Categories } from "@/modules/home/Categories"
-import { FeaturedProducts } from "@/modules/home/FeaturedProducts"
-import { Footer } from "@/modules/Footer"
+import { BannerCarousel } from '@/components/BannerCarousel';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
+import { CategoriesSection, FeaturedProductsSection, BenefitsSection } from '@/components/pages/home';
+import { banners } from '@/data/home';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
-      <Navigation />
-      <Hero />
-      <Categories />
-      <FeaturedProducts />
+    <div className="min-h-screen flex flex-col bg-white">
+      <Header />
+      <BannerCarousel banners={banners} autoPlayInterval={5000} />
+
+      <main className="flex-1">
+        <CategoriesSection />
+        <FeaturedProductsSection />
+        <BenefitsSection />
+      </main>
+
       <Footer />
     </div>
-  )
+  );
 }
