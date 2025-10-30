@@ -10,5 +10,6 @@ export const users = pgTable('users', {
   password: varchar('password', { length: 256 }).notNull(),
   firstName: varchar('first_name', { length: 100 }),
   lastName: varchar('last_name', { length: 100 }),
+  refreshToken: varchar('refresh_token', { length: 512 }),
   ...timestamps,
 });

@@ -29,6 +29,13 @@
       "when": 1750675052773,
       "tag": "0003_varchar_id_to_uuid",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1761822880781,
+      "tag": "0004_complex_scorpion",
+      "breakpoints": true
     }
   ]
 }

@@ -17,6 +17,7 @@ import { OrderItemsModule } from './modules/order-items/order-items.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { WishlistModule } from './modules/wishlists/wishlists.module';
 import { WishlistItemsModule } from './modules/wishlist-items/wishlist-items.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -60,8 +61,10 @@ import { WishlistItemsModule } from './modules/wishlist-items/wishlist-items.mod
     WishlistModule,
 
     WishlistItemsModule,
+
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
