@@ -12,7 +12,12 @@ import {
   createUserSchema,
   updateUserSchema,
   loginUserSchema,
+  refreshTokenSchema,
   idSchema,
+  CreateUserDto,
+  UpdateUserDto,
+  LoginUserDto,
+  RefreshTokenDto,
 } from './user.zod';
 import { UsersService } from './users.service';
 
@@ -75,11 +80,12 @@ export class UsersController {
   }
 
   @Post('refresh')
-  async refresh(@Body() body: { refresh_token: string }) {
-    if (!body.refresh_token) {
-      throw new BadRequestException('Refresh token is required');
+  async refresh(@Body() body: RefreshTokenDto) {
+    const result = refreshTokenSchema.safeParse(body);
+    if (!result.success) {
+      throw new BadRequestException(result.error.format());
     }
-    return this.usersService.refreshAccessToken(body.refresh_token);
+    return this.usersService.refreshAccessToken(result.data.refresh_token);
   }
 
   @Post('logout/:id')

@@ -8,6 +8,7 @@ import { users } from './user.schema';
 import { eq } from 'drizzle-orm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto, UpdateUserDto } from './user.zod';
 
 @Injectable()
 export class UsersService {
@@ -28,12 +29,7 @@ export class UsersService {
     return user;
   }
 
-  async create(data: {
-    email: string;
-    password: string;
-    firstName?: string;
-    lastName?: string;
-  }) {
+  async create(data: CreateUserDto) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
     const [user] = await this.drizzle.db
       .insert(users)
@@ -42,15 +38,7 @@ export class UsersService {
     return user;
   }
 
-  async update(
-    id: string,
-    data: {
-      email?: string;
-      password?: string;
-      firstName?: string;
-      lastName?: string;
-    },
-  ) {
+  async update(id: string, data: UpdateUserDto) {
     const updateData = { ...data };
     if (data.password) {
       updateData.password = await bcrypt.hash(data.password, 10);
