@@ -1,25 +1,65 @@
 services:
-  klikklakdb-db:
+  postgres:
     image: postgres:16-alpine
+    container_name: klikklak-postgres
     restart: always
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: adminadmin
       POSTGRES_DB: klikklakdb
     volumes:
-      - klikklakdb-db-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - "5432:5432"
+    networks:
+      - klikklak-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
-    image: klikklak-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: klikklak-backend
     ports:
-      - 3000:3000
+      - "3000:3000"
     environment:
-      DATABASE_URL: postgresql://postgres:adminadmin@klikklakdb-db:5432/klikklakdb
+      DATABASE_URL: postgresql://postgres:adminadmin@postgres:5432/klikklakdb
+      NODE_ENV: production
     depends_on:
-      - klikklakdb-db
+      postgres:
+        condition: service_healthy
     restart: always
+    networks:
+      - klikklak-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: klikklak-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:3000
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - klikklak-network
+
+networks:
+  klikklak-network:
+    driver: bridge
+    name: klikklak-network
 
 volumes:
-  klikklakdb-db-data:
+  postgres-data:
     driver: local
+    name: klikklak-postgres-data

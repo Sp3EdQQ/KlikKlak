@@ -13,5 +13,5 @@ export const products = pgTable('products', {
   stock: numeric('stock').notNull(),
   imageUrl: varchar('image_url', { length: 512 }),
   ...timestamps,
-  categoryId: varchar('category_id').references(() => categories.id),
+  categoryId: uuid('category_id').references(() => categories.id),
 });

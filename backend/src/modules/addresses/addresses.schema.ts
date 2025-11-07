@@ -6,7 +6,7 @@ export const addresses = pgTable('addresses', {
   id: uuid('id')
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  userId: varchar('user_id').references(() => users.id),
+  userId: uuid('user_id').references(() => users.id),
   fullName: varchar('full_name', { length: 255 }),
   street: varchar('street', { length: 255 }),
   city: varchar('city', { length: 100 }),

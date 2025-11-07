@@ -1,16 +1,22 @@
-# /frontend/Dockerfile
-FROM node:22
+# Development stage
+FROM node:22-alpine
+
+# Install pnpm
+RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY package*.json ./
+# Copy package files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-RUN npm install
+# Install dependencies
+RUN pnpm install --frozen-lockfile
 
+# Copy source code
 COPY . .
 
-RUN npm run build
-
+# Expose port
 EXPOSE 5173
 
-CMD [ "npm", "run", "dev" ]
+# Start development server
+CMD ["pnpm", "run", "dev", "--host", "0.0.0.0"]

@@ -7,6 +7,6 @@ export const wishlists = pgTable('wishlists', {
   id: uuid('id')
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  userId: varchar('user_id').references(() => users.id),
+  userId: uuid('user_id').references(() => users.id),
   ...timestamps,
 });

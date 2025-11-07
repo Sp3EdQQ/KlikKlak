@@ -7,11 +7,11 @@ export const orders = pgTable('orders', {
   id: uuid('id')
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  userId: varchar('user_id').references(() => users.id),
+  userId: uuid('user_id').references(() => users.id),
   status: varchar('status', { length: 50 }),
   total: decimal('total'),
   ...timestamps,
-  shippingAddressId: varchar('shipping_address_id').references(
+  shippingAddressId: uuid('shipping_address_id').references(
     () => addresses.id,
   ),
 });

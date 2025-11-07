@@ -7,8 +7,8 @@ export const reviews = pgTable('reviews', {
   id: uuid('id')
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  userId: varchar('user_id').references(() => users.id),
-  productId: varchar('product_id').references(() => products.id),
+  userId: uuid('user_id').references(() => users.id),
+  productId: uuid('product_id').references(() => products.id),
   rating: integer('rating'),
   comment: varchar('comment'),
   ...timestamps,

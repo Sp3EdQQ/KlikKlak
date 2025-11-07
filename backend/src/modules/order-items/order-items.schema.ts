@@ -6,8 +6,8 @@ export const orderItems = pgTable('order_items', {
   id: uuid('id')
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  orderId: varchar('order_id').references(() => orders.id),
-  productId: varchar('product_id').references(() => products.id),
+  orderId: uuid('order_id').references(() => orders.id),
+  productId: uuid('product_id').references(() => products.id),
   quantity: integer('quantity'),
   price: decimal('price'),
 });

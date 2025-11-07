@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: klikklak-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@klikklak-klikklakdb-db-1:5432/klikklakdb
+      - NODE_ENV=production
+    networks:
+      - klikklak_default
+    restart: unless-stopped
+
+# Use existing network where the database container is already running
+networks:
+  klikklak_default:
+    external: true

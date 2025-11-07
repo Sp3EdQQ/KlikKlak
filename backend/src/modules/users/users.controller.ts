@@ -12,18 +12,13 @@ import {
   createUserSchema,
   updateUserSchema,
   loginUserSchema,
-  refreshTokenSchema,
   idSchema,
-  CreateUserDto,
-  UpdateUserDto,
-  LoginUserDto,
-  RefreshTokenDto,
 } from './user.zod';
 import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   @Get()
   async findAll() {
@@ -77,23 +72,5 @@ export class UsersController {
       throw new BadRequestException(result.error.format());
     }
     return this.usersService.login(result.data.email, result.data.password);
-  }
-
-  @Post('refresh')
-  async refresh(@Body() body: RefreshTokenDto) {
-    const result = refreshTokenSchema.safeParse(body);
-    if (!result.success) {
-      throw new BadRequestException(result.error.format());
-    }
-    return this.usersService.refreshAccessToken(result.data.refresh_token);
-  }
-
-  @Post('logout/:id')
-  async logout(@Param('id') id: string) {
-    const result = idSchema.safeParse(id);
-    if (!result.success) {
-      throw new BadRequestException('Invalid user id');
-    }
-    return this.usersService.logout(id);
   }
 }

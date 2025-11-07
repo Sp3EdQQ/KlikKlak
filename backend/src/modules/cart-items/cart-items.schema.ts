@@ -6,7 +6,7 @@ export const cartItems = pgTable('cart_items', {
   id: uuid('id')
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  cartId: varchar('cart_id').references(() => carts.id),
-  productId: varchar('product_id').references(() => products.id),
+  cartId: uuid('cart_id').references(() => carts.id),
+  productId: uuid('product_id').references(() => products.id),
   quantity: integer('quantity').notNull(),
 });
