@@ -1,0 +1,5 @@
+export { RegisterHeader } from "./RegisterHeader"
+export { RegisterForm } from "./RegisterForm"
+export { NameInput } from "./NameInput"
+export { ConfirmPasswordInput } from "./ConfirmPasswordInput"
+export { LoginLink } from "./LoginLink"
