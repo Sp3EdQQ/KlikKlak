@@ -16,6 +16,11 @@ type Pages = {
   "/products": {
     params: {};
   };
+  "/products/:slug": {
+    params: {
+      "slug": string;
+    };
+  };
   "/logowanie": {
     params: {};
   };
@@ -27,7 +32,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/products" | "/logowanie" | "/rejestracja";
+    page: "/" | "/products" | "/products/:slug" | "/logowanie" | "/rejestracja";
   };
   "./pages/Home.tsx": {
     id: "pages/Home";
@@ -36,6 +41,10 @@ type RouteFiles = {
   "./pages/Products.tsx": {
     id: "pages/Products";
     page: "/products";
+  };
+  "./pages/ProductDetail.tsx": {
+    id: "pages/ProductDetail";
+    page: "/products/:slug";
   };
   "./pages/Login.tsx": {
     id: "pages/Login";
