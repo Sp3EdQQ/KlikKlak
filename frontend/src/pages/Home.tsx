@@ -1,6 +1,5 @@
 import { BannerCarousel } from '@/components/BannerCarousel';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
+import { Header, Footer } from '@/components/layout/index';
 import { CategoriesSection, FeaturedProductsSection, BenefitsSection } from '@/components/pages/home';
 import { banners } from '@/data/home';
 

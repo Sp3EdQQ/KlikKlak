@@ -1,7 +1,5 @@
-import { Header } from "@/components/layout/Header"
-import { Footer } from "@/components/layout/Footer"
-import { ProductsHeader } from "@/components/pages/Products/ProductsHeader"
-import { CategoriesGrid } from "@/components/pages/Products/CategoriesGrid"
+import { Header, Footer } from "@/components/layout/index"
+import { ProductsHeader, CategoriesGrid } from "@/components/pages/Products"
 
 export default function Products() {
   return (

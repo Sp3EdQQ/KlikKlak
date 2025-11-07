@@ -1,8 +1,5 @@
-import { Header } from "@/components/layout/Header"
-import { Footer } from "@/components/layout/Footer"
-import { RegisterHeader } from "@/components/pages/Register/RegisterHeader"
-import { RegisterForm } from "@/components/pages/Register/RegisterForm"
-import { LoginLink } from "@/components/pages/Register/LoginLink"
+import { Header, Footer } from "@/components/layout/index"
+import { RegisterHeader, RegisterForm, LoginLink } from "@/components/pages/Register"
 
 type RegisterFormData = {
     firstName: string

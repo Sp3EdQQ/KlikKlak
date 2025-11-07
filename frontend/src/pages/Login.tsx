@@ -1,8 +1,5 @@
-import { Header } from "@/components/layout/Header"
-import { Footer } from "@/components/layout/Footer"
-import { LoginHeader } from "@/components/pages/Login/LoginHeader"
-import { LoginForm } from "@/components/pages/Login/LoginForm"
-import { RegisterLink } from "@/components/pages/Login/RegisterLink"
+import { Header, Footer } from "@/components/layout/index"
+import { LoginHeader, LoginForm, RegisterLink } from "@/components/pages/Login"
 
 export default function Login() {
     const handleLogin = (email: string, password: string) => {

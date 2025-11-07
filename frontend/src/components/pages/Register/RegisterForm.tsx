@@ -2,8 +2,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { NameInput } from "./NameInput"
 import { ConfirmPasswordInput } from "./ConfirmPasswordInput"
-import { EmailInput } from "@/components/pages/Login/EmailInput"
-import { PasswordInput } from "@/components/pages/Login/PasswordInput"
+import { EmailInput, PasswordInput } from "@/components/pages/Login"
 
 type RegisterFormData = {
     firstName: string
