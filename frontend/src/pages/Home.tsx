@@ -1,6 +1,6 @@
 import { BannerCarousel } from '@/components/BannerCarousel';
 import { Header, Footer } from '@/components/layout/index';
-import { CategoriesSection, FeaturedProductsSection, BenefitsSection } from '@/components/pages/home';
+import { CategoriesSection, FeaturedProductsSection } from '@/components/pages/home';
 import { banners } from '@/data/home';
 
 export default function Home() {
@@ -12,7 +12,6 @@ export default function Home() {
       <main className="flex-1">
         <CategoriesSection />
         <FeaturedProductsSection />
-        <BenefitsSection />
       </main>
 
       <Footer />

@@ -26,11 +26,11 @@ export function ProductCard({
     const discount = originalPrice ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
 
     return (
-        <div className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-all hover:shadow-lg">
+        <div className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-all hover:shadow-lg w-full">
             {/* Badge */}
             {badge && (
-                <div className="absolute left-3 top-3 z-10">
-                    <Badge variant="destructive">{badge}</Badge>
+                <div className="absolute left-2 top-2 z-10">
+                    <Badge variant="destructive" className="text-xs">{badge}</Badge>
                 </div>
             )}
 
@@ -44,11 +44,11 @@ export function ProductCard({
             </div>
 
             {/* Content */}
-            <div className="flex flex-1 flex-col p-4">
-                <h3 className="mb-2 line-clamp-2">{name}</h3>
+            <div className="flex flex-1 flex-col p-3">
+                <h3 className="mb-2 line-clamp-2 text-sm">{name}</h3>
 
                 {/* Rating */}
-                <div className="mb-3 flex items-center gap-1">
+                <div className="mb-2 flex items-center gap-1">
                     <div className="flex">
                         {[...Array(5)].map((_, i) => (
                             <Star
@@ -60,34 +60,34 @@ export function ProductCard({
                             />
                         ))}
                     </div>
-                    <span className="text-gray-500">({reviews})</span>
+                    <span className="text-xs text-gray-500">({reviews})</span>
                 </div>
 
                 {/* Price */}
-                <div className="mb-3 flex items-baseline gap-2">
-                    <span className="text-2xl">${price.toFixed(2)}</span>
+                <div className="mb-2 flex items-baseline gap-2 flex-wrap">
+                    <span className="text-lg font-semibold">${price.toFixed(2)}</span>
                     {originalPrice && (
                         <>
-                            <span className="text-gray-500 line-through">
+                            <span className="text-sm text-gray-500 line-through">
                                 ${originalPrice.toFixed(2)}
                             </span>
-                            <Badge variant="secondary">-{discount}%</Badge>
+                            <Badge variant="secondary" className="text-xs">-{discount}%</Badge>
                         </>
                     )}
                 </div>
 
                 {/* Stock status */}
-                <div className="mb-3">
+                <div className="mb-2">
                     {inStock ? (
-                        <span className="text-green-600">In Stock</span>
+                        <span className="text-xs text-green-600">In Stock</span>
                     ) : (
-                        <span className="text-red-500">Out of Stock</span>
+                        <span className="text-xs text-red-500">Out of Stock</span>
                     )}
                 </div>
 
                 {/* Add to cart button */}
-                <Button className="mt-auto w-full gap-2 bg-blue-500 hover:bg-blue-600" disabled={!inStock}>
-                    <ShoppingCart className="h-4 w-4" />
+                <Button className="mt-auto w-full gap-2 bg-blue-500 hover:bg-blue-600 text-sm py-2" disabled={!inStock}>
+                    <ShoppingCart className="h-3 w-3" />
                     Add to Cart
                 </Button>
             </div>

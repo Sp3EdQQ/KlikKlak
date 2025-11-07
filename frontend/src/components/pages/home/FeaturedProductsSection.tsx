@@ -11,19 +11,20 @@ export function FeaturedProductsSection() {
                         Najwyżej oceniane komponenty wybrane przez naszych klientów
                     </p>
                 </div>
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="flex flex-wrap gap-4 justify-center">
                     {featuredProducts.map((product, index) => (
-                        <ProductCard
-                            key={index}
-                            name={product.name}
-                            price={product.price}
-                            originalPrice={product.originalPrice}
-                            imageUrl={product.imageUrl}
-                            rating={product.rating}
-                            reviews={product.reviews}
-                            inStock={product.inStock}
-                            badge={product.badge}
-                        />
+                        <div key={index} className="w-[calc(25%-12px)] min-w-[180px] max-w-[250px]">
+                            <ProductCard
+                                name={product.name}
+                                price={product.price}
+                                originalPrice={product.originalPrice}
+                                imageUrl={product.imageUrl}
+                                rating={product.rating}
+                                reviews={product.reviews}
+                                inStock={product.inStock}
+                                badge={product.badge}
+                            />
+                        </div>
                     ))}
                 </div>
             </div>
