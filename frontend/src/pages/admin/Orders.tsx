@@ -8,24 +8,46 @@ export default function AdminOrders() {
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
+    const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
+    const [newStatus, setNewStatus] = useState('');
 
     useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                setLoading(true);
-                const data = await apiService.getOrders();
-                setOrders(data);
-                setError(null);
-            } catch (err) {
-                console.error('Error fetching orders:', err);
-                setError('Nie udało się pobrać zamówień');
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchOrders();
     }, []);
+
+    const fetchOrders = async () => {
+        try {
+            setLoading(true);
+            const data = await apiService.getOrders();
+            setOrders(data);
+            setError(null);
+        } catch (err) {
+            console.error('Error fetching orders:', err);
+            setError('Nie udało się pobrać zamówień');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleStatusChange = async () => {
+        if (!selectedOrder || !newStatus) return;
+        try {
+            await apiService.updateOrder(selectedOrder.id, { status: newStatus });
+            setIsStatusModalOpen(false);
+            setSelectedOrder(null);
+            setNewStatus('');
+            fetchOrders();
+        } catch (error) {
+            console.error('Błąd aktualizacji statusu:', error);
+        }
+    };
+
+    const openStatusModal = (order: any) => {
+        setSelectedOrder(order);
+        setNewStatus(order.status);
+        setIsStatusModalOpen(true);
+    };
 
     const getStatusInfo = (status: string) => {
         switch (status) {
@@ -114,9 +136,9 @@ export default function AdminOrders() {
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-right">
-                                                    <Button variant="outline" size="sm" className="gap-1">
+                                                    <Button variant="outline" size="sm" className="gap-1" onClick={() => openStatusModal(order)}>
                                                         <Eye className="h-3 w-3" />
-                                                        Zobacz
+                                                        Zmień status
                                                     </Button>
                                                 </td>
                                             </tr>
@@ -128,6 +150,44 @@ export default function AdminOrders() {
                     </div>
                 )}
             </div>
+
+            {/* Status Change Modal */}
+            {isStatusModalOpen && selectedOrder && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg p-6 w-full max-w-md">
+                        <h2 className="text-xl font-bold mb-4">Zmień status zamówienia</h2>
+                        <div className="space-y-4">
+                            <div>
+                                <p className="text-sm text-gray-600 mb-2">Zamówienie #{selectedOrder.id}</p>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                <select
+                                    value={newStatus}
+                                    onChange={(e) => setNewStatus(e.target.value)}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                    <option value="pending">Oczekuje</option>
+                                    <option value="processing">W realizacji</option>
+                                    <option value="completed">Zrealizowane</option>
+                                    <option value="cancelled">Anulowane</option>
+                                </select>
+                            </div>
+                            <div className="flex justify-end space-x-2">
+                                <Button
+                                    variant="outline"
+                                    onClick={() => {
+                                        setIsStatusModalOpen(false);
+                                        setSelectedOrder(null);
+                                        setNewStatus('');
+                                    }}
+                                >
+                                    Anuluj
+                                </Button>
+                                <Button onClick={handleStatusChange}>Zapisz</Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </AdminLayout>
     );
 }

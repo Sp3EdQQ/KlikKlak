@@ -142,25 +142,65 @@ class ApiService {
     });
   }
 
+  // Tags
+  async getTags() {
+    return this.request<any[]>('/tags');
+  }
+
+  async getTag(id: string) {
+    return this.request<any>(`/tags/${id}`);
+  }
+
+  async createTag(data: any) {
+    return this.request<any>('/tags', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateTag(id: string, data: any) {
+    return this.request<any>(`/tags/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteTag(id: string) {
+    return this.request<any>(`/tags/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
   // Reviews
   async getReviews() {
     return this.request<any[]>('/reviews');
   }
 
-  // Statistics (możemy stworzyć dedykowany endpoint lub liczyć po stronie frontu)
+  // Wishlists
+  async getWishlists() {
+    return this.request<any[]>('/wishlist');
+  }
+
+  // Statistics
   async getStats() {
-    const [users, products, orders] = await Promise.all([
+    const [users, products, orders, categories, tags, wishlists] = await Promise.all([
       this.getUsers(),
       this.getProducts(),
       this.getOrders(),
+      this.getCategories(),
+      this.getTags(),
+      this.getWishlists(),
     ]);
 
-    const totalSales = orders.reduce((sum, order) => sum + (order.totalAmount || 0), 0);
+    const totalSales = orders.reduce((sum, order) => sum + (parseFloat(order.total) || 0), 0);
 
     return {
       users: users.length,
       products: products.length,
       orders: orders.length,
+      categories: categories.length,
+      tags: tags.length,
+      wishlists: wishlists.length,
       totalSales,
     };
   }

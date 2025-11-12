@@ -25,9 +25,11 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
     const navigation = [
         { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-        { name: 'Produkty', href: '/products', icon: Package },
-        { name: 'Zamówienia', href: '/orders', icon: ShoppingCart },
         { name: 'Użytkownicy', href: '/users', icon: Users },
+        { name: 'Kategorie', href: '/categories', icon: LayoutDashboard },
+        { name: 'Produkty', href: '/products-admin', icon: Package },
+        { name: 'Tagi', href: '/tags', icon: LayoutDashboard },
+        { name: 'Zamówienia', href: '/orders', icon: ShoppingCart },
         { name: 'Ustawienia', href: '/settings', icon: Settings },
     ];
 

@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { AdminLayout } from '@/components/layout';
-import { Package, ShoppingCart, Users, DollarSign } from 'lucide-react';
+import { Package, ShoppingCart, Users, DollarSign, LayoutDashboard } from 'lucide-react';
 import { apiService } from '@/services/api.service';
 
 interface Stats {
     users: number;
     products: number;
     orders: number;
+    categories: number;
+    tags: number;
+    wishlists: number;
     totalSales: number;
 }
 
@@ -37,30 +40,44 @@ export default function AdminDashboard() {
         {
             title: 'Całkowita sprzedaż',
             value: `${stats.totalSales.toFixed(2)} zł`,
-            change: '+20.1%',
             icon: DollarSign,
-            changeType: 'positive' as const,
+            color: 'blue',
         },
         {
             title: 'Zamówienia',
             value: stats.orders.toString(),
-            change: '+15.3%',
             icon: ShoppingCart,
-            changeType: 'positive' as const,
+            color: 'green',
         },
         {
             title: 'Produkty',
             value: stats.products.toString(),
-            change: '+8.2%',
             icon: Package,
-            changeType: 'positive' as const,
+            color: 'purple',
         },
         {
             title: 'Użytkownicy',
             value: stats.users.toString(),
-            change: '+12.5%',
             icon: Users,
-            changeType: 'positive' as const,
+            color: 'orange',
+        },
+        {
+            title: 'Kategorie',
+            value: stats.categories.toString(),
+            icon: LayoutDashboard,
+            color: 'pink',
+        },
+        {
+            title: 'Tagi',
+            value: stats.tags.toString(),
+            icon: LayoutDashboard,
+            color: 'indigo',
+        },
+        {
+            title: 'Listy życzeń',
+            value: stats.wishlists.toString(),
+            icon: Users,
+            color: 'red',
         },
     ] : [];
 
@@ -97,17 +114,9 @@ export default function AdminDashboard() {
                                         className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow"
                                     >
                                         <div className="flex items-center justify-between mb-4">
-                                            <div className="p-2 bg-blue-50 rounded-lg">
-                                                <Icon className="h-6 w-6 text-blue-500" />
+                                            <div className={`p-2 bg-${stat.color}-50 rounded-lg`}>
+                                                <Icon className={`h-6 w-6 text-${stat.color}-500`} />
                                             </div>
-                                            <span
-                                                className={`text-sm font-medium ${stat.changeType === 'positive'
-                                                    ? 'text-green-600'
-                                                    : 'text-red-600'
-                                                    }`}
-                                            >
-                                                {stat.change}
-                                            </span>
                                         </div>
                                         <h3 className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</h3>
                                         <p className="text-sm text-gray-500">{stat.title}</p>
