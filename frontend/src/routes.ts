@@ -7,8 +7,9 @@ export default [
   route("/products/:slug", "./pages/ProductDetail.tsx"),
   route("/logowanie", "./pages/Login.tsx"),
   route("/rejestracja", "./pages/Register.tsx"),
-  
+
   // Admin panel routes
+  route("/login", "./pages/admin/Login.tsx"),
   route("/users", "./pages/admin/Users.tsx"),
   route("/orders", "./pages/admin/Orders.tsx"),
   route("/settings", "./pages/admin/Settings.tsx"),

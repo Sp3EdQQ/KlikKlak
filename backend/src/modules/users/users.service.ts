@@ -48,8 +48,8 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(data.password, 10);
     const [user] = await this.drizzle
       .insert(users)
-      .values({ 
-        ...data, 
+      .values({
+        ...data,
         password: hashedPassword,
         role: data.role || 'user'
       })

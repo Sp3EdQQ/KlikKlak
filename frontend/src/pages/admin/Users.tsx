@@ -201,11 +201,10 @@ export default function AdminUsers() {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                                    user.role === 'admin' 
-                                                        ? 'bg-purple-100 text-purple-800' 
+                                                <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${user.role === 'admin'
+                                                        ? 'bg-purple-100 text-purple-800'
                                                         : 'bg-gray-100 text-gray-800'
-                                                }`}>
+                                                    }`}>
                                                     {user.role === 'admin' && <Shield className="h-3 w-3" />}
                                                     {user.role === 'admin' ? 'Admin' : 'Użytkownik'}
                                                 </span>
@@ -214,8 +213,8 @@ export default function AdminUsers() {
                                                 {formatDate(user.createdAt)}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right space-x-2">
-                                                <Button 
-                                                    variant="outline" 
+                                                <Button
+                                                    variant="outline"
                                                     size="sm"
                                                     onClick={() => openEditModal(user)}
                                                     className="inline-flex items-center gap-1"
@@ -223,8 +222,8 @@ export default function AdminUsers() {
                                                     <Pencil className="h-3 w-3" />
                                                     Edytuj
                                                 </Button>
-                                                <Button 
-                                                    variant="outline" 
+                                                <Button
+                                                    variant="outline"
                                                     size="sm"
                                                     onClick={() => openDeleteModal(user)}
                                                     className="inline-flex items-center gap-1 text-red-600 hover:text-red-700 hover:border-red-300"
@@ -403,15 +402,15 @@ export default function AdminUsers() {
                                 Ta operacja jest nieodwracalna.
                             </p>
                             <div className="flex gap-2">
-                                <Button 
+                                <Button
                                     onClick={handleDeleteUser}
                                     className="flex-1 bg-red-600 hover:bg-red-700"
                                 >
                                     Usuń użytkownika
                                 </Button>
-                                <Button 
-                                    variant="outline" 
-                                    onClick={() => setIsDeleteModalOpen(false)} 
+                                <Button
+                                    variant="outline"
+                                    onClick={() => setIsDeleteModalOpen(false)}
                                     className="flex-1"
                                 >
                                     Anuluj

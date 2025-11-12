@@ -12,6 +12,7 @@ import {
     Home,
 } from 'lucide-react';
 import { Logo } from '@/assets/svgs';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 interface AdminLayoutProps {
     children: React.ReactNode;
@@ -20,6 +21,7 @@ interface AdminLayoutProps {
 export function AdminLayout({ children }: AdminLayoutProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const location = useLocation();
+    const { user, loading, logout } = useAdminAuth();
 
     const navigation = [
         { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -81,11 +83,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                                     key={item.name}
                                     to={item.href}
                                     onClick={() => setIsSidebarOpen(false)}
-                                    className={`flex items-center gap-3 px-4 py-3 w-full text-left rounded-lg transition-colors ${
-                                        active 
-                                            ? 'bg-gray-800 text-white' 
+                                    className={`flex items-center gap-3 px-4 py-3 w-full text-left rounded-lg transition-colors ${active
+                                            ? 'bg-gray-800 text-white'
                                             : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                                    }`}
+                                        }`}
                                 >
                                     <Icon className="h-5 w-5" />
                                     <span className="font-medium">{item.name}</span>
@@ -96,6 +97,12 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
                     {/* Bottom section */}
                     <div className="border-t border-gray-800 p-4 space-y-2">
+                        {user && (
+                            <div className="px-4 py-3 mb-2">
+                                <p className="text-xs text-gray-400">Zalogowany jako</p>
+                                <p className="text-sm text-white font-medium">{user.email}</p>
+                            </div>
+                        )}
                         <button
                             onClick={handleStoreRedirect}
                             className="flex items-center gap-3 px-4 py-3 w-full text-left text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors"
@@ -103,7 +110,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                             <Home className="h-5 w-5" />
                             <span className="font-medium">Wróć do sklepu</span>
                         </button>
-                        <button className="flex items-center gap-3 px-4 py-3 w-full text-left text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors">
+                        <button
+                            onClick={logout}
+                            className="flex items-center gap-3 px-4 py-3 w-full text-left text-gray-300 hover:bg-gray-800 hover:text-red-400 rounded-lg transition-colors"
+                        >
                             <LogOut className="h-5 w-5" />
                             <span className="font-medium">Wyloguj się</span>
                         </button>
@@ -113,33 +123,48 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
             {/* Main content */}
             <div className="lg:pl-64">
-                {/* Top bar */}
-                <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
-                    <div className="flex items-center justify-between h-16 px-6">
-                        <button
-                            onClick={() => setIsSidebarOpen(true)}
-                            className="lg:hidden text-gray-600 hover:text-gray-900"
-                        >
-                            <Menu className="h-6 w-6" />
-                        </button>
-                        <div className="flex items-center gap-4 ml-auto">
-                            <div className="flex items-center gap-3">
-                                <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
-                                    A
-                                </div>
-                                <div className="hidden md:block">
-                                    <div className="text-sm font-medium text-gray-900">Admin User</div>
-                                    <div className="text-xs text-gray-500">admin@klikklak.pl</div>
-                                </div>
-                            </div>
+                {loading ? (
+                    <div className="min-h-screen flex items-center justify-center">
+                        <div className="text-center">
+                            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mb-4"></div>
+                            <p className="text-gray-600">Sprawdzanie autoryzacji...</p>
                         </div>
                     </div>
-                </header>
+                ) : (
+                    <>
+                        {/* Top bar */}
+                        <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
+                            <div className="flex items-center justify-between h-16 px-6">
+                                <button
+                                    onClick={() => setIsSidebarOpen(true)}
+                                    className="lg:hidden text-gray-600 hover:text-gray-900"
+                                >
+                                    <Menu className="h-6 w-6" />
+                                </button>
+                                <div className="flex items-center gap-4 ml-auto">
+                                    {user && (
+                                        <div className="flex items-center gap-3">
+                                            <div className="h-10 w-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-medium">
+                                                {user.firstName?.[0] || user.email[0].toUpperCase()}
+                                            </div>
+                                            <div className="hidden md:block">
+                                                <div className="text-sm font-medium text-gray-900">
+                                                    {user.firstName} {user.lastName}
+                                                </div>
+                                                <div className="text-xs text-gray-500">{user.email}</div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </header>
 
-                {/* Page content */}
-                <main className="p-6">
-                    {children}
-                </main>
+                        {/* Page content */}
+                        <main className="p-6">
+                            {children}
+                        </main>
+                    </>
+                )}
             </div>
         </div>
     );

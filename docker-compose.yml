@@ -29,6 +29,8 @@ services:
     environment:
       DATABASE_URL: postgresql://postgres:adminadmin@postgres:5432/klikklakdb
       NODE_ENV: production
+      JWT_SECRET: klikklak-super-secret-key-2025
+      JWT_EXPIRES_IN: 24h
     depends_on:
       postgres:
         condition: service_healthy
