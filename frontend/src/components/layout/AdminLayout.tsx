@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link, useLocation } from 'react-router';
 import {
     LayoutDashboard,
     Package,
@@ -18,6 +19,7 @@ interface AdminLayoutProps {
 
 export function AdminLayout({ children }: AdminLayoutProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const location = useLocation();
 
     const navigation = [
         { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -27,10 +29,9 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         { name: 'Ustawienia', href: '/settings', icon: Settings },
     ];
 
-    const handleNavigation = (href: string) => {
-        window.history.pushState({}, '', href);
-        window.dispatchEvent(new PopStateEvent('popstate'));
-        setIsSidebarOpen(false);
+    const isActive = (href: string) => {
+        if (href === '/') return location.pathname === '/';
+        return location.pathname.startsWith(href);
     };
 
     const handleStoreRedirect = () => {
@@ -58,10 +59,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                 <div className="flex flex-col h-full">
                     {/* Logo */}
                     <div className="flex items-center justify-between h-16 px-6 border-b border-gray-800">
-                        <button onClick={() => handleNavigation('/')} className="flex items-center gap-2">
+                        <Link to="/" className="flex items-center gap-2">
                             <Logo className="h-8 w-8 text-white" />
                             <span className="text-xl font-bold text-white">KlikKlak Admin</span>
-                        </button>
+                        </Link>
                         <button
                             onClick={() => setIsSidebarOpen(false)}
                             className="lg:hidden text-gray-400 hover:text-white"
@@ -74,15 +75,21 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                     <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
                         {navigation.map((item) => {
                             const Icon = item.icon;
+                            const active = isActive(item.href);
                             return (
-                                <button
+                                <Link
                                     key={item.name}
-                                    onClick={() => handleNavigation(item.href)}
-                                    className="flex items-center gap-3 px-4 py-3 w-full text-left text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors"
+                                    to={item.href}
+                                    onClick={() => setIsSidebarOpen(false)}
+                                    className={`flex items-center gap-3 px-4 py-3 w-full text-left rounded-lg transition-colors ${
+                                        active 
+                                            ? 'bg-gray-800 text-white' 
+                                            : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                                    }`}
                                 >
                                     <Icon className="h-5 w-5" />
                                     <span className="font-medium">{item.name}</span>
-                                </button>
+                                </Link>
                             );
                         })}
                     </nav>

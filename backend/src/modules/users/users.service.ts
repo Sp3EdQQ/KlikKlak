@@ -19,7 +19,13 @@ export class UsersService {
   ) { }
 
   async findAll() {
-    return this.drizzle.select().from(users);
+    const allUsers = await this.drizzle.select().from(users);
+    // Remove passwords from response
+    return allUsers.map(user => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password: _, ...userWithoutPassword } = user;
+      return userWithoutPassword;
+    });
   }
 
   async findOne(id: string) {
@@ -27,7 +33,9 @@ export class UsersService {
       where: eq(users.id, id),
     });
     if (!user) throw new NotFoundException('User not found');
-    return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 
   async create(data: {
@@ -35,13 +43,20 @@ export class UsersService {
     password: string;
     firstName?: string;
     lastName?: string;
+    role?: 'user' | 'admin';
   }) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
     const [user] = await this.drizzle
       .insert(users)
-      .values({ ...data, password: hashedPassword })
+      .values({ 
+        ...data, 
+        password: hashedPassword,
+        role: data.role || 'user'
+      })
       .returning();
-    return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 
   async update(
@@ -51,9 +66,10 @@ export class UsersService {
       password?: string;
       firstName?: string;
       lastName?: string;
+      role?: 'user' | 'admin';
     },
   ) {
-    const updateData = { ...data };
+    const updateData: any = { ...data };
     if (data.password) {
       updateData.password = await bcrypt.hash(data.password, 10);
     }
@@ -63,7 +79,9 @@ export class UsersService {
       .where(eq(users.id, id))
       .returning();
     if (!user) throw new NotFoundException('User not found');
-    return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 
   async remove(id: string) {
@@ -72,7 +90,9 @@ export class UsersService {
       .where(eq(users.id, id))
       .returning();
     if (!user) throw new NotFoundException('User not found');
-    return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 
   async findByEmail(email: string) {

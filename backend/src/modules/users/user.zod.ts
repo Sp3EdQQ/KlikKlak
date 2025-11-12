@@ -5,6 +5,7 @@ export const createUserSchema = z.object({
   password: z.string().min(6),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
+  role: z.enum(['user', 'admin']).optional().default('user'),
 });
 
 export const updateUserSchema = z.object({
@@ -12,6 +13,7 @@ export const updateUserSchema = z.object({
   password: z.string().min(6).optional(),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
+  role: z.enum(['user', 'admin']).optional(),
 });
 
 export const loginUserSchema = z.object({

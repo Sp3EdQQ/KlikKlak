@@ -10,5 +10,6 @@ export const users = pgTable('users', {
   password: varchar('password', { length: 256 }).notNull(),
   firstName: varchar('first_name', { length: 100 }),
   lastName: varchar('last_name', { length: 100 }),
+  role: varchar('role', { length: 20 }).notNull().default('user'), // 'user' or 'admin'
   ...timestamps,
 });
