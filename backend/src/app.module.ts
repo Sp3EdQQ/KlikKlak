@@ -17,17 +17,24 @@ import { OrderItemsModule } from './modules/order-items/order-items.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { WishlistModule } from './modules/wishlists/wishlists.module';
 import { WishlistItemsModule } from './modules/wishlist-items/wishlist-items.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ load: [database], isGlobal: true }),
+    ConfigModule.forRoot({
+      load: [database],
+      isGlobal: true,
+      ignoreEnvFile: process.env.NODE_ENV === 'production',
+    }),
 
     DrizzlePostgresModule.registerAsync({
       tag: 'DB',
       useFactory(configService: ConfigService) {
+        const dbUrl = process.env.DATABASE_URL || configService.get<string>('database.url');
+        console.log('Database URL:', dbUrl);
         return {
           postgres: {
-            url: configService.get<string>('database_url')!,
+            url: dbUrl!,
           },
           config: {
             schema: { ...schema },
@@ -60,8 +67,10 @@ import { WishlistItemsModule } from './modules/wishlist-items/wishlist-items.mod
     WishlistModule,
 
     WishlistItemsModule,
+
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

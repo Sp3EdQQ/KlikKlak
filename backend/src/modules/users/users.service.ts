@@ -1,9 +1,11 @@
 import {
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { DrizzleService } from 'src/database/drizzle.service';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import * as schema from '../../database/index';
 import { users } from './user.schema';
 import { eq } from 'drizzle-orm';
 import * as bcrypt from 'bcrypt';
@@ -12,16 +14,16 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class UsersService {
   constructor(
-    private readonly drizzle: DrizzleService,
+    @Inject('DB') private readonly drizzle: NodePgDatabase<typeof schema>,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async findAll() {
-    return this.drizzle.db.select().from(users);
+    return this.drizzle.select().from(users);
   }
 
   async findOne(id: string) {
-    const user = await this.drizzle.db.query.users.findFirst({
+    const user = await this.drizzle.query.users.findFirst({
       where: eq(users.id, id),
     });
     if (!user) throw new NotFoundException('User not found');
@@ -35,7 +37,7 @@ export class UsersService {
     lastName?: string;
   }) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
-    const [user] = await this.drizzle.db
+    const [user] = await this.drizzle
       .insert(users)
       .values({ ...data, password: hashedPassword })
       .returning();
@@ -55,7 +57,7 @@ export class UsersService {
     if (data.password) {
       updateData.password = await bcrypt.hash(data.password, 10);
     }
-    const [user] = await this.drizzle.db
+    const [user] = await this.drizzle
       .update(users)
       .set(updateData)
       .where(eq(users.id, id))
@@ -65,7 +67,7 @@ export class UsersService {
   }
 
   async remove(id: string) {
-    const [user] = await this.drizzle.db
+    const [user] = await this.drizzle
       .delete(users)
       .where(eq(users.id, id))
       .returning();
@@ -74,7 +76,7 @@ export class UsersService {
   }
 
   async findByEmail(email: string) {
-    return this.drizzle.db.query.users.findFirst({
+    return this.drizzle.query.users.findFirst({
       where: eq(users.email, email),
     });
   }
