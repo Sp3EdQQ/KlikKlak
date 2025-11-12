@@ -6,18 +6,18 @@ import { Input } from '@/components/ui/input';
 import { apiService } from '@/services/api.service';
 
 interface Product {
-  id: string;
-  name: string;
-  description: string | null;
-  price: string;
-  stock: number;
-  imageUrl: string | null;
-  categoryId: string | null;
+    id: string;
+    name: string;
+    description: string | null;
+    price: string;
+    stock: number;
+    imageUrl: string | null;
+    categoryId: string | null;
 }
 
 interface Category {
-  id: string;
-  name: string;
+    id: string;
+    name: string;
 }
 
 export default function AdminProducts() {

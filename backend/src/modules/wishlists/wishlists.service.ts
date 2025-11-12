@@ -5,11 +5,11 @@ import { wishlists } from './wishlists.schema';
 
 @Injectable()
 export class WishlistService {
-  constructor(
-    @Inject('DB') private readonly drizzle: NodePgDatabase<typeof schema>,
-  ) {}
+    constructor(
+        @Inject('DB') private readonly drizzle: NodePgDatabase<typeof schema>,
+    ) { }
 
-  async findAll() {
-    return this.drizzle.select().from(wishlists);
-  }
+    async findAll() {
+        return this.drizzle.select().from(wishlists);
+    }
 }

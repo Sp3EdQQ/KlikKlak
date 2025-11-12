@@ -99,9 +99,9 @@ export function Header() {
                             {/* Account */}
                             {isAuthenticated && user ? (
                                 <div className="relative hidden md:block">
-                                    <Button 
-                                        variant="ghost" 
-                                        className="flex gap-2" 
+                                    <Button
+                                        variant="ghost"
+                                        className="flex gap-2"
                                         onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                                     >
                                         <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
@@ -113,11 +113,11 @@ export function Header() {
                                         </div>
                                         <ChevronDown className="h-4 w-4" />
                                     </Button>
-                                    
+
                                     {isUserMenuOpen && (
                                         <>
-                                            <div 
-                                                className="fixed inset-0 z-40" 
+                                            <div
+                                                className="fixed inset-0 z-40"
                                                 onClick={() => setIsUserMenuOpen(false)}
                                             />
                                             <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
@@ -138,7 +138,7 @@ export function Header() {
                                                     Ustawienia konta
                                                 </a>
                                                 <hr className="my-2" />
-                                                <button 
+                                                <button
                                                     onClick={() => {
                                                         logout();
                                                         setIsUserMenuOpen(false);

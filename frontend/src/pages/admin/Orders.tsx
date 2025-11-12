@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { AdminLayout } from '@/components/layout';
-import { Eye } from 'lucide-react';
+import { Eye, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { apiService } from '@/services/api.service';
 
 export default function AdminOrders() {
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [searchTerm, setSearchTerm] = useState('');
     const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
     const [newStatus, setNewStatus] = useState('');
@@ -48,6 +50,11 @@ export default function AdminOrders() {
         setNewStatus(order.status);
         setIsStatusModalOpen(true);
     };
+
+    const filteredOrders = orders.filter(order =>
+        order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.status.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     const getStatusInfo = (status: string) => {
         switch (status) {
@@ -90,64 +97,79 @@ export default function AdminOrders() {
                 )}
 
                 {!loading && !error && (
-                    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                        {orders.length === 0 ? (
-                            <div className="text-center py-12 text-gray-500">
-                                Brak zamówień do wyświetlenia
+                    <>
+                        {/* Search Bar */}
+                        <div className="bg-white rounded-lg border border-gray-200 p-4">
+                            <div className="relative">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                <Input
+                                    placeholder="Szukaj zamówień..."
+                                    className="pl-10"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
                             </div>
-                        ) : (
-                            <table className="w-full">
-                                <thead className="bg-gray-50 border-b border-gray-200">
-                                    <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            ID
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Data
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Suma
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Status
-                                        </th>
-                                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Akcje
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    {orders.map((order) => {
-                                        const statusInfo = getStatusInfo(order.status);
-                                        return (
-                                            <tr key={order.id} className="hover:bg-gray-50">
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="font-medium text-blue-600">#{order.id}</div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                                                    {formatDate(order.createdAt)}
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-gray-900 font-medium">
-                                                    {order.totalAmount} zł
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusInfo.color}`}>
-                                                        {statusInfo.label}
-                                                    </span>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-right">
-                                                    <Button variant="outline" size="sm" className="gap-1" onClick={() => openStatusModal(order)}>
-                                                        <Eye className="h-3 w-3" />
-                                                        Zmień status
-                                                    </Button>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </table>
-                        )}
-                    </div>
+                        </div>
+
+                        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                            {filteredOrders.length === 0 ? (
+                                <div className="text-center py-12 text-gray-500">
+                                    Brak zamówień do wyświetlenia
+                                </div>
+                            ) : (
+                                <table className="w-full">
+                                    <thead className="bg-gray-50 border-b border-gray-200">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                ID
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Data
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Suma
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Status
+                                            </th>
+                                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Akcje
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-200">
+                                        {filteredOrders.map((order) => {
+                                            const statusInfo = getStatusInfo(order.status);
+                                            return (
+                                                <tr key={order.id} className="hover:bg-gray-50">
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        <div className="font-medium text-blue-600">#{order.id}</div>
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                                                        {formatDate(order.createdAt)}
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-gray-900 font-medium">
+                                                        {order.totalAmount} zł
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusInfo.color}`}>
+                                                            {statusInfo.label}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                                                        <Button variant="outline" size="sm" className="gap-1" onClick={() => openStatusModal(order)}>
+                                                            <Eye className="h-3 w-3" />
+                                                            Zmień status
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            )}
+                        </div>
+                    </>
                 )}
             </div>
 

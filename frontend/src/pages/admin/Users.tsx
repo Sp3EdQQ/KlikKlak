@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { AdminLayout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
-import { Mail, Shield, Plus, Pencil, Trash2, X } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Mail, Shield, Plus, Pencil, Trash2, X, Search } from 'lucide-react';
 import { apiService } from '@/services/api.service';
 
 interface User {
@@ -18,6 +19,7 @@ export default function AdminUsers() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [searchTerm, setSearchTerm] = useState('');
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -98,6 +100,13 @@ export default function AdminUsers() {
         }
     };
 
+    const filteredUsers = users.filter(user =>
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (user.firstName && user.firstName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.lastName && user.lastName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        user.role.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     const openEditModal = (user: User) => {
         setSelectedUser(user);
         setFormData({
@@ -155,89 +164,104 @@ export default function AdminUsers() {
                 )}
 
                 {!loading && !error && (
-                    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                        {users.length === 0 ? (
-                            <div className="text-center py-12 text-gray-500">
-                                Brak użytkowników do wyświetlenia
+                    <>
+                        {/* Search Bar */}
+                        <div className="bg-white rounded-lg border border-gray-200 p-4">
+                            <div className="relative">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                <Input
+                                    placeholder="Szukaj użytkowników..."
+                                    className="pl-10"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
                             </div>
-                        ) : (
-                            <table className="w-full">
-                                <thead className="bg-gray-50 border-b border-gray-200">
-                                    <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Użytkownik
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Email
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Rola
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Data dołączenia
-                                        </th>
-                                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Akcje
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    {users.map((user) => (
-                                        <tr key={user.id} className="hover:bg-gray-50">
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="flex items-center gap-3">
-                                                    <div className={`h-10 w-10 rounded-full ${user.role === 'admin' ? 'bg-purple-500' : 'bg-blue-500'} flex items-center justify-center text-white font-medium`}>
-                                                        {getInitials(user.firstName, user.lastName)}
+                        </div>
+
+                        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                            {filteredUsers.length === 0 ? (
+                                <div className="text-center py-12 text-gray-500">
+                                    Brak użytkowników do wyświetlenia
+                                </div>
+                            ) : (
+                                <table className="w-full">
+                                    <thead className="bg-gray-50 border-b border-gray-200">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Użytkownik
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Email
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Rola
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Data dołączenia
+                                            </th>
+                                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Akcje
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-200">
+                                        {filteredUsers.map((user) => (
+                                            <tr key={user.id} className="hover:bg-gray-50">
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className={`h-10 w-10 rounded-full ${user.role === 'admin' ? 'bg-purple-500' : 'bg-blue-500'} flex items-center justify-center text-white font-medium`}>
+                                                            {getInitials(user.firstName, user.lastName)}
+                                                        </div>
+                                                        <div className="font-medium text-gray-900">
+                                                            {user.firstName} {user.lastName}
+                                                        </div>
                                                     </div>
-                                                    <div className="font-medium text-gray-900">
-                                                        {user.firstName} {user.lastName}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center gap-2 text-gray-500">
+                                                        <Mail className="h-4 w-4" />
+                                                        {user.email}
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="flex items-center gap-2 text-gray-500">
-                                                    <Mail className="h-4 w-4" />
-                                                    {user.email}
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${user.role === 'admin'
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${user.role === 'admin'
                                                         ? 'bg-purple-100 text-purple-800'
                                                         : 'bg-gray-100 text-gray-800'
-                                                    }`}>
-                                                    {user.role === 'admin' && <Shield className="h-3 w-3" />}
-                                                    {user.role === 'admin' ? 'Admin' : 'Użytkownik'}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                                                {formatDate(user.createdAt)}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-right space-x-2">
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                    onClick={() => openEditModal(user)}
-                                                    className="inline-flex items-center gap-1"
-                                                >
-                                                    <Pencil className="h-3 w-3" />
-                                                    Edytuj
-                                                </Button>
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                    onClick={() => openDeleteModal(user)}
-                                                    className="inline-flex items-center gap-1 text-red-600 hover:text-red-700 hover:border-red-300"
-                                                >
-                                                    <Trash2 className="h-3 w-3" />
-                                                    Usuń
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        )}
-                    </div>
+                                                        }`}>
+                                                        {user.role === 'admin' && <Shield className="h-3 w-3" />}
+                                                        {user.role === 'admin' ? 'Admin' : 'Użytkownik'}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                                                    {formatDate(user.createdAt)}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-right space-x-2">
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={() => openEditModal(user)}
+                                                        className="inline-flex items-center gap-1"
+                                                    >
+                                                        <Pencil className="h-3 w-3" />
+                                                        Edytuj
+                                                    </Button>
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={() => openDeleteModal(user)}
+                                                        className="inline-flex items-center gap-1 text-red-600 hover:text-red-700 hover:border-red-300"
+                                                    >
+                                                        <Trash2 className="h-3 w-3" />
+                                                        Usuń
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            )}
+                        </div>
+                    </>
                 )}
 
                 {/* Create User Modal */}
