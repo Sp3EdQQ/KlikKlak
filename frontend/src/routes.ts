@@ -5,6 +5,7 @@ export default [
   route("/", "./pages/Home.tsx"),
   route("/products", "./pages/Products.tsx"),
   route("/products/:slug", "./pages/ProductDetail.tsx"),
+  route("/category/:id", "./pages/Category.tsx"),
   route("/logowanie", "./pages/Login.tsx"),
   route("/rejestracja", "./pages/Register.tsx"),
 

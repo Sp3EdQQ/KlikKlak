@@ -1,25 +1,55 @@
-import { useState } from 'react';
-import { ShoppingCart, User, Search, Menu, Heart, Package, ChevronDown, Cpu, Monitor, HardDrive, Keyboard, Mouse, Headphones, X, LogOut } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ShoppingCart, User, Search, Menu, Heart, Package, ChevronDown, Cpu, Monitor, HardDrive, Keyboard, Mouse, Headphones, X, LogOut, MemoryStick, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/assets/svgs';
 import { useAuth } from '@/hooks/useAuth';
+import { apiService } from '@/services/api.service';
+import type { LucideIcon } from 'lucide-react';
+
+interface Category {
+    id: string;
+    name: string;
+    description: string | null;
+}
+
+// Mapowanie ikon dla kategorii
+const iconMap: Record<string, LucideIcon> = {
+    'procesory': Cpu,
+    'monitory': Monitor,
+    'dyski': HardDrive,
+    'pamięć': MemoryStick,
+    'klawiatury': Keyboard,
+    'myszki': Mouse,
+    'słuchawki': Headphones,
+    'zasilacze': Zap,
+};
+
+const getIconForCategory = (name: string): LucideIcon => {
+    const key = name.toLowerCase().trim();
+    return iconMap[key] || HardDrive;
+};
 
 export function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const [categories, setCategories] = useState<Category[]>([]);
     const { user, isAuthenticated, logout } = useAuth();
 
-    const categories = [
-        { name: 'Procesory', icon: Cpu, href: '/category/cpu' },
-        { name: 'Monitory', icon: Monitor, href: '/category/monitors' },
-        { name: 'Dyski', icon: HardDrive, href: '/category/storage' },
-        { name: 'Klawiatury', icon: Keyboard, href: '/category/keyboards' },
-        { name: 'Myszki', icon: Mouse, href: '/category/mice' },
-        { name: 'Słuchawki', icon: Headphones, href: '/category/headphones' },
-    ];
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const data = await apiService.getCategories();
+                setCategories(data);
+            } catch (error) {
+                console.error('Błąd pobierania kategorii:', error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
 
     return (
         <header className="sticky top-0 z-50 w-full bg-white shadow-sm">
@@ -214,16 +244,19 @@ export function Header() {
                             Wszystkie kategorie
                             <ChevronDown className="h-4 w-4" />
                         </Button>
-                        {categories.map((category) => (
-                            <a
-                                key={category.name}
-                                href={category.href}
-                                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-white rounded-md transition-colors"
-                            >
-                                <category.icon className="h-4 w-4" />
-                                {category.name}
-                            </a>
-                        ))}
+                        {categories.map((category) => {
+                            const CategoryIcon = getIconForCategory(category.name);
+                            return (
+                                <a
+                                    key={category.id}
+                                    href={`/category/${category.id}`}
+                                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-white rounded-md transition-colors"
+                                >
+                                    <CategoryIcon className="h-4 w-4" />
+                                    {category.name}
+                                </a>
+                            );
+                        })}
                     </nav>
                 </div>
             </div>
@@ -233,16 +266,19 @@ export function Header() {
                 <div className="lg:hidden border-b border-gray-200 bg-white">
                     <nav className="container mx-auto px-4 py-4">
                         <div className="space-y-1">
-                            {categories.map((category) => (
-                                <a
-                                    key={category.name}
-                                    href={category.href}
-                                    className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg"
-                                >
-                                    <category.icon className="h-5 w-5" />
-                                    {category.name}
-                                </a>
-                            ))}
+                            {categories.map((category) => {
+                                const CategoryIcon = getIconForCategory(category.name);
+                                return (
+                                    <a
+                                        key={category.id}
+                                        href={`/category/${category.id}`}
+                                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg"
+                                    >
+                                        <CategoryIcon className="h-5 w-5" />
+                                        {category.name}
+                                    </a>
+                                );
+                            })}
                             <div className="border-t border-gray-200 my-2 pt-2">
                                 <a href="/logowanie" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">
                                     <User className="h-5 w-5" />
