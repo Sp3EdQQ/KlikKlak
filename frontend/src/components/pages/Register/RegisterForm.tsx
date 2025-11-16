@@ -13,10 +13,11 @@ type RegisterFormData = {
 }
 
 type RegisterFormProps = {
-    onSubmit: (data: RegisterFormData) => void
+    onSubmit: (data: RegisterFormData) => void | Promise<void>
+    isLoading?: boolean
 }
 
-export function RegisterForm({ onSubmit }: RegisterFormProps) {
+export function RegisterForm({ onSubmit, isLoading = false }: RegisterFormProps) {
     const [formData, setFormData] = useState<RegisterFormData>({
         firstName: "",
         lastName: "",
@@ -70,9 +71,10 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
 
                 <Button
                     type="submit"
-                    className="h-12 w-full bg-blue-500 text-base font-semibold hover:bg-blue-600"
+                    disabled={isLoading}
+                    className="h-12 w-full bg-blue-500 text-base font-semibold hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    Zarejestruj się
+                    {isLoading ? 'Rejestracja...' : 'Zarejestruj się'}
                 </Button>
             </form>
         </div>

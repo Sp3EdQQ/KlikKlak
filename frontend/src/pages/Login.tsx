@@ -1,10 +1,36 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { Header, Footer } from "@/components/layout/index"
 import { LoginHeader, LoginForm, RegisterLink } from "@/components/pages/Login"
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Login() {
-    const handleLogin = (email: string, password: string) => {
-        // TODO: Implementacja logowania
-        console.log("Login:", { email, password })
+    const navigate = useNavigate();
+    const { login, isAuthenticated } = useAuth();
+    const [error, setError] = useState<string>('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        // Jeśli użytkownik jest już zalogowany, przekieruj na stronę główną
+        if (isAuthenticated) {
+            navigate('/');
+        }
+    }, [isAuthenticated, navigate]);
+
+    const handleLogin = async (email: string, password: string) => {
+        setError('');
+        setIsLoading(true);
+
+        const result = await login(email, password);
+
+        if (result.success) {
+            // Przekieruj na stronę główną po udanym logowaniu
+            navigate('/');
+        } else {
+            setError(result.error || 'Wystąpił błąd podczas logowania');
+        }
+
+        setIsLoading(false);
     }
 
     return (
@@ -15,7 +41,12 @@ export default function Login() {
                 <div className="container mx-auto px-4">
                     <div className="mx-auto max-w-md">
                         <LoginHeader />
-                        <LoginForm onSubmit={handleLogin} />
+                        {error && (
+                            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                                {error}
+                            </div>
+                        )}
+                        <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
                         <RegisterLink />
                     </div>
                 </div>

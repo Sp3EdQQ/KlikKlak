@@ -5,10 +5,11 @@ import { PasswordInput } from "./PasswordInput"
 import { RememberAndForgot } from "./RememberAndForgot"
 
 type LoginFormProps = {
-    onSubmit: (email: string, password: string) => void
+    onSubmit: (email: string, password: string) => void | Promise<void>
+    isLoading?: boolean
 }
 
-export function LoginForm({ onSubmit }: LoginFormProps) {
+export function LoginForm({ onSubmit, isLoading = false }: LoginFormProps) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
@@ -26,9 +27,10 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
 
                 <Button
                     type="submit"
-                    className="h-12 w-full bg-blue-500 text-base font-semibold hover:bg-blue-600"
+                    disabled={isLoading}
+                    className="h-12 w-full bg-blue-500 text-base font-semibold hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    Zaloguj się
+                    {isLoading ? 'Logowanie...' : 'Zaloguj się'}
                 </Button>
             </form>
         </div>

@@ -1,7 +1,67 @@
+import { useEffect, useState } from 'react';
 import { CategoryCard } from './CategoryCard';
-import { categories } from '@/data/home';
+import { apiService } from '@/services/api.service';
+import { Cpu, Monitor, HardDrive, Keyboard, Mouse, Headphones, MemoryStick, Zap } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+
+interface Category {
+    id: string;
+    name: string;
+    description: string | null;
+}
+
+// Mapowanie ikon dla kategorii
+const iconMap: Record<string, LucideIcon> = {
+    'procesory': Cpu,
+    'monitory': Monitor,
+    'dyski': HardDrive,
+    'pamięć': MemoryStick,
+    'klawiatury': Keyboard,
+    'myszki': Mouse,
+    'słuchawki': Headphones,
+    'zasilacze': Zap,
+};
+
+const getIconForCategory = (name: string): LucideIcon => {
+    const key = name.toLowerCase().trim();
+    return iconMap[key] || HardDrive; // Domyślna ikona
+};
 
 export function CategoriesSection() {
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const data = await apiService.getCategories();
+                setCategories(data);
+            } catch (error) {
+                console.error('Błąd pobierania kategorii:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    if (loading) {
+        return (
+            <section className="py-16 md:py-24">
+                <div className="container mx-auto px-4">
+                    <div className="text-center py-8">
+                        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    if (categories.length === 0) {
+        return null;
+    }
+
     return (
         <section className="py-16 md:py-24">
             <div className="container mx-auto px-4">
@@ -12,13 +72,14 @@ export function CategoriesSection() {
                     </p>
                 </div>
                 <div className="flex gap-4 overflow-x-auto pb-4">
-                    {categories.map((category, index) => (
+                    {categories.map((category) => (
                         <CategoryCard
-                            key={index}
-                            title={category.title}
-                            description={category.description}
-                            icon={category.icon}
-                            productsCount={category.productsCount}
+                            key={category.id}
+                            id={category.id}
+                            title={category.name}
+                            description={category.description || ''}
+                            icon={getIconForCategory(category.name)}
+                            productsCount={0}
                         />
                     ))}
                 </div>

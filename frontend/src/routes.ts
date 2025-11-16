@@ -1,9 +1,20 @@
 import { type RouteConfig, route } from "@react-router/dev/routes"
 
 export default [
+  // Check if we're on admin subdomain and route accordingly
   route("/", "./pages/Home.tsx"),
   route("/products", "./pages/Products.tsx"),
   route("/products/:slug", "./pages/ProductDetail.tsx"),
+  route("/category/:id", "./pages/Category.tsx"),
   route("/logowanie", "./pages/Login.tsx"),
   route("/rejestracja", "./pages/Register.tsx"),
+
+  // Admin panel routes
+  route("/login", "./pages/admin/Login.tsx"),
+  route("/users", "./pages/admin/Users.tsx"),
+  route("/categories", "./pages/admin/Categories.tsx"),
+  route("/products-admin", "./pages/admin/Products.tsx"),
+  route("/tags", "./pages/admin/Tags.tsx"),
+  route("/orders", "./pages/admin/Orders.tsx"),
+  route("/settings", "./pages/admin/Settings.tsx"),
 ] satisfies RouteConfig

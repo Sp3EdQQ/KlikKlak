@@ -1,9 +1,11 @@
 import {
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { DrizzleService } from 'src/database/drizzle.service';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import * as schema from '../../database/index';
 import { users } from './user.schema';
 import { eq } from 'drizzle-orm';
 import * as bcrypt from 'bcrypt';
@@ -12,20 +14,28 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class UsersService {
   constructor(
-    private readonly drizzle: DrizzleService,
+    @Inject('DB') private readonly drizzle: NodePgDatabase<typeof schema>,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async findAll() {
-    return this.drizzle.db.select().from(users);
+    const allUsers = await this.drizzle.select().from(users);
+    // Remove passwords from response
+    return allUsers.map(user => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password: _, ...userWithoutPassword } = user;
+      return userWithoutPassword;
+    });
   }
 
   async findOne(id: string) {
-    const user = await this.drizzle.db.query.users.findFirst({
+    const user = await this.drizzle.query.users.findFirst({
       where: eq(users.id, id),
     });
     if (!user) throw new NotFoundException('User not found');
-    return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 
   async create(data: {
@@ -33,13 +43,20 @@ export class UsersService {
     password: string;
     firstName?: string;
     lastName?: string;
+    role?: 'user' | 'admin';
   }) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
-    const [user] = await this.drizzle.db
+    const [user] = await this.drizzle
       .insert(users)
-      .values({ ...data, password: hashedPassword })
+      .values({
+        ...data,
+        password: hashedPassword,
+        role: data.role || 'user'
+      })
       .returning();
-    return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 
   async update(
@@ -49,32 +66,37 @@ export class UsersService {
       password?: string;
       firstName?: string;
       lastName?: string;
+      role?: 'user' | 'admin';
     },
   ) {
-    const updateData = { ...data };
+    const updateData: any = { ...data };
     if (data.password) {
       updateData.password = await bcrypt.hash(data.password, 10);
     }
-    const [user] = await this.drizzle.db
+    const [user] = await this.drizzle
       .update(users)
       .set(updateData)
       .where(eq(users.id, id))
       .returning();
     if (!user) throw new NotFoundException('User not found');
-    return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 
   async remove(id: string) {
-    const [user] = await this.drizzle.db
+    const [user] = await this.drizzle
       .delete(users)
       .where(eq(users.id, id))
       .returning();
     if (!user) throw new NotFoundException('User not found');
-    return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 
   async findByEmail(email: string) {
-    return this.drizzle.db.query.users.findFirst({
+    return this.drizzle.query.users.findFirst({
       where: eq(users.email, email),
     });
   }
