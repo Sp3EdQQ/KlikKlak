@@ -75,6 +75,7 @@ export function CategoriesSection() {
                     {categories.map((category) => (
                         <CategoryCard
                             key={category.id}
+                            id={category.id}
                             title={category.name}
                             description={category.description || ''}
                             icon={getIconForCategory(category.name)}
