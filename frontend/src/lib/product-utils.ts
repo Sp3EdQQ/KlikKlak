@@ -1,6 +1,7 @@
 /**
  * Generuje slug URL z ID i nazwy produktu
- * np. (1, "AMD Ryzen 9 7950X") -> "1-amd-ryzen-9-7950x"
+ * Format: {uuid}--{nazwa-produktu}
+ * np. ("ffeb0263-1234-5678-9abc-def012345678", "AMD Ryzen 9 7950X") -> "ffeb0263-1234-5678-9abc-def012345678--amd-ryzen-9-7950x"
  */
 export function generateProductSlug(id: string | number, name: string): string {
     const nameSlug = name
@@ -10,15 +11,17 @@ export function generateProductSlug(id: string | number, name: string): string {
         .replace(/[^a-z0-9]+/g, "-") // Zamiana nie-alfanumerycznych na myślniki
         .replace(/^-+|-+$/g, "") // Usunięcie myślników na początku/końcu
 
-    return `${id}-${nameSlug}`
+    // Używamy podwójnego myślnika jako separatora między UUID a nazwą
+    return `${id}--${nameSlug}`
 }
 
 /**
  * Wyciąga ID produktu ze sluga
- * np. "1-amd-ryzen-9-7950x" -> "1"
+ * np. "ffeb0263-1234-5678-9abc-def012345678--amd-ryzen-9-7950x" -> "ffeb0263-1234-5678-9abc-def012345678"
  */
 export function getProductIdFromSlug(slug: string): string {
-    return slug.split("-")[0]
+    // Separator to podwójny myślnik, więc dzielimy po "--" i bierzemy pierwszą część (UUID)
+    return slug.split("--")[0]
 }
 
 /**

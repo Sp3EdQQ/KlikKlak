@@ -13,15 +13,15 @@ type ProductCardProps = {
     reviewCount?: number
 }
 
-export function ProductCard({ 
-    id, 
-    name, 
-    price, 
-    imageUrl, 
-    stock, 
+export function ProductCard({
+    id,
+    name,
+    price,
+    imageUrl,
+    stock,
     inStock = true,
     rating,
-    reviewCount 
+    reviewCount
 }: ProductCardProps) {
     const productUrl = getProductUrl(id, name)
     const isAvailable = stock !== undefined ? stock > 0 : inStock
@@ -46,7 +46,7 @@ export function ProductCard({
                 <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-blue-600 line-clamp-2 min-h-[3rem]">
                     {name}
                 </h3>
-                
+
                 {/* Rating */}
                 {rating !== undefined && (
                     <div className="flex items-center gap-1 mb-2">
@@ -54,11 +54,10 @@ export function ProductCard({
                             {[...Array(5)].map((_, i) => (
                                 <Star
                                     key={i}
-                                    className={`h-3 w-3 ${
-                                        i < Math.floor(rating)
+                                    className={`h-3 w-3 ${i < Math.floor(rating)
                                             ? 'fill-yellow-400 text-yellow-400'
                                             : 'text-gray-300'
-                                    }`}
+                                        }`}
                                 />
                             ))}
                         </div>

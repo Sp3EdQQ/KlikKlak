@@ -316,11 +316,10 @@ export default function Category() {
                                 </div>
                             ) : (
                                 <div
-                                    className={`grid gap-4 ${
-                                        gridView === '4'
+                                    className={`grid gap-4 ${gridView === '4'
                                             ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
                                             : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-                                    }`}
+                                        }`}
                                 >
                                     {filteredProducts.map((product) => (
                                         <ProductCard
