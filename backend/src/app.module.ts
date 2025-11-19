@@ -18,6 +18,17 @@ import { ReviewsModule } from './modules/reviews/reviews.module';
 import { WishlistModule } from './modules/wishlists/wishlists.module';
 import { WishlistItemsModule } from './modules/wishlist-items/wishlist-items.module';
 import { UsersModule } from './modules/users/users.module';
+import { CpusModule } from './modules/cpus/cpus.module';
+import { GpusModule } from './modules/gpus/gpus.module';
+import { RamsModule } from './modules/rams/rams.module';
+import { SsdsModule } from './modules/ssds/ssds.module';
+import { HddsModule } from './modules/hdds/hdds.module';
+import { MotherboardsModule } from './modules/motherboards/motherboards.module';
+import { PsusModule } from './modules/psus/psus.module';
+import { CpuCoolersModule } from './modules/cpu-coolers/cpu-coolers.module';
+import { MonitorsModule } from './modules/monitors/monitors.module';
+import { CasesModule } from './modules/cases/cases.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -42,6 +53,14 @@ import { UsersModule } from './modules/users/users.module';
         };
       },
       inject: [ConfigService],
+    }),
+
+    DatabaseModule.forRoot({
+      host: process.env.POSTGRES_HOST || (process.env.NODE_ENV === 'production' ? 'postgres' : 'localhost'),
+      port: parseInt(process.env.POSTGRES_PORT || '5432'),
+      user: process.env.POSTGRES_USER || 'postgres',
+      password: process.env.POSTGRES_PASSWORD || 'adminadmin',
+      database: process.env.POSTGRES_DB || 'klikklakdb',
     }),
 
     ProductsModule,
@@ -69,6 +88,26 @@ import { UsersModule } from './modules/users/users.module';
     WishlistItemsModule,
 
     UsersModule,
+
+    CpusModule,
+
+    GpusModule,
+
+    RamsModule,
+
+    SsdsModule,
+
+    HddsModule,
+
+    MotherboardsModule,
+
+    PsusModule,
+
+    CpuCoolersModule,
+
+    MonitorsModule,
+
+    CasesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

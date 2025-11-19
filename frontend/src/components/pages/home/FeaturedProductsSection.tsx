@@ -1,34 +1,11 @@
-import { useEffect, useState } from "react"
 import { ProductCard } from "./ProductCard"
-import { apiService } from "@/services/api.service"
-
-interface Product {
-  id: string
-  name: string
-  price: string
-  stock: string
-  imageUrl: string | null
-}
+import { useAllComponents } from "@/hooks/useQueries"
 
 export function FeaturedProductsSection() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await apiService.getProducts()
-        // Pobieramy pierwsze 8 produktów jako wyróżnione
-        setProducts(data.slice(0, 8))
-      } catch (error) {
-        console.error("Błąd pobierania produktów:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchProducts()
-  }, [])
+  const { data: allProducts = [], isLoading: loading } = useAllComponents()
+  
+  // Pobieramy pierwsze 8 produktów jako wyróżnione
+  const products = allProducts.slice(0, 8)
 
   if (loading) {
     return (

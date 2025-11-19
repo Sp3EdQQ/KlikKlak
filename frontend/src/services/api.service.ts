@@ -65,7 +65,7 @@ class ApiService {
     })
   }
 
-  // Products
+  // Products (Legacy - keep for backward compatibility)
   async getProducts() {
     return this.request<any[]>("/products")
   }
@@ -92,6 +92,113 @@ class ApiService {
     return this.request<any>(`/products/${id}`, {
       method: "DELETE"
     })
+  }
+
+  // CPUs
+  async getCpus() {
+    return this.request<any[]>("/cpus")
+  }
+
+  async getCpu(id: string) {
+    return this.request<any>(`/cpus/${id}`)
+  }
+
+  // GPUs
+  async getGpus() {
+    return this.request<any[]>("/gpus")
+  }
+
+  async getGpu(id: string) {
+    return this.request<any>(`/gpus/${id}`)
+  }
+
+  // RAMs
+  async getRams() {
+    return this.request<any[]>("/rams")
+  }
+
+  async getRam(id: string) {
+    return this.request<any>(`/rams/${id}`)
+  }
+
+  // SSDs
+  async getSsds() {
+    return this.request<any[]>("/ssds")
+  }
+
+  async getSsd(id: string) {
+    return this.request<any>(`/ssds/${id}`)
+  }
+
+  // HDDs
+  async getHdds() {
+    return this.request<any[]>("/hdds")
+  }
+
+  async getHdd(id: string) {
+    return this.request<any>(`/hdds/${id}`)
+  }
+
+  // Motherboards
+  async getMotherboards() {
+    return this.request<any[]>("/motherboards")
+  }
+
+  async getMotherboard(id: string) {
+    return this.request<any>(`/motherboards/${id}`)
+  }
+
+  // PSUs
+  async getPsus() {
+    return this.request<any[]>("/psus")
+  }
+
+  async getPsu(id: string) {
+    return this.request<any>(`/psus/${id}`)
+  }
+
+  // CPU Coolers
+  async getCpuCoolers() {
+    return this.request<any[]>("/cpu-coolers")
+  }
+
+  async getCpuCooler(id: string) {
+    return this.request<any>(`/cpu-coolers/${id}`)
+  }
+
+  // Monitors
+  async getMonitors() {
+    return this.request<any[]>("/monitors")
+  }
+
+  async getMonitor(id: string) {
+    return this.request<any>(`/monitors/${id}`)
+  }
+
+  // Cases
+  async getCases() {
+    return this.request<any[]>("/cases")
+  }
+
+  async getCase(id: string) {
+    return this.request<any>(`/cases/${id}`)
+  }
+
+  // Universal method to get all components
+  async getAllComponents() {
+    const [cpus, gpus, rams, ssds, hdds, motherboards, psus, cpuCoolers, monitors, cases] = await Promise.all([
+      this.getCpus(),
+      this.getGpus(),
+      this.getRams(),
+      this.getSsds(),
+      this.getHdds(),
+      this.getMotherboards(),
+      this.getPsus(),
+      this.getCpuCoolers(),
+      this.getMonitors(),
+      this.getCases(),
+    ])
+    return [...cpus, ...gpus, ...rams, ...ssds, ...hdds, ...motherboards, ...psus, ...cpuCoolers, ...monitors, ...cases]
   }
 
   // Orders

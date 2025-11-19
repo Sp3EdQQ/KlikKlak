@@ -16,7 +16,11 @@ import {
   X,
   LogOut,
   MemoryStick,
-  Zap
+  Zap,
+  Box,
+  Fan,
+  Server,
+  Disc
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -35,13 +39,29 @@ interface Category {
 // Mapowanie ikon dla kategorii
 const iconMap: Record<string, LucideIcon> = {
   "procesory": Cpu,
+  "cpus": Cpu,
+  "karty graficzne": Monitor,
+  "gpus": Monitor,
+  "pamięć ram": MemoryStick,
+  "rams": MemoryStick,
+  "dyski ssd": Disc,
+  "ssds": Disc,
+  "dyski hdd": HardDrive,
+  "hdds": HardDrive,
+  "płyty główne": Server,
+  "motherboards": Server,
+  "zasilacze": Zap,
+  "psus": Zap,
+  "chłodzenia cpu": Fan,
+  "cpu coolers": Fan,
+  "cpu-coolers": Fan,
   "monitory": Monitor,
-  "dyski": HardDrive,
-  "pamięć": MemoryStick,
+  "monitors": Monitor,
+  "obudowy": Box,
+  "cases": Box,
   "klawiatury": Keyboard,
   "myszki": Mouse,
-  "słuchawki": Headphones,
-  "zasilacze": Zap
+  "słuchawki": Headphones
 }
 
 const getIconForCategory = (name: string): LucideIcon => {

@@ -3,6 +3,7 @@ import { apiService } from "@/services/api.service"
 
 // ============= QUERIES =============
 
+// Legacy Products
 export const useProducts = () => {
     return useQuery({
         queryKey: ["products"],
@@ -14,6 +15,174 @@ export const useProduct = (id: string | undefined) => {
     return useQuery({
         queryKey: ["products", id],
         queryFn: () => apiService.getProduct(id!),
+        enabled: !!id
+    })
+}
+
+// All Components Combined
+export const useAllComponents = () => {
+    return useQuery({
+        queryKey: ["components", "all"],
+        queryFn: () => apiService.getAllComponents()
+    })
+}
+
+// CPUs
+export const useCpus = () => {
+    return useQuery({
+        queryKey: ["cpus"],
+        queryFn: () => apiService.getCpus()
+    })
+}
+
+export const useCpu = (id: string | undefined) => {
+    return useQuery({
+        queryKey: ["cpus", id],
+        queryFn: () => apiService.getCpu(id!),
+        enabled: !!id
+    })
+}
+
+// GPUs
+export const useGpus = () => {
+    return useQuery({
+        queryKey: ["gpus"],
+        queryFn: () => apiService.getGpus()
+    })
+}
+
+export const useGpu = (id: string | undefined) => {
+    return useQuery({
+        queryKey: ["gpus", id],
+        queryFn: () => apiService.getGpu(id!),
+        enabled: !!id
+    })
+}
+
+// RAMs
+export const useRams = () => {
+    return useQuery({
+        queryKey: ["rams"],
+        queryFn: () => apiService.getRams()
+    })
+}
+
+export const useRam = (id: string | undefined) => {
+    return useQuery({
+        queryKey: ["rams", id],
+        queryFn: () => apiService.getRam(id!),
+        enabled: !!id
+    })
+}
+
+// SSDs
+export const useSsds = () => {
+    return useQuery({
+        queryKey: ["ssds"],
+        queryFn: () => apiService.getSsds()
+    })
+}
+
+export const useSsd = (id: string | undefined) => {
+    return useQuery({
+        queryKey: ["ssds", id],
+        queryFn: () => apiService.getSsd(id!),
+        enabled: !!id
+    })
+}
+
+// HDDs
+export const useHdds = () => {
+    return useQuery({
+        queryKey: ["hdds"],
+        queryFn: () => apiService.getHdds()
+    })
+}
+
+export const useHdd = (id: string | undefined) => {
+    return useQuery({
+        queryKey: ["hdds", id],
+        queryFn: () => apiService.getHdd(id!),
+        enabled: !!id
+    })
+}
+
+// Motherboards
+export const useMotherboards = () => {
+    return useQuery({
+        queryKey: ["motherboards"],
+        queryFn: () => apiService.getMotherboards()
+    })
+}
+
+export const useMotherboard = (id: string | undefined) => {
+    return useQuery({
+        queryKey: ["motherboards", id],
+        queryFn: () => apiService.getMotherboard(id!),
+        enabled: !!id
+    })
+}
+
+// PSUs
+export const usePsus = () => {
+    return useQuery({
+        queryKey: ["psus"],
+        queryFn: () => apiService.getPsus()
+    })
+}
+
+export const usePsu = (id: string | undefined) => {
+    return useQuery({
+        queryKey: ["psus", id],
+        queryFn: () => apiService.getPsu(id!),
+        enabled: !!id
+    })
+}
+
+// CPU Coolers
+export const useCpuCoolers = () => {
+    return useQuery({
+        queryKey: ["cpu-coolers"],
+        queryFn: () => apiService.getCpuCoolers()
+    })
+}
+
+export const useCpuCooler = (id: string | undefined) => {
+    return useQuery({
+        queryKey: ["cpu-coolers", id],
+        queryFn: () => apiService.getCpuCooler(id!),
+        enabled: !!id
+    })
+}
+
+// Monitors
+export const useMonitors = () => {
+    return useQuery({
+        queryKey: ["monitors"],
+        queryFn: () => apiService.getMonitors()
+    })
+}
+
+export const useMonitor = (id: string | undefined) => {
+    return useQuery({
+        queryKey: ["monitors", id],
+        queryFn: () => apiService.getMonitor(id!),
+        enabled: !!id
+    })
+}
+
+// Cases
+export const useCases = () => {
+    return useQuery({
+        queryKey: ["cases"],
+        queryFn: () => apiService.getCases()
+    })
+}
+
+export const useCase = (id: string | undefined) => {
+    return useQuery({
+        queryKey: ["cases", id],
+        queryFn: () => apiService.getCase(id!),
         enabled: !!id
     })
 }
