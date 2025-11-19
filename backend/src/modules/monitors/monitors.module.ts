@@ -7,4 +7,4 @@ import { MonitorsController } from './monitors.controller';
   providers: [MonitorsService],
   exports: [MonitorsService],
 })
-export class MonitorsModule {}
+export class MonitorsModule { }

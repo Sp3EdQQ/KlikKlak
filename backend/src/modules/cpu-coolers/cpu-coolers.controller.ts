@@ -3,7 +3,7 @@ import { CpuCoolersService } from './cpu-coolers.service';
 
 @Controller('cpu-coolers')
 export class CpuCoolersController {
-  constructor(private readonly cpuCoolersService: CpuCoolersService) {}
+  constructor(private readonly cpuCoolersService: CpuCoolersService) { }
 
   @Get()
   findAll() {

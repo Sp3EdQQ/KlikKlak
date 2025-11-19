@@ -3,7 +3,7 @@ import { SsdsService } from './ssds.service';
 
 @Controller('ssds')
 export class SsdsController {
-  constructor(private readonly ssdsService: SsdsService) {}
+  constructor(private readonly ssdsService: SsdsService) { }
 
   @Get()
   findAll() {

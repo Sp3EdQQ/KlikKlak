@@ -7,4 +7,4 @@ import { CpuCoolersController } from './cpu-coolers.controller';
   providers: [CpuCoolersService],
   exports: [CpuCoolersService],
 })
-export class CpuCoolersModule {}
+export class CpuCoolersModule { }

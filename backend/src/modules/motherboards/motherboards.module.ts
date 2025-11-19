@@ -7,4 +7,4 @@ import { MotherboardsController } from './motherboards.controller';
   providers: [MotherboardsService],
   exports: [MotherboardsService],
 })
-export class MotherboardsModule {}
+export class MotherboardsModule { }

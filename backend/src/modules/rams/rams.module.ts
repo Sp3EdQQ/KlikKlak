@@ -7,4 +7,4 @@ import { RamsController } from './rams.controller';
   providers: [RamsService],
   exports: [RamsService],
 })
-export class RamsModule {}
+export class RamsModule { }

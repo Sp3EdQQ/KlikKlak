@@ -65,9 +65,14 @@ class ApiService {
     })
   }
 
-  // Products (Legacy - keep for backward compatibility)
-  async getProducts() {
-    return this.request<any[]>("/products")
+  // Products (Unified table)
+  async getProducts(params?: { categoryId?: string; type?: string }) {
+    const queryParams = new URLSearchParams()
+    if (params?.categoryId) queryParams.append('categoryId', params.categoryId)
+    if (params?.type) queryParams.append('type', params.type)
+
+    const query = queryParams.toString()
+    return this.request<any[]>(`/products${query ? `?${query}` : ''}`)
   }
 
   async getProduct(id: string) {

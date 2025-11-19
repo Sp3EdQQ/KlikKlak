@@ -3,7 +3,7 @@ import { MotherboardsService } from './motherboards.service';
 
 @Controller('motherboards')
 export class MotherboardsController {
-  constructor(private readonly motherboardsService: MotherboardsService) {}
+  constructor(private readonly motherboardsService: MotherboardsService) { }
 
   @Get()
   findAll() {

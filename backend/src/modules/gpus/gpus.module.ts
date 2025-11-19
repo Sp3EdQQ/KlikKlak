@@ -7,4 +7,4 @@ import { GpusController } from './gpus.controller';
   providers: [GpusService],
   exports: [GpusService],
 })
-export class GpusModule {}
+export class GpusModule { }

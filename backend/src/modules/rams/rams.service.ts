@@ -7,7 +7,7 @@ import * as schema from '../../database/schema';
 export class RamsService {
   constructor(
     @Inject('DRIZZLE') private db: NodePgDatabase<typeof schema>,
-  ) {}
+  ) { }
 
   async findAll() {
     return this.db.select().from(schema.rams);

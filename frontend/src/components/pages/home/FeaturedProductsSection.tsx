@@ -3,7 +3,7 @@ import { useAllComponents } from "@/hooks/useQueries"
 
 export function FeaturedProductsSection() {
   const { data: allProducts = [], isLoading: loading } = useAllComponents()
-  
+
   // Pobieramy pierwsze 8 produktów jako wyróżnione
   const products = allProducts.slice(0, 8)
 

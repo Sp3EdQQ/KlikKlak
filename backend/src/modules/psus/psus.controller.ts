@@ -3,7 +3,7 @@ import { PsusService } from './psus.service';
 
 @Controller('psus')
 export class PsusController {
-  constructor(private readonly psusService: PsusService) {}
+  constructor(private readonly psusService: PsusService) { }
 
   @Get()
   findAll() {

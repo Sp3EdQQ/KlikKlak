@@ -3,7 +3,7 @@ import { GpusService } from './gpus.service';
 
 @Controller('gpus')
 export class GpusController {
-  constructor(private readonly gpusService: GpusService) {}
+  constructor(private readonly gpusService: GpusService) { }
 
   @Get()
   findAll() {

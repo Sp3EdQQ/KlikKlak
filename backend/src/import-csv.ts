@@ -260,7 +260,7 @@ function parseInteger(value: string): number | null {
 
 async function importCSV(csvFileName: string, mapping: any) {
   const csvPath = path.join(__dirname, '../../database files', csvFileName);
-  
+
   if (!fs.existsSync(csvPath)) {
     console.log(`⚠️  File not found: ${csvFileName}`);
     return;
@@ -283,26 +283,26 @@ async function importCSV(csvFileName: string, mapping: any) {
 
   for (const record of records) {
     const data: any = {};
-    
+
     // Map CSV columns to database columns
     for (const [csvCol, dbCol] of Object.entries<string>(mapping.columns)) {
       const value = (record as any)[csvCol];
-      
+
       if (dbCol === 'price') {
         data[dbCol] = parsePrice(value);
-      } else if (dbCol.includes('unlocked') || dbCol.includes('wifi') || 
-                 dbCol.includes('speaker') || dbCol.includes('curved') || 
-                 dbCol.includes('has_window') || dbCol.includes('dust_filter') ||
-                 dbCol.includes('cable_management') || dbCol.includes('noise_isolation') ||
-                 dbCol.includes('adjustable') || dbCol.includes('integrated') ||
-                 dbCol.includes('additional_fan')) {
+      } else if (dbCol.includes('unlocked') || dbCol.includes('wifi') ||
+        dbCol.includes('speaker') || dbCol.includes('curved') ||
+        dbCol.includes('has_window') || dbCol.includes('dust_filter') ||
+        dbCol.includes('cable_management') || dbCol.includes('noise_isolation') ||
+        dbCol.includes('adjustable') || dbCol.includes('integrated') ||
+        dbCol.includes('additional_fan')) {
         data[dbCol] = parseBoolean(value);
-      } else if (dbCol.includes('_connectors') || dbCol.includes('hdmi') || 
-                 dbCol.includes('display_port') || dbCol.includes('dvi') || 
-                 dbCol.includes('vga') || dbCol.includes('sata') || 
-                 dbCol.includes('ram_slots') || dbCol.includes('sticks') ||
-                 dbCol.includes('fans_') || dbCol.includes('radiator_') ||
-                 dbCol.includes('disk_')) {
+      } else if (dbCol.includes('_connectors') || dbCol.includes('hdmi') ||
+        dbCol.includes('display_port') || dbCol.includes('dvi') ||
+        dbCol.includes('vga') || dbCol.includes('sata') ||
+        dbCol.includes('ram_slots') || dbCol.includes('sticks') ||
+        dbCol.includes('fans_') || dbCol.includes('radiator_') ||
+        dbCol.includes('disk_')) {
         data[dbCol] = parseInteger(value);
       } else {
         data[dbCol] = value && value !== '' ? value : null;

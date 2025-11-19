@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react"
+import { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { Header, Footer } from "@/components/layout"
 import { ProductCard } from "@/components/ProductCard"
@@ -30,7 +30,8 @@ type SortOption = "name-asc" | "name-desc" | "price-asc" | "price-desc" | "newes
 export default function Category() {
     const { id } = useParams<{ id: string }>()
     const { data: category, isLoading: categoryLoading } = useCategory(id)
-    const { data: allProducts = [], isLoading: productsLoading } = useProducts()
+    // Fetch products filtered by categoryId directly from API
+    const { data: products = [], isLoading: productsLoading } = useProducts({ categoryId: id })
 
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
     const [showFilters, setShowFilters] = useState(true)
@@ -43,10 +44,6 @@ export default function Category() {
     const [sortBy, setSortBy] = useState<SortOption>("name-asc")
 
     const loading = categoryLoading || productsLoading
-    const products = useMemo(() => 
-        allProducts.filter((p: Product) => p.categoryId === id),
-        [allProducts, id]
-    )
 
     useEffect(() => {
         if (products.length > 0) {

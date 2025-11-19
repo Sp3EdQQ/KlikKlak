@@ -7,4 +7,4 @@ import { HddsController } from './hdds.controller';
   providers: [HddsService],
   exports: [HddsService],
 })
-export class HddsModule {}
+export class HddsModule { }

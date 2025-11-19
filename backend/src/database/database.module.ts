@@ -33,4 +33,4 @@ import { DrizzleService } from './drizzle.service';
     },
   ],
 })
-export class DatabaseModule extends ConfigurableDatabaseModule {}
+export class DatabaseModule extends ConfigurableDatabaseModule { }

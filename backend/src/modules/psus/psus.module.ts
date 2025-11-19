@@ -7,4 +7,4 @@ import { PsusController } from './psus.controller';
   providers: [PsusService],
   exports: [PsusService],
 })
-export class PsusModule {}
+export class PsusModule { }

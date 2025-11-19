@@ -7,4 +7,4 @@ import { CpusController } from './cpus.controller';
   providers: [CpusService],
   exports: [CpusService],
 })
-export class CpusModule {}
+export class CpusModule { }

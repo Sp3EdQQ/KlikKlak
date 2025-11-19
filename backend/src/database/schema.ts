@@ -10,6 +10,9 @@ export * from '../modules/order-items/order-items.schema';
 export * from '../modules/cart-items/cart-items.schema';
 export * from '../modules/product-tags/product-tags.schema';
 
+// Unified products table
+export * from '../modules/products/products.schema';
+
 // Component schemas
 export * from '../modules/cpus/cpus.schema';
 export * from '../modules/gpus/gpus.schema';

@@ -3,7 +3,7 @@ import { RamsService } from './rams.service';
 
 @Controller('rams')
 export class RamsController {
-  constructor(private readonly ramsService: RamsService) {}
+  constructor(private readonly ramsService: RamsService) { }
 
   @Get()
   findAll() {

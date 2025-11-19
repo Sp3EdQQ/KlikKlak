@@ -3,7 +3,7 @@ import { CpusService } from './cpus.service';
 
 @Controller('cpus')
 export class CpusController {
-  constructor(private readonly cpusService: CpusService) {}
+  constructor(private readonly cpusService: CpusService) { }
 
   @Get()
   findAll() {

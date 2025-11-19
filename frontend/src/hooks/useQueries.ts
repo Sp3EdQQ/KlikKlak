@@ -3,11 +3,11 @@ import { apiService } from "@/services/api.service"
 
 // ============= QUERIES =============
 
-// Legacy Products
-export const useProducts = () => {
+// Products (Unified table with filters)
+export const useProducts = (params?: { categoryId?: string; type?: string }) => {
     return useQuery({
-        queryKey: ["products"],
-        queryFn: () => apiService.getProducts()
+        queryKey: ["products", params],
+        queryFn: () => apiService.getProducts(params)
     })
 }
 

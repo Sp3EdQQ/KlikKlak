@@ -14,7 +14,6 @@ type ProductCardProps = {
 }
 
 export function ProductCard({
-  id,
   name,
   price,
   imageUrl,
@@ -23,7 +22,7 @@ export function ProductCard({
   rating,
   reviewCount
 }: ProductCardProps) {
-  const productUrl = getProductUrl(id, name)
+  const productUrl = getProductUrl(name)
   const isAvailable = stock !== undefined ? stock > 0 : inStock
 
   return (
@@ -54,11 +53,10 @@ export function ProductCard({
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
-                  className={`h-3 w-3 ${
-                    i < Math.floor(rating)
+                  className={`h-3 w-3 ${i < Math.floor(rating)
                       ? "fill-yellow-400 text-yellow-400"
                       : "text-gray-300"
-                  }`}
+                    }`}
                 />
               ))}
             </div>

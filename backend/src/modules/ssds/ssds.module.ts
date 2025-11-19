@@ -7,4 +7,4 @@ import { SsdsController } from './ssds.controller';
   providers: [SsdsService],
   exports: [SsdsService],
 })
-export class SsdsModule {}
+export class SsdsModule { }

@@ -3,7 +3,7 @@ import { MonitorsService } from './monitors.service';
 
 @Controller('monitors')
 export class MonitorsController {
-  constructor(private readonly monitorsService: MonitorsService) {}
+  constructor(private readonly monitorsService: MonitorsService) { }
 
   @Get()
   findAll() {
