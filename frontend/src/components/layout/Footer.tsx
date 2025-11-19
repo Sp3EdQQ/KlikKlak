@@ -175,7 +175,7 @@ export function Footer() {
                 Otrzymuj najnowsze oferty i informacje technologiczne na swoją skrzynkę.
               </p>
             </div>
-            <div className="flex gap-2 md:min-w-[360px]">
+            <div className="flex gap-2 md:min-w-[22.5rem]">
               <Input type="email" placeholder="Wpisz swój email" />
               <Button className="bg-blue-500 hover:bg-blue-600">Zapisz się</Button>
             </div>

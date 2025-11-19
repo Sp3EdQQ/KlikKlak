@@ -21,10 +21,36 @@ type Pages = {
       "slug": string;
     };
   };
-  "/logowanie": {
+  "/category/:id": {
+    params: {
+      "id": string;
+    };
+  };
+  "/login": {
     params: {};
   };
-  "/rejestracja": {
+  "/register": {
+    params: {};
+  };
+  "/AdminLogin": {
+    params: {};
+  };
+  "/AdminUsers": {
+    params: {};
+  };
+  "/AdminCategories": {
+    params: {};
+  };
+  "/AdminProducts": {
+    params: {};
+  };
+  "/AdminTags": {
+    params: {};
+  };
+  "/AdminOrders": {
+    params: {};
+  };
+  "/AdminSettings": {
     params: {};
   };
 };
@@ -32,7 +58,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/products" | "/products/:slug" | "/logowanie" | "/rejestracja";
+    page: "/" | "/products" | "/products/:slug" | "/category/:id" | "/login" | "/register" | "/AdminLogin" | "/AdminUsers" | "/AdminCategories" | "/AdminProducts" | "/AdminTags" | "/AdminOrders" | "/AdminSettings";
   };
   "./pages/Home.tsx": {
     id: "pages/Home";
@@ -46,12 +72,44 @@ type RouteFiles = {
     id: "pages/ProductDetail";
     page: "/products/:slug";
   };
+  "./pages/Category.tsx": {
+    id: "pages/Category";
+    page: "/category/:id";
+  };
   "./pages/Login.tsx": {
     id: "pages/Login";
-    page: "/logowanie";
+    page: "/login";
   };
   "./pages/Register.tsx": {
     id: "pages/Register";
-    page: "/rejestracja";
+    page: "/register";
+  };
+  "./pages/admin/Login.tsx": {
+    id: "pages/admin/Login";
+    page: "/AdminLogin";
+  };
+  "./pages/admin/Users.tsx": {
+    id: "pages/admin/Users";
+    page: "/AdminUsers";
+  };
+  "./pages/admin/Categories.tsx": {
+    id: "pages/admin/Categories";
+    page: "/AdminCategories";
+  };
+  "./pages/admin/Products.tsx": {
+    id: "pages/admin/Products";
+    page: "/AdminProducts";
+  };
+  "./pages/admin/Tags.tsx": {
+    id: "pages/admin/Tags";
+    page: "/AdminTags";
+  };
+  "./pages/admin/Orders.tsx": {
+    id: "pages/admin/Orders";
+    page: "/AdminOrders";
+  };
+  "./pages/admin/Settings.tsx": {
+    id: "pages/admin/Settings";
+    page: "/AdminSettings";
   };
 };

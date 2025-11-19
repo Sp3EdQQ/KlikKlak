@@ -10,7 +10,7 @@ interface BannerProps {
 
 export function Banner({ imageUrl, title, subtitle, ctaText, gradient }: BannerProps) {
   return (
-    <div className="group relative h-[400px] cursor-pointer overflow-hidden rounded-2xl">
+    <div className="group relative h-96 cursor-pointer overflow-hidden rounded-2xl">
       {/* Background Image */}
       <img
         src={imageUrl}

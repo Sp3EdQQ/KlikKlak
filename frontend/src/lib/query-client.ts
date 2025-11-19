@@ -6,10 +6,10 @@ export const queryClient = new QueryClient({
             staleTime: 1000 * 60 * 5, // 5 minut
             gcTime: 1000 * 60 * 10, // 10 minut (wcześniej cacheTime)
             refetchOnWindowFocus: false,
-            retry: 1
+            retry: 3
         },
         mutations: {
-            retry: 1
+            retry: 3
         }
     }
 })

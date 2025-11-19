@@ -59,7 +59,7 @@ export function FeaturedProductsSection() {
           {products.map(product => (
             <div
               key={product.id}
-              className="w-[calc(25%-12px)] max-w-[250px] min-w-[180px]"
+              className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(25%-0.75rem)] max-w-xs min-w-[11.25rem]"
             >
               <ProductCard
                 name={product.name}

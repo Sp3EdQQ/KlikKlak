@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { useParams } from "react-router"
 import { Header, Footer } from "@/components/layout"
 import { ProductCard } from "@/components/ProductCard"
@@ -43,7 +43,10 @@ export default function Category() {
     const [sortBy, setSortBy] = useState<SortOption>("name-asc")
 
     const loading = categoryLoading || productsLoading
-    const products = allProducts.filter((p: Product) => p.categoryId === id)
+    const products = useMemo(() => 
+        allProducts.filter((p: Product) => p.categoryId === id),
+        [allProducts, id]
+    )
 
     useEffect(() => {
         if (products.length > 0) {
@@ -54,10 +57,6 @@ export default function Category() {
     }, [products])
 
     useEffect(() => {
-        applyFilters()
-    }, [products, priceRange, searchTerm, inStock, sortBy])
-
-    const applyFilters = () => {
         let filtered = [...products]
 
         // Search filter
@@ -95,7 +94,7 @@ export default function Category() {
         })
 
         setFilteredProducts(filtered)
-    }
+    }, [products, priceRange, searchTerm, inStock, sortBy])
 
     const resetFilters = () => {
         setPriceRange([0, maxPrice])

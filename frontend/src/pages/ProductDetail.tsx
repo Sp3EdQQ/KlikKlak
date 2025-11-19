@@ -108,7 +108,7 @@ export default function ProductDetail() {
                                         "https://placehold.co/800x600/e5e7eb/6b7280?text=Brak+zdjęcia"
                                     }
                                     alt={product.name}
-                                    className="h-[500px] w-full object-cover"
+                                    className="h-32 w-full object-cover"
                                     onError={e => {
                                         const target = e.target as HTMLImageElement
                                         target.src =

@@ -143,7 +143,7 @@ export function Header() {
                 <Heart className="h-5 w-5" />
                 <Badge
                   variant="default"
-                  className="absolute -top-1 -right-1 h-5 min-w-5 rounded-full px-1 text-[10px]"
+                  className="absolute -top-1 -right-1 h-5 min-w-5 rounded-full px-1 text-xs bg-blue-500"
                 >
                   5
                 </Badge>
