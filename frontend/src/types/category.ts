@@ -1,8 +1,8 @@
-import type { LucideIcon } from 'lucide-react';
+import type { LucideIcon } from "lucide-react"
 
 export type CategoryData = {
-    title: string;
-    description: string;
-    icon: LucideIcon;
-    productsCount: number;
-};
+  title: string
+  description: string
+  icon: LucideIcon
+  productsCount: number
+}

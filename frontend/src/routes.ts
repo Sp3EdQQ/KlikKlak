@@ -16,5 +16,5 @@ export default [
   route("/AdminProducts", "./pages/admin/Products.tsx"),
   route("/AdminTags", "./pages/admin/Tags.tsx"),
   route("/AdminOrders", "./pages/admin/Orders.tsx"),
-  route("/AdminSettings", "./pages/admin/Settings.tsx"),
+  route("/AdminSettings", "./pages/admin/Settings.tsx")
 ] satisfies RouteConfig

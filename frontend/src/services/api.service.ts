@@ -1,184 +1,181 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"
 
 class ApiService {
-  private baseUrl: string;
+  private baseUrl: string
 
   constructor() {
-    this.baseUrl = API_BASE_URL;
+    this.baseUrl = API_BASE_URL
   }
 
-  private async request<T>(
-    endpoint: string,
-    options?: RequestInit
-  ): Promise<T> {
-    const url = `${this.baseUrl}${endpoint}`;
+  private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
+    const url = `${this.baseUrl}${endpoint}`
 
     // Get admin token if available
-    const token = localStorage.getItem('adminToken');
+    const token = localStorage.getItem("adminToken")
 
     const config: RequestInit = {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` }),
-        ...options?.headers,
-      },
-    };
+        "Content-Type": "application/json",
+        ...(token && { "Authorization": `Bearer ${token}` }),
+        ...options?.headers
+      }
+    }
 
     try {
-      const response = await fetch(url, config);
+      const response = await fetch(url, config)
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
 
-      return await response.json();
+      return await response.json()
     } catch (error) {
-      console.error('API request failed:', error);
-      throw error;
+      console.error("API request failed:", error)
+      throw error
     }
   }
 
   // Users
   async getUsers() {
-    return this.request<any[]>('/users');
+    return this.request<any[]>("/users")
   }
 
   async getUser(id: string) {
-    return this.request<any>(`/users/${id}`);
+    return this.request<any>(`/users/${id}`)
   }
 
   async createUser(data: any) {
-    return this.request<any>('/users', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    return this.request<any>("/users", {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
   }
 
   async updateUser(id: string, data: any) {
     return this.request<any>(`/users/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
+      method: "PUT",
+      body: JSON.stringify(data)
+    })
   }
 
   async deleteUser(id: string) {
     return this.request<any>(`/users/${id}`, {
-      method: 'DELETE',
-    });
+      method: "DELETE"
+    })
   }
 
   // Products
   async getProducts() {
-    return this.request<any[]>('/products');
+    return this.request<any[]>("/products")
   }
 
   async getProduct(id: string) {
-    return this.request<any>(`/products/${id}`);
+    return this.request<any>(`/products/${id}`)
   }
 
   async createProduct(data: any) {
-    return this.request<any>('/products', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    return this.request<any>("/products", {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
   }
 
   async updateProduct(id: string, data: any) {
     return this.request<any>(`/products/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
+      method: "PUT",
+      body: JSON.stringify(data)
+    })
   }
 
   async deleteProduct(id: string) {
     return this.request<any>(`/products/${id}`, {
-      method: 'DELETE',
-    });
+      method: "DELETE"
+    })
   }
 
   // Orders
   async getOrders() {
-    return this.request<any[]>('/orders');
+    return this.request<any[]>("/orders")
   }
 
   async getOrder(id: string) {
-    return this.request<any>(`/orders/${id}`);
+    return this.request<any>(`/orders/${id}`)
   }
 
   async updateOrder(id: string, data: any) {
     return this.request<any>(`/orders/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
+      method: "PUT",
+      body: JSON.stringify(data)
+    })
   }
 
   // Categories
   async getCategories() {
-    return this.request<any[]>('/categories');
+    return this.request<any[]>("/categories")
   }
 
   async getCategory(id: string) {
-    return this.request<any>(`/categories/${id}`);
+    return this.request<any>(`/categories/${id}`)
   }
 
   async createCategory(data: any) {
-    return this.request<any>('/categories', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    return this.request<any>("/categories", {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
   }
 
   async updateCategory(id: string, data: any) {
     return this.request<any>(`/categories/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
+      method: "PUT",
+      body: JSON.stringify(data)
+    })
   }
 
   async deleteCategory(id: string) {
     return this.request<any>(`/categories/${id}`, {
-      method: 'DELETE',
-    });
+      method: "DELETE"
+    })
   }
 
   // Tags
   async getTags() {
-    return this.request<any[]>('/tags');
+    return this.request<any[]>("/tags")
   }
 
   async getTag(id: string) {
-    return this.request<any>(`/tags/${id}`);
+    return this.request<any>(`/tags/${id}`)
   }
 
   async createTag(data: any) {
-    return this.request<any>('/tags', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    return this.request<any>("/tags", {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
   }
 
   async updateTag(id: string, data: any) {
     return this.request<any>(`/tags/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
+      method: "PUT",
+      body: JSON.stringify(data)
+    })
   }
 
   async deleteTag(id: string) {
     return this.request<any>(`/tags/${id}`, {
-      method: 'DELETE',
-    });
+      method: "DELETE"
+    })
   }
 
   // Reviews
   async getReviews() {
-    return this.request<any[]>('/reviews');
+    return this.request<any[]>("/reviews")
   }
 
   // Wishlists
   async getWishlists() {
-    return this.request<any[]>('/wishlist');
+    return this.request<any[]>("/wishlist")
   }
 
   // Statistics
@@ -189,10 +186,13 @@ class ApiService {
       this.getOrders(),
       this.getCategories(),
       this.getTags(),
-      this.getWishlists(),
-    ]);
+      this.getWishlists()
+    ])
 
-    const totalSales = orders.reduce((sum, order) => sum + (parseFloat(order.total) || 0), 0);
+    const totalSales = orders.reduce(
+      (sum, order) => sum + (parseFloat(order.total) || 0),
+      0
+    )
 
     return {
       users: users.length,
@@ -201,9 +201,9 @@ class ApiService {
       categories: categories.length,
       tags: tags.length,
       wishlists: wishlists.length,
-      totalSales,
-    };
+      totalSales
+    }
   }
 }
 
-export const apiService = new ApiService();
+export const apiService = new ApiService()
