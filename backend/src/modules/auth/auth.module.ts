@@ -7,15 +7,15 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { RolesGuard } from './guards/roles.guard';
 
 @Module({
-  imports: [
-    PassportModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET || 'secret-key',
-      signOptions: { expiresIn: '15m' },
-    }),
-  ],
-  controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, RolesGuard],
-  exports: [AuthService, JwtStrategy, RolesGuard],
+    imports: [
+        PassportModule,
+        JwtModule.register({
+            secret: process.env.JWT_SECRET || 'secret-key',
+            signOptions: { expiresIn: '15m' },
+        }),
+    ],
+    controllers: [AuthController],
+    providers: [AuthService, JwtStrategy, RolesGuard],
+    exports: [AuthService, JwtStrategy, RolesGuard],
 })
-export class AuthModule {}
+export class AuthModule { }
