@@ -36,6 +36,39 @@ class ApiService {
     }
   }
 
+  // Auth
+  async register(data: { email: string; password: string; firstName: string; lastName: string }) {
+    return this.request<any>("/auth/register", {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
+  }
+
+  async login(data: { email: string; password: string }) {
+    return this.request<any>("/auth/login", {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
+  }
+
+  async logout(refreshToken: string) {
+    return this.request<any>("/auth/logout", {
+      method: "POST",
+      body: JSON.stringify({ refreshToken })
+    })
+  }
+
+  async refreshToken(refreshToken: string) {
+    return this.request<any>("/auth/refresh", {
+      method: "POST",
+      body: JSON.stringify({ refreshToken })
+    })
+  }
+
+  async getProfile() {
+    return this.request<any>("/auth/me")
+  }
+
   // Users
   async getUsers() {
     return this.request<any[]>("/users")
