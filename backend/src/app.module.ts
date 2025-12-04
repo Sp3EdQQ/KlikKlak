@@ -29,6 +29,7 @@ import { CpuCoolersModule } from './modules/cpu-coolers/cpu-coolers.module';
 import { MonitorsModule } from './modules/monitors/monitors.module';
 import { CasesModule } from './modules/cases/cases.module';
 import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -62,6 +63,8 @@ import { DatabaseModule } from './database/database.module';
       password: process.env.POSTGRES_PASSWORD || 'adminadmin',
       database: process.env.POSTGRES_DB || 'klikklakdb',
     }),
+
+    AuthModule,
 
     ProductsModule,
 

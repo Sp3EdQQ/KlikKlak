@@ -52,7 +52,7 @@ export function useAuth() {
     password: string
   ): Promise<{ success: boolean; error?: string }> => {
     try {
-      const response = await fetch("http://localhost:3000/users/login", {
+      const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -67,13 +67,14 @@ export function useAuth() {
 
       const data = await response.json()
 
-      // Zapisz token i dane użytkownika
-      localStorage.setItem("authToken", data.access_token)
+      // Zapisz tokeny i dane użytkownika
+      localStorage.setItem("authToken", data.accessToken)
+      localStorage.setItem("refreshToken", data.refreshToken)
       localStorage.setItem("authUser", JSON.stringify(data.user))
 
       setAuthState({
         user: data.user,
-        token: data.access_token,
+        token: data.accessToken,
         isAuthenticated: true
       })
 
@@ -84,14 +85,30 @@ export function useAuth() {
     }
   }
 
-  const logout = () => {
-    localStorage.removeItem("authToken")
-    localStorage.removeItem("authUser")
-    setAuthState({
-      user: null,
-      token: null,
-      isAuthenticated: false
-    })
+  const logout = async () => {
+    try {
+      const refreshToken = localStorage.getItem("refreshToken")
+      if (refreshToken) {
+        await fetch("http://localhost:3000/auth/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ refreshToken })
+        })
+      }
+    } catch (error) {
+      console.error("Logout error:", error)
+    } finally {
+      localStorage.removeItem("authToken")
+      localStorage.removeItem("refreshToken")
+      localStorage.removeItem("authUser")
+      setAuthState({
+        user: null,
+        token: null,
+        isAuthenticated: false
+      })
+    }
   }
 
   return {

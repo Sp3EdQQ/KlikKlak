@@ -64,6 +64,13 @@
       "when": 1763567692006,
       "tag": "0008_gigantic_scrambler",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1764857401079,
+      "tag": "0009_free_sabretooth",
+      "breakpoints": true
     }
   ]
 }
