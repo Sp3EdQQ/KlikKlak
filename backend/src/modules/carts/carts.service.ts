@@ -1,14 +1,16 @@
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { and, eq } from 'drizzle-orm';
-import type { DrizzleDB } from 'src/database/drizzle.service';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import * as schema from '../../database/index';
 import { carts } from './carts.schema';
 import { cartItems } from '../cart-items/cart-items.schema';
 import { products } from 'src/database/schema';
-import { DRIZZLE } from 'src/database/database.module-definition';
 
 @Injectable()
 export class CartsService {
-  constructor(@Inject(DRIZZLE) private readonly db: DrizzleDB) {}
+  constructor(
+    @Inject('DRIZZLE') private readonly db: NodePgDatabase<typeof schema>,
+  ) { }
 
   async getOrCreateCart(userId: string) {
     const existingCart = await this.db
@@ -76,7 +78,7 @@ export class CartsService {
       throw new NotFoundException('Product not found');
     }
 
-    if (product[0].stock < quantity) {
+    if (Number(product[0].stock) < quantity) {
       throw new Error('Insufficient stock');
     }
 
@@ -94,7 +96,7 @@ export class CartsService {
     if (existingItem.length > 0) {
       const newQuantity = existingItem[0].quantity + quantity;
 
-      if (product[0].stock < newQuantity) {
+      if (Number(product[0].stock) < newQuantity) {
         throw new Error('Insufficient stock');
       }
 
@@ -140,7 +142,7 @@ export class CartsService {
       throw new Error('Unauthorized');
     }
 
-    if (item[0].product.stock < quantity) {
+    if (Number(item[0].product.stock) < quantity) {
       throw new Error('Insufficient stock');
     }
 

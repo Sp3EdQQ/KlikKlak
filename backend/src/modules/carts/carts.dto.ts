@@ -1,13 +1,8 @@
-import { z } from 'zod';
+export interface AddToCartDto {
+  productId: string;
+  quantity: number;
+}
 
-export const AddToCartSchema = z.object({
-  productId: z.string().uuid(),
-  quantity: z.number().int().min(1),
-});
-
-export const UpdateCartItemSchema = z.object({
-  quantity: z.number().int().min(1),
-});
-
-export type AddToCartDto = z.infer<typeof AddToCartSchema>;
-export type UpdateCartItemDto = z.infer<typeof UpdateCartItemSchema>;
+export interface UpdateCartItemDto {
+  quantity: number;
+}

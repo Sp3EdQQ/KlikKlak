@@ -8,24 +8,17 @@ import {
   Param,
   UseGuards,
   Request,
-  UsePipes,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
 import { CartsService } from './carts.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { ZodValidationPipe } from 'nestjs-zod';
-import {
-  AddToCartSchema,
-  AddToCartDto,
-  UpdateCartItemSchema,
-  UpdateCartItemDto,
-} from './carts.dto';
+import { AddToCartDto, UpdateCartItemDto } from './carts.dto';
 
 @Controller('carts')
 @UseGuards(JwtAuthGuard)
 export class CartsController {
-  constructor(private readonly cartsService: CartsService) {}
+  constructor(private readonly cartsService: CartsService) { }
 
   @Get('me')
   async getMyCart(@Request() req) {
@@ -33,7 +26,6 @@ export class CartsController {
   }
 
   @Post('items')
-  @UsePipes(new ZodValidationPipe(AddToCartSchema))
   async addItem(@Request() req, @Body() addToCartDto: AddToCartDto) {
     await this.cartsService.addItem(
       req.user.sub,
@@ -44,7 +36,6 @@ export class CartsController {
   }
 
   @Patch('items/:id')
-  @UsePipes(new ZodValidationPipe(UpdateCartItemSchema))
   async updateItem(
     @Request() req,
     @Param('id') itemId: string,
