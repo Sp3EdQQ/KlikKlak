@@ -6,15 +6,15 @@ export default [
   route("/products", "./pages/Products.tsx"),
   route("/products/:slug", "./pages/ProductDetail.tsx"),
   route("/category/:id", "./pages/Category.tsx"),
-  route("/logowanie", "./pages/Login.tsx"),
-  route("/rejestracja", "./pages/Register.tsx"),
+  route("/login", "./pages/Login.tsx"),
+  route("/register", "./pages/Register.tsx"),
 
   // Admin panel routes
-  route("/login", "./pages/admin/Login.tsx"),
-  route("/users", "./pages/admin/Users.tsx"),
-  route("/categories", "./pages/admin/Categories.tsx"),
-  route("/products-admin", "./pages/admin/Products.tsx"),
-  route("/tags", "./pages/admin/Tags.tsx"),
-  route("/orders", "./pages/admin/Orders.tsx"),
-  route("/settings", "./pages/admin/Settings.tsx"),
+  route("/AdminLogin", "./pages/admin/Login.tsx"),
+  route("/AdminUsers", "./pages/admin/Users.tsx"),
+  route("/AdminCategories", "./pages/admin/Categories.tsx"),
+  route("/AdminProducts", "./pages/admin/Products.tsx"),
+  route("/AdminTags", "./pages/admin/Tags.tsx"),
+  route("/AdminOrders", "./pages/admin/Orders.tsx"),
+  route("/AdminSettings", "./pages/admin/Settings.tsx")
 ] satisfies RouteConfig

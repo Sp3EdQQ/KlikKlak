@@ -2,47 +2,38 @@ import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
 import { useState } from "react"
 import { useParams, Link } from "react-router"
-import { ShoppingCart, Heart, Truck, Shield, RotateCcw, Check, Minus, Plus } from "lucide-react"
+import {
+    ShoppingCart,
+    Heart,
+    Truck,
+    Shield,
+    RotateCcw,
+    Check,
+    Minus,
+    Plus
+} from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { getProductIdFromSlug } from "@/lib/product-utils"
-
-// Mock data - w przyszłości zamień na fetch z API
-// Używa tylko pól z tabeli products: id, name, description, price, stock, categoryId, imageUrl
-const mockProduct = {
-    id: "1",
-    name: "AMD Ryzen 9 7950X",
-    description:
-        "Procesor AMD Ryzen 9 7950X to potężna jednostka obliczeniowa zaprojektowana dla najbardziej wymagających użytkowników. Wyposażony w 16 rdzeni i 32 wątki, oferuje niesamowitą wydajność w grach, renderowaniu i zadaniach wielowątkowych. Idealny do gier, renderowania wideo, streamingu i wymagających aplikacji profesjonalnych.",
-    price: 2899.99,
-    stock: 15,
-    categoryId: "cat-123",
-    imageUrl: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=800&h=600&fit=crop",
-    createdAt: "2025-11-07T10:00:00Z",
-    updatedAt: "2025-11-07T10:00:00Z"
-}
+import { useProduct } from "@/hooks/useQueries"
 
 export default function ProductDetail() {
     const params = useParams()
     const [quantity, setQuantity] = useState(1)
     const [isInWishlist, setIsInWishlist] = useState(false)
 
-    // Wyciągnij ID z URL (format: "1-amd-ryzen-9-7950x" -> "1")
-    const productId = params.slug ? getProductIdFromSlug(params.slug) : "1"
-
-    // W przyszłości: fetch produktu z API na podstawie productId
-    // const { data: product } = useFetch(`/api/products/${productId}`)
-    const product = mockProduct
+    const productId = params.slug
+    const { data: product, isLoading: loading, error } = useProduct(productId)
 
     const handleAddToCart = () => {
         // TODO: Implementacja dodawania do koszyka
-        console.log(`Dodano ${quantity}x ${product.name} do koszyka`)
-        alert(`Dodano ${quantity}x ${product.name} do koszyka!`)
+        const name = product?.name ?? "produkt"
+        console.log(`Dodano ${quantity}x ${name} do koszyka`)
+        alert(`Dodano ${quantity}x ${name} do koszyka!`)
     }
 
     const handleQuantityChange = (delta: number) => {
         const newQuantity = quantity + delta
-        if (newQuantity >= 1 && newQuantity <= product.stock) {
+        if (newQuantity >= 1 && newQuantity <= (product?.stock ?? 0)) {
             setQuantity(newQuantity)
         }
     }
@@ -51,7 +42,42 @@ export default function ProductDetail() {
         setIsInWishlist(!isInWishlist)
     }
 
+    if (loading) {
+        return (
+            <div className="flex min-h-screen flex-col">
+                <Header />
+                <main className="flex flex-1 items-center justify-center bg-gray-50 py-8">
+                    <div className="text-center">
+                        <div className="inline-block h-12 w-12 animate-spin rounded-full border-b-2 border-blue-500"></div>
+                        <p className="mt-4 text-gray-600">Ładowanie produktu...</p>
+                    </div>
+                </main>
+                <Footer />
+            </div>
+        )
+    }
+
+    if (error || !product) {
+        return (
+            <div className="flex min-h-screen flex-col">
+                <Header />
+                <main className="flex flex-1 items-center justify-center bg-gray-50 py-8">
+                    <div className="text-center">
+                        <h1 className="mb-4 text-2xl font-bold text-gray-900">
+                            {error?.message || "Produkt nie został znaleziony"}
+                        </h1>
+                        <Button asChild>
+                            <Link to="/">Wróć do strony głównej</Link>
+                        </Button>
+                    </div>
+                </main>
+                <Footer />
+            </div>
+        )
+    }
+
     const isInStock = product.stock > 0
+    const productPrice = parseFloat(product.price)
 
     return (
         <div className="flex min-h-screen flex-col">
@@ -77,12 +103,20 @@ export default function ProductDetail() {
                         <div className="space-y-4">
                             <div className="relative overflow-hidden rounded-lg bg-white shadow-lg">
                                 <img
-                                    src={product.imageUrl}
+                                    src={
+                                        product.imageUrl ||
+                                        "https://placehold.co/800x600/e5e7eb/6b7280?text=Brak+zdjęcia"
+                                    }
                                     alt={product.name}
-                                    className="h-[500px] w-full object-cover"
+                                    className="h-32 w-full object-cover"
+                                    onError={e => {
+                                        const target = e.target as HTMLImageElement
+                                        target.src =
+                                            "https://placehold.co/800x600/e5e7eb/6b7280?text=Brak+zdjęcia"
+                                    }}
                                 />
                                 {!isInStock && (
-                                    <div className="absolute right-4 top-4 rounded-full bg-red-500 px-4 py-2 text-sm font-bold text-white">
+                                    <div className="absolute top-4 right-4 rounded-full bg-red-500 px-4 py-2 text-sm font-bold text-white">
                                         Brak w magazynie
                                     </div>
                                 )}
@@ -95,7 +129,9 @@ export default function ProductDetail() {
                                 <h1 className="mb-4 text-3xl font-bold text-gray-900">{product.name}</h1>
 
                                 {/* Opis */}
-                                <p className="text-lg text-gray-700">{product.description}</p>
+                                <p className="text-lg text-gray-700">
+                                    {product.description || "Brak opisu produktu"}
+                                </p>
                             </div>
 
                             {/* Cena */}
@@ -104,7 +140,7 @@ export default function ProductDetail() {
                                     <div className="mb-4">
                                         <div className="flex items-baseline gap-3">
                                             <span className="text-4xl font-bold text-purple-600">
-                                                {product.price.toFixed(2)} zł
+                                                {productPrice.toFixed(2)} zł
                                             </span>
                                         </div>
                                     </div>
@@ -115,8 +151,8 @@ export default function ProductDetail() {
                                             <div className="flex items-center gap-2 text-green-600">
                                                 <Check className="h-5 w-5" />
                                                 <span className="font-semibold">
-                                                    Dostępne ({product.stock} {product.stock === 1 ? "sztuka" : "sztuk"} w
-                                                    magazynie)
+                                                    Dostępne ({product.stock}{" "}
+                                                    {product.stock === 1 ? "sztuka" : "sztuk"} w magazynie)
                                                 </span>
                                             </div>
                                         ) : (
@@ -152,7 +188,7 @@ export default function ProductDetail() {
                                                 </button>
                                             </div>
                                             <span className="text-sm text-gray-500">
-                                                Razem: {(product.price * quantity).toFixed(2)} zł
+                                                Razem: {(productPrice * quantity).toFixed(2)} zł
                                             </span>
                                         </div>
                                     </div>
@@ -175,7 +211,9 @@ export default function ProductDetail() {
                                                     : "hover:bg-gray-50"
                                                 }`}
                                         >
-                                            <Heart className={`mr-2 h-5 w-5 ${isInWishlist ? "fill-red-500" : ""}`} />
+                                            <Heart
+                                                className={`mr-2 h-5 w-5 ${isInWishlist ? "fill-red-500" : ""}`}
+                                            />
                                             {isInWishlist ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
                                         </Button>
                                     </div>
@@ -214,13 +252,17 @@ export default function ProductDetail() {
                         <Card>
                             <CardContent className="p-6">
                                 <div>
-                                    <h2 className="mb-4 text-2xl font-bold text-gray-900">Szczegółowy opis</h2>
+                                    <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                                        Szczegółowy opis
+                                    </h2>
                                     <div className="prose max-w-none text-gray-700">
-                                        <p className="whitespace-pre-line">{product.description}</p>
+                                        <p className="whitespace-pre-line">
+                                            {product.description || "Brak szczegółowego opisu produktu"}
+                                        </p>
                                     </div>
 
                                     {/* Informacje o produkcie */}
-                                    <div className="mt-8 grid grid-cols-2 gap-4 border-t pt-6 text-sm md:grid-cols-4">
+                                    <div className="mt-8 grid grid-cols-2 gap-4 border-t pt-6 text-sm md:grid-cols-2">
                                         <div>
                                             <p className="text-gray-500">ID Produktu</p>
                                             <p className="font-semibold text-gray-900">{product.id}</p>
@@ -228,18 +270,6 @@ export default function ProductDetail() {
                                         <div>
                                             <p className="text-gray-500">Stan magazynowy</p>
                                             <p className="font-semibold text-gray-900">{product.stock} szt.</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-gray-500">Dodano</p>
-                                            <p className="font-semibold text-gray-900">
-                                                {new Date(product.createdAt).toLocaleDateString("pl-PL")}
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <p className="text-gray-500">Aktualizacja</p>
-                                            <p className="font-semibold text-gray-900">
-                                                {new Date(product.updatedAt).toLocaleDateString("pl-PL")}
-                                            </p>
                                         </div>
                                     </div>
                                 </div>

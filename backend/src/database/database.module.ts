@@ -10,7 +10,7 @@ import { DrizzleService } from './drizzle.service';
 
 @Global()
 @Module({
-  exports: [DrizzleService],
+  exports: [DrizzleService, 'DRIZZLE'],
   providers: [
     DrizzleService,
     {
@@ -26,6 +26,11 @@ import { DrizzleService } from './drizzle.service';
         });
       },
     },
+    {
+      provide: 'DRIZZLE',
+      useFactory: (drizzleService: DrizzleService) => drizzleService.db,
+      inject: [DrizzleService],
+    },
   ],
 })
-export class DatabaseModule extends ConfigurableDatabaseModule {}
+export class DatabaseModule extends ConfigurableDatabaseModule { }
