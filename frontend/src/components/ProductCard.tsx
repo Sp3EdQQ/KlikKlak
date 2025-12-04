@@ -54,8 +54,8 @@ export function ProductCard({
                 <Star
                   key={i}
                   className={`h-3 w-3 ${i < Math.floor(rating)
-                      ? "fill-yellow-400 text-yellow-400"
-                      : "text-gray-300"
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "text-gray-300"
                     }`}
                 />
               ))}
