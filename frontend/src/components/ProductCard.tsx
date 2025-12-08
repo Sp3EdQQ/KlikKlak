@@ -1,6 +1,8 @@
 import { Link } from "react-router"
 import { getProductUrl } from "@/lib/product-utils"
-import { Star } from "lucide-react"
+import { Star, ShoppingCart } from "lucide-react"
+import { Button } from "./ui/button"
+import { useCart } from "@/hooks/useCart"
 
 type ProductCardProps = {
   id: string
@@ -14,6 +16,7 @@ type ProductCardProps = {
 }
 
 export function ProductCard({
+  id,
   name,
   price,
   imageUrl,
@@ -24,27 +27,37 @@ export function ProductCard({
 }: ProductCardProps) {
   const productUrl = getProductUrl(name)
   const isAvailable = stock !== undefined ? stock > 0 : inStock
+  const { addToCart, isAddingToCart } = useCart()
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    console.log('Adding to cart:', { productId: id, quantity: 1 })
+    addToCart({ productId: id, quantity: 1 })
+  }
 
   return (
-    <Link
-      to={productUrl}
-      className="group overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-lg"
-    >
-      <div className="aspect-square overflow-hidden bg-gray-100">
-        <img
-          src={imageUrl}
-          alt={name}
-          className="h-full w-full object-cover transition-transform group-hover:scale-105"
-          onError={e => {
-            const target = e.target as HTMLImageElement
-            target.src = "https://placehold.co/400x400/e5e7eb/6b7280?text=Brak+zdjęcia"
-          }}
-        />
-      </div>
+    <div className="group overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-lg">
+      <Link to={productUrl}>
+        <div className="aspect-square overflow-hidden bg-gray-100">
+          <img
+            src={imageUrl}
+            alt={name}
+            className="h-full w-full object-cover transition-transform group-hover:scale-105"
+            onError={e => {
+              const target = e.target as HTMLImageElement
+              target.src = "https://placehold.co/400x400/e5e7eb/6b7280?text=Brak+zdjęcia"
+            }}
+          />
+        </div>
+      </Link>
+      
       <div className="p-4">
-        <h3 className="mb-2 line-clamp-2 min-h-[3rem] font-semibold text-gray-900 group-hover:text-blue-600">
-          {name}
-        </h3>
+        <Link to={productUrl}>
+          <h3 className="mb-2 line-clamp-2 min-h-[3rem] font-semibold text-gray-900 group-hover:text-blue-600">
+            {name}
+          </h3>
+        </Link>
 
         {/* Rating */}
         {rating !== undefined && (
@@ -54,8 +67,8 @@ export function ProductCard({
                 <Star
                   key={i}
                   className={`h-3 w-3 ${i < Math.floor(rating)
-                    ? "fill-yellow-400 text-yellow-400"
-                    : "text-gray-300"
+                      ? "fill-yellow-400 text-yellow-400"
+                      : "text-gray-300"
                     }`}
                 />
               ))}
@@ -66,7 +79,7 @@ export function ProductCard({
           </div>
         )}
 
-        <div className="flex items-center justify-between">
+        <div className="mb-3 flex items-center justify-between">
           <span className="text-xl font-bold text-blue-600">{price.toFixed(2)} zł</span>
           {isAvailable ? (
             <span className="text-sm font-medium text-green-600">Dostępny</span>
@@ -74,7 +87,17 @@ export function ProductCard({
             <span className="text-sm font-medium text-red-600">Brak</span>
           )}
         </div>
+
+        <Button
+          onClick={handleAddToCart}
+          disabled={!isAvailable || isAddingToCart}
+          className="w-full"
+          size="sm"
+        >
+          <ShoppingCart className="mr-2 h-4 w-4" />
+          {isAddingToCart ? "Dodawanie..." : "Do koszyka"}
+        </Button>
       </div>
-    </Link>
+    </div>
   )
 }

@@ -27,8 +27,10 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Logo } from "@/assets/svgs"
 import { useAuth } from "@/hooks/useAuth"
+import { useCart } from "@/hooks/useCart"
 import { apiService } from "@/services/api.service"
 import type { LucideIcon } from "lucide-react"
+import { Link } from "react-router"
 
 interface Category {
   id: string
@@ -75,6 +77,7 @@ export function Header() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
   const { user, isAuthenticated, logout } = useAuth()
+  const { cart } = useCart()
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -256,19 +259,25 @@ export function Header() {
               )}
 
               {/* Cart */}
-              <Button variant="default" className="relative h-11 gap-2 bg-blue-500">
-                <ShoppingCart className="h-5 w-5" />
-                <div className="hidden flex-col items-start sm:flex">
-                  <span className="text-xs">Koszyk</span>
-                  <span className="text-sm font-bold">1,299 zł</span>
-                </div>
-                <Badge
-                  variant="secondary"
-                  className="absolute -top-2 -right-2 h-6 min-w-6 rounded-full border-2 border-white bg-red-500 px-1.5 text-white"
-                >
-                  3
-                </Badge>
-              </Button>
+              <Link to="/cart">
+                <Button variant="default" className="relative h-11 gap-2 bg-blue-500">
+                  <ShoppingCart className="h-5 w-5" />
+                  <div className="hidden flex-col items-start sm:flex">
+                    <span className="text-xs">Koszyk</span>
+                    <span className="text-sm font-bold">
+                      {cart ? `${cart.total.toFixed(2)} zł` : "0.00 zł"}
+                    </span>
+                  </div>
+                  {cart && cart.itemCount > 0 && (
+                    <Badge
+                      variant="secondary"
+                      className="absolute -top-2 -right-2 h-6 min-w-6 rounded-full border-2 border-white bg-red-500 px-1.5 text-white"
+                    >
+                      {cart.itemCount}
+                    </Badge>
+                  )}
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

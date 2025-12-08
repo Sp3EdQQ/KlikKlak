@@ -28,7 +28,7 @@ export function useAuth() {
 
   const checkAuth = () => {
     try {
-      const token = localStorage.getItem("authToken")
+      const token = localStorage.getItem("accessToken")
       const userStr = localStorage.getItem("authUser")
 
       if (token && userStr) {
@@ -52,7 +52,8 @@ export function useAuth() {
     password: string
   ): Promise<{ success: boolean; error?: string }> => {
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -68,7 +69,7 @@ export function useAuth() {
       const data = await response.json()
 
       // Zapisz tokeny i dane użytkownika
-      localStorage.setItem("authToken", data.accessToken)
+      localStorage.setItem("accessToken", data.accessToken)
       localStorage.setItem("refreshToken", data.refreshToken)
       localStorage.setItem("authUser", JSON.stringify(data.user))
 
@@ -87,9 +88,10 @@ export function useAuth() {
 
   const logout = async () => {
     try {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
       const refreshToken = localStorage.getItem("refreshToken")
       if (refreshToken) {
-        await fetch("http://localhost:3000/auth/logout", {
+        await fetch(`${API_URL}/auth/logout`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -100,7 +102,7 @@ export function useAuth() {
     } catch (error) {
       console.error("Logout error:", error)
     } finally {
-      localStorage.removeItem("authToken")
+      localStorage.removeItem("accessToken")
       localStorage.removeItem("refreshToken")
       localStorage.removeItem("authUser")
       setAuthState({
