@@ -8,6 +8,7 @@ export default [
   route("/category/:id", "./pages/Category.tsx"),
   route("/login", "./pages/Login.tsx"),
   route("/register", "./pages/Register.tsx"),
+  route("/cart", "./pages/Cart.tsx"),
 
   // Admin panel routes
   route("/AdminLogin", "./pages/admin/Login.tsx"),
