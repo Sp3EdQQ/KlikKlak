@@ -1,6 +1,7 @@
 import { useCart } from '../hooks/useCart';
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 import { Button } from '../components/ui/button';
+import { Chatbot } from '../components/Chatbot';
 import { Link } from 'react-router';
 
 export default function Cart() {
@@ -157,6 +158,7 @@ export default function Cart() {
           </div>
         </div>
       </div>
+      <Chatbot />
     </div>
   );
 }

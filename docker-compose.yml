@@ -31,6 +31,11 @@ services:
       NODE_ENV: production
       JWT_SECRET: klikklak-super-secret-key-2025
       JWT_EXPIRES_IN: 24h
+      JWT_REFRESH_SECRET: klikklak-refresh-secret-key-2025
+      JWT_REFRESH_EXPIRES_IN: 7d
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    env_file:
+      - ./backend/.env
     depends_on:
       postgres:
         condition: service_healthy

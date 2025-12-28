@@ -1,5 +1,6 @@
 import { Header, Footer } from "@/components/layout/index"
 import { ProductsHeader, CategoriesGrid } from "@/components/pages/Products"
+import { Chatbot } from "@/components/Chatbot"
 
 export default function Products() {
   return (
@@ -12,6 +13,7 @@ export default function Products() {
         </section>
       </main>
       <Footer />
+      <Chatbot />
     </div>
   )
 }

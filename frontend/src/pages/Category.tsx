@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { Header, Footer } from "@/components/layout"
 import { ProductCard } from "@/components/ProductCard"
+import { Chatbot } from "@/components/Chatbot"
 import { useCategory, useProducts } from "@/hooks/useQueries"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -296,6 +297,7 @@ export default function Category() {
             </main>
 
             <Footer />
+            <Chatbot />
         </div>
     )
 }

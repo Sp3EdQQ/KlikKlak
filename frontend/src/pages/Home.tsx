@@ -3,6 +3,7 @@ import { useNavigate } from "react-router"
 import { BannerCarousel } from "@/components/BannerCarousel"
 import { Header, Footer } from "@/components/layout/index"
 import { CategoriesSection, FeaturedProductsSection } from "@/components/pages/home"
+import { Chatbot } from "@/components/Chatbot"
 import Dashboard from "./admin/Dashboard"
 import type { BannerData } from "@/types"
 
@@ -88,6 +89,7 @@ export default function Home() {
       </main>
 
       <Footer />
+      <Chatbot />
     </div>
   )
 }

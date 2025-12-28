@@ -1,5 +1,6 @@
 import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
+import { Chatbot } from "@/components/Chatbot"
 import { useState } from "react"
 import { useParams, Link } from "react-router"
 import {
@@ -280,6 +281,7 @@ export default function ProductDetail() {
             </main>
 
             <Footer />
+            <Chatbot />
         </div>
     )
 }

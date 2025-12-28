@@ -1,0 +1,4 @@
+
+# Environment variables (zawiera klucze API)
+backend/.env
+.env

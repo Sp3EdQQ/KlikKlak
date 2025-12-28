@@ -29,7 +29,13 @@ type Pages = {
   "/login": {
     params: {};
   };
-  "/register": {
+  "/logowanie": {
+    params: {};
+  };
+  "/rejestracja": {
+    params: {};
+  };
+  "/cart": {
     params: {};
   };
   "/AdminLogin": {
@@ -58,7 +64,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/products" | "/products/:slug" | "/category/:id" | "/login" | "/register" | "/AdminLogin" | "/AdminUsers" | "/AdminCategories" | "/AdminProducts" | "/AdminTags" | "/AdminOrders" | "/AdminSettings";
+    page: "/" | "/products" | "/products/:slug" | "/category/:id" | "/login" | "/logowanie" | "/rejestracja" | "/cart" | "/AdminLogin" | "/AdminUsers" | "/AdminCategories" | "/AdminProducts" | "/AdminTags" | "/AdminOrders" | "/AdminSettings";
   };
   "./pages/Home.tsx": {
     id: "pages/Home";
@@ -79,10 +85,17 @@ type RouteFiles = {
   "./pages/Login.tsx": {
     id: "pages/Login";
     page: "/login";
+  } | {
+    id: "pages/Login-pl";
+    page: "/logowanie";
   };
   "./pages/Register.tsx": {
     id: "pages/Register";
-    page: "/register";
+    page: "/rejestracja";
+  };
+  "./pages/Cart.tsx": {
+    id: "pages/Cart";
+    page: "/cart";
   };
   "./pages/admin/Login.tsx": {
     id: "pages/admin/Login";

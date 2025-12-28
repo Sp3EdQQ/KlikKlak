@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -36,9 +35,15 @@ interface UpdateCartItemPayload {
   quantity: number;
 }
 
-const getAuthHeaders = () => {
+const getAuthHeaders = (): HeadersInit => {
   const token = localStorage.getItem('accessToken');
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
 };
 
 export const useCart = () => {
@@ -48,10 +53,15 @@ export const useCart = () => {
   const { data: cart, isLoading, error } = useQuery<Cart>({
     queryKey: ['cart'],
     queryFn: async () => {
-      const response = await axios.get(`${API_URL}/carts/me`, {
+      const response = await fetch(`${API_URL}/carts/me`, {
         headers: getAuthHeaders(),
       });
-      return response.data;
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch cart');
+      }
+      
+      return response.json();
     },
     enabled: !!token,
     retry: false,
@@ -63,21 +73,25 @@ export const useCart = () => {
       if (!token) {
         throw new Error('Musisz być zalogowany aby dodać produkt do koszyka');
       }
-      const response = await axios.post(
-        `${API_URL}/carts/items`,
-        payload,
-        {
-          headers: getAuthHeaders(),
-        }
-      );
-      return response.data;
+      
+      const response = await fetch(`${API_URL}/carts/items`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(payload),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to add item to cart');
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
     onError: (error: any) => {
       console.error('Error adding to cart:', error);
-      if (error.response?.status === 401) {
+      if (error.message.includes('401')) {
         alert('Musisz być zalogowany aby dodać produkt do koszyka');
       } else {
         alert(error.message || 'Nie udało się dodać produktu do koszyka');
@@ -87,14 +101,17 @@ export const useCart = () => {
 
   const updateCartItemMutation = useMutation({
     mutationFn: async ({ itemId, quantity }: UpdateCartItemPayload) => {
-      const response = await axios.patch(
-        `${API_URL}/carts/items/${itemId}`,
-        { quantity },
-        {
-          headers: getAuthHeaders(),
-        }
-      );
-      return response.data;
+      const response = await fetch(`${API_URL}/carts/items/${itemId}`, {
+        method: 'PATCH',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ quantity }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update cart item');
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
@@ -103,13 +120,16 @@ export const useCart = () => {
 
   const removeCartItemMutation = useMutation({
     mutationFn: async (itemId: string) => {
-      const response = await axios.delete(
-        `${API_URL}/carts/items/${itemId}`,
-        {
-          headers: getAuthHeaders(),
-        }
-      );
-      return response.data;
+      const response = await fetch(`${API_URL}/carts/items/${itemId}`, {
+        method: 'DELETE',
+        headers: getAuthHeaders(),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to remove cart item');
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
@@ -118,13 +138,16 @@ export const useCart = () => {
 
   const clearCartMutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.delete(
-        `${API_URL}/carts/clear`,
-        {
-          headers: getAuthHeaders(),
-        }
-      );
-      return response.data;
+      const response = await fetch(`${API_URL}/carts/clear`, {
+        method: 'DELETE',
+        headers: getAuthHeaders(),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to clear cart');
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });

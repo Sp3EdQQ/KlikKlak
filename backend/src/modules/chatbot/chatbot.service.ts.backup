@@ -1,0 +1,203 @@
+import { Injectable, Logger } from '@nestjs/common';
+import OpenAI from 'openai';
+import { ConfigService } from '@nestjs/config';
+import { CpusService } from '../cpus/cpus.service';
+import { GpusService } from '../gpus/gpus.service';
+import { RamsService } from '../rams/rams.service';
+import { SsdsService } from '../ssds/ssds.service';
+import { HddsService } from '../hdds/hdds.service';
+import { MotherboardsService } from '../motherboards/motherboards.service';
+import { PsusService } from '../psus/psus.service';
+import { CpuCoolersService } from '../cpu-coolers/cpu-coolers.service';
+import { MonitorsService } from '../monitors/monitors.service';
+import { CasesService } from '../cases/cases.service';
+import { ChatMessageDto } from './chatbot.dto';
+
+@Injectable()
+export class ChatbotService {
+  private readonly logger = new Logger(ChatbotService.name);
+  private openai: OpenAI;
+
+  constructor(
+    private configService: ConfigService,
+    private cpusService: CpusService,
+    private gpusService: GpusService,
+    private ramsService: RamsService,
+    private ssdsService: SsdsService,
+    private hddsService: HddsService,
+    private motherboardsService: MotherboardsService,
+    private psusService: PsusService,
+    private cpuCoolersService: CpuCoolersService,
+    private monitorsService: MonitorsService,
+    private casesService: CasesService,
+  ) {
+    const apiKey = this.configService.get<string>('OPENAI_API_KEY');
+    if (!apiKey) {
+      this.logger.warn(
+        'OPENAI_API_KEY not found in environment variables. Chatbot will not work.',
+      );
+    }
+    this.openai = new OpenAI({
+      apiKey: apiKey || 'dummy-key',
+    });
+  }
+
+  async chat(chatMessageDto: ChatMessageDto) {
+    const { message, conversationHistory = [] } = chatMessageDto;
+
+    try {
+      // Pobierz dane produktów do kontekstu
+      const productsContext = await this.getProductsContext();
+
+      // Przygotuj system prompt
+      const systemPrompt = this.buildSystemPrompt(productsContext);
+
+      // Buduj historię konwersacji
+      const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
+        { role: 'system', content: systemPrompt },
+        ...conversationHistory.map((msg) => ({
+          role: msg.role as 'user' | 'assistant',
+          content: msg.content,
+        })),
+        { role: 'user', content: message },
+      ];
+
+      // Wywołaj OpenAI API
+      const completion = await this.openai.chat.completions.create({
+        model: 'gpt-4o',
+        messages: messages,
+        temperature: 0.7,
+        max_tokens: 1000,
+      });
+
+      const assistantMessage =
+        completion.choices[0]?.message?.content ||
+        'Przepraszam, nie mogłem przetworzyć Twojego zapytania.';
+
+      // Zaktualizuj historię konwersacji
+      const updatedHistory = [
+        ...conversationHistory,
+        { role: 'user', content: message },
+        { role: 'assistant', content: assistantMessage },
+      ];
+
+      // Spróbuj wyodrębnić sugerowane produkty z odpowiedzi
+      const suggestedProducts = await this.extractSuggestedProducts(
+        assistantMessage,
+      );
+
+      return {
+        message: assistantMessage,
+        conversationHistory: updatedHistory,
+        suggestedProducts,
+      };
+    } catch (error) {
+      this.logger.error('Error in chatbot service:', error);
+      throw new Error('Nie udało się przetworzyć wiadomości');
+    }
+  }
+
+  private async getProductsContext(): Promise<string> {
+    try {
+      // Pobierz próbki produktów z każdej kategorii
+      const [cpus, gpus, rams, ssds, hdds, motherboards, psus, coolers, monitors, cases] = await Promise.all([
+        this.cpusService.findAll().then((items) => items.slice(0, 10)),
+        this.gpusService.findAll().then((items) => items.slice(0, 10)),
+        this.ramsService.findAll().then((items) => items.slice(0, 10)),
+        this.ssdsService.findAll().then((items) => items.slice(0, 10)),
+        this.hddsService.findAll().then((items) => items.slice(0, 10)),
+        this.motherboardsService.findAll().then((items) => items.slice(0, 10)),
+        this.psusService.findAll().then((items) => items.slice(0, 10)),
+        this.cpuCoolersService.findAll().then((items) => items.slice(0, 10)),
+        this.monitorsService.findAll().then((items) => items.slice(0, 10)),
+        this.casesService.findAll().then((items) => items.slice(0, 10)),
+      ]);
+
+      // Formatuj informacje o produktach
+      let context = 'Dostępne produkty w sklepie KlikKlak:\n\n';
+
+      if (cpus.length > 0) {
+        context += '=== PROCESORY ===\n';
+        cpus.forEach((cpu) => {
+          context += `- ${cpu.name} (${cpu.producer}): ${cpu.price} PLN, ${cpu.cores} rdzeni, ${cpu.threads} wątków, Socket: ${cpu.socket}\n`;
+        });
+        context += '\n';
+      }
+
+      if (gpus.length > 0) {
+        context += '=== KARTY GRAFICZNE ===\n';
+        gpus.forEach((gpu) => {
+          context += `- ${gpu.name} (${gpu.producer}): ${gpu.price} PLN, VRAM: ${gpu.vram}, TDP: ${gpu.tdp}W\n`;
+        });
+        context += '\n';
+      }
+
+      if (rams.length > 0) {
+        context += '=== PAMIĘĆ RAM ===\n';
+        rams.forEach((ram) => {
+          context += `- ${ram.name} (${ram.producer}): ${ram.price} PLN, ${ram.size}, ${ram.ramType}, ${ram.clock}\n`;
+        });
+        context += '\n';
+      }
+
+      if (ssds.length > 0) {
+        context += '=== DYSKI SSD ===\n';
+        ssds.forEach((ssd) => {
+          context += `- ${ssd.name} (${ssd.producer}): ${ssd.price} PLN, ${ssd.size}, ${ssd.formFactor}, ${ssd.protocol}\n`;
+        });
+        context += '\n';
+      }
+
+      if (monitors.length > 0) {
+        context += '=== MONITORY ===\n';
+        monitors.forEach((monitor) => {
+          context += `- ${monitor.name} (${monitor.producer}): ${monitor.price} PLN, ${monitor.size}", ${monitor.resolution}, ${monitor.refreshRate}\n`;
+        });
+        context += '\n';
+      }
+
+      return context;
+    } catch (error) {
+      this.logger.error('Error fetching products context:', error);
+      return 'Produkty są obecnie niedostępne.';
+    }
+  }
+
+  private buildSystemPrompt(productsContext: string): string {
+    return `Jesteś pomocnym asystentem sklepu komputerowego KlikKlak. Twoim zadaniem jest:
+1. Doradzać klientom w wyborze podzespołów komputerowych
+2. Odpowiadać na pytania techniczne dotyczące komponentów
+3. Sugerować odpowiednie produkty na podstawie budżetu i potrzeb klienta
+4. Pomagać w komponowaniu zestawów komputerowych (dbając o kompatybilność)
+5. Być uprzejmym, profesjonalnym i pomocnym
+
+Ważne wskazówki:
+- Zawsze sprawdzaj kompatybilność komponentów (socket procesora z płytą główną, typ RAM, etc.)
+- Pytaj o budżet klienta przed sugerowaniem produktów
+- Wyjaśniaj różnice między komponentami w przystępny sposób
+- Jeśli nie masz pewności, przyznaj się do tego
+- Podawaj ceny w PLN
+- Mów po polsku
+
+${productsContext}
+
+Pamiętaj: Jeśli chcesz polecić konkretny produkt, użyj dokładnej nazwy z listy powyżej.`;
+  }
+
+  private async extractSuggestedProducts(
+    assistantMessage: string,
+  ): Promise<any[]> {
+    // Prosta ekstrakcja produktów - można to ulepszyć
+    const suggestedProducts = [];
+
+    try {
+      // Tutaj możesz dodać logikę do wyodrębniania nazw produktów z wiadomości
+      // i wyszukiwania ich w bazie danych
+      // Na razie zwracamy pustą tablicę
+    } catch (error) {
+      this.logger.error('Error extracting suggested products:', error);
+    }
+
+    return suggestedProducts;
+  }
+}

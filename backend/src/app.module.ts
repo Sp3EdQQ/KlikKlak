@@ -30,6 +30,7 @@ import { MonitorsModule } from './modules/monitors/monitors.module';
 import { CasesModule } from './modules/cases/cases.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { ChatbotModule } from './modules/chatbot/chatbot.module';
 
 @Module({
   imports: [
@@ -111,6 +112,8 @@ import { AuthModule } from './modules/auth/auth.module';
     MonitorsModule,
 
     CasesModule,
+
+    ChatbotModule,
   ],
   controllers: [AppController],
   providers: [AppService],
