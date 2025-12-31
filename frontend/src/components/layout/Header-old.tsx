@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router"
 import {
   ShoppingCart,
   User,
@@ -76,23 +75,9 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
-  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
-  const [searchQuery, setSearchQuery] = useState("")
-  const [mobileSearchQuery, setMobileSearchQuery] = useState("")
   const { user, isAuthenticated, logout } = useAuth()
   const { cart } = useCart()
-  const navigate = useNavigate()
-
-  const handleSearch = (e: React.FormEvent, query: string) => {
-    e.preventDefault()
-    if (query.trim()) {
-      navigate(`/search?q=${encodeURIComponent(query.trim())}`)
-      setSearchQuery("")
-      setMobileSearchQuery("")
-      setIsSearchOpen(false)
-    }
-  }
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -108,12 +93,12 @@ export function Header() {
   }, [])
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white shadow-md">
+    <header className="sticky top-0 z-50 w-full bg-white shadow-sm">
       {/* Top info bar */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-white">
+      <div className="bg-blue-500 text-white">
         <div className="container mx-auto px-4">
           <div className="flex h-9 items-center justify-center text-sm font-medium">
-            <span>🚀 KlikKlak - Twój sklep komputerowy</span>
+            <span>KlikKlak - Projekt Inżynierski</span>
           </div>
         </div>
       </div>
@@ -121,44 +106,51 @@ export function Header() {
       {/* Main header */}
       <div className="border-b border-gray-200">
         <div className="container mx-auto px-4">
-          <div className="flex h-16 items-center justify-between gap-3">
+          <div className="flex h-16 items-center justify-between gap-1 md:gap-2 flex-nowrap">
             {/* Logo */}
-            <Link to="/" className="flex shrink-0 items-center gap-2">
-              <Logo className="aspect-square h-10 w-10" />
-              <div className="hidden sm:block">
-                <h1 className="text-lg font-bold text-gray-900 leading-tight">KlikKlak</h1>
-                <p className="text-xs text-gray-600 leading-tight">Sklep komputerowy</p>
-              </div>
-            </Link>
+            <div className="flex items-center gap-1 shrink-0">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden p-1.5"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+              <a href="/" className="flex shrink-0 items-center gap-1.5">
+                <Logo className="aspect-square h-9 w-9" />
+                <div className="hidden lg:block">
+                  <h1 className="text-base font-bold text-gray-900 leading-tight whitespace-nowrap">KlikKlak</h1>
+                  <p className="text-[10px] text-gray-500 leading-tight whitespace-nowrap">Sklep komputerowy</p>
+                </div>
+              </a>
+            </div>
 
             {/* Search - Desktop */}
-            <div className="hidden md:flex flex-1 max-w-xl mx-4">
-              <form onSubmit={(e) => handleSearch(e, searchQuery)} className="relative w-full">
-                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <div className="hidden max-w-md flex-1 lg:flex mx-2">
+              <div className="relative w-full">
+                <Search className="absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2 text-gray-400" />
                 <Input
                   type="search"
-                  placeholder="Szukaj produktów..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="h-10 w-full border-gray-300 pr-20 pl-10 text-sm focus:border-blue-500 focus-visible:ring-blue-500"
+                  placeholder="Szukaj..."
+                  className="h-9 w-full border-gray-200 pr-16 pl-9 text-sm focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
                 <Button
-                  type="submit"
                   size="sm"
-                  className="absolute top-1/2 right-1 -translate-y-1/2 bg-blue-500 hover:bg-blue-600 h-8 text-xs px-3"
+                  className="absolute top-1/2 right-0.5 -translate-y-1/2 bg-blue-500 h-8 text-xs px-2"
                 >
                   Szukaj
                 </Button>
-              </form>
+              </div>
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-0.5 md:gap-1 shrink-0 flex-nowrap">
               {/* Search Mobile */}
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden"
+                className="lg:hidden p-1.5"
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
               >
                 <Search className="h-5 w-5" />
@@ -168,13 +160,13 @@ export function Header() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="relative hidden lg:flex"
+                className="relative hidden 2xl:flex p-1.5"
                 title="Lista życzeń"
               >
                 <Heart className="h-5 w-5" />
                 <Badge
                   variant="default"
-                  className="absolute -top-1 -right-1 h-4 min-w-4 rounded-full px-1 text-xs bg-blue-500"
+                  className="absolute -top-0.5 -right-0.5 h-4 min-w-4 rounded-full px-0.5 text-[10px] bg-blue-500"
                 >
                   5
                 </Badge>
@@ -182,16 +174,16 @@ export function Header() {
 
               {/* Account */}
               {isAuthenticated && user ? (
-                <div className="relative hidden md:block">
+                <div className="relative hidden lg:block">
                   <Button
                     variant="ghost"
-                    className="flex gap-2"
+                    className="flex gap-1 p-1.5"
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   >
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 font-medium text-white text-sm">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-500 font-medium text-white text-xs">
                       {user.firstName?.[0] || user.email[0].toUpperCase()}
                     </div>
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronDown className="h-3 w-3" />
                   </Button>
 
                   {isUserMenuOpen && (
@@ -200,7 +192,7 @@ export function Header() {
                         className="fixed inset-0 z-40"
                         onClick={() => setIsUserMenuOpen(false)}
                       />
-                      <div className="absolute right-0 z-50 mt-2 w-56 rounded-lg border border-gray-200 bg-white py-2 shadow-xl">
+                      <div className="absolute right-0 z-50 mt-2 w-56 rounded-lg border border-gray-200 bg-white py-2 shadow-lg">
                         <div className="border-b border-gray-200 px-4 py-2">
                           <p className="text-sm font-medium text-gray-900">
                             {user.firstName} {user.lastName}
@@ -247,7 +239,7 @@ export function Header() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="hidden md:flex"
+                  className="hidden lg:flex p-1.5"
                   title="Zaloguj się"
                   asChild
                 >
@@ -259,34 +251,24 @@ export function Header() {
 
               {/* Cart */}
               <Link to="/cart">
-                <Button variant="default" className="relative h-10 gap-2 bg-blue-500 hover:bg-blue-600 px-3">
-                  <ShoppingCart className="h-5 w-5" />
-                  <div className="hidden sm:flex flex-col items-start">
-                    <span className="text-xs leading-tight">Koszyk</span>
-                    <span className="text-sm font-bold leading-tight">
+                <Button variant="default" className="relative h-9 gap-1.5 bg-blue-500 hover:bg-blue-600 px-2.5">
+                  <ShoppingCart className="h-4 w-4" />
+                  <div className="hidden flex-col items-start lg:flex">
+                    <span className="text-[10px] leading-tight whitespace-nowrap">Koszyk</span>
+                    <span className="text-xs font-bold leading-tight whitespace-nowrap">
                       {cart ? `${cart.total.toFixed(2)} zł` : "0 zł"}
                     </span>
                   </div>
                   {cart && cart.itemCount > 0 && (
                     <Badge
                       variant="secondary"
-                      className="absolute -top-1 -right-1 h-5 min-w-5 rounded-full border-2 border-white bg-red-500 px-1 text-xs text-white"
+                      className="absolute -top-1 -right-1 h-4 min-w-4 rounded-full border border-white bg-red-500 px-0.5 text-[10px] text-white"
                     >
                       {cart.itemCount}
                     </Badge>
                   )}
                 </Button>
               </Link>
-
-              {/* Mobile Menu Button */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="md:hidden"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
             </div>
           </div>
         </div>
@@ -294,19 +276,16 @@ export function Header() {
 
       {/* Mobile Search */}
       {isSearchOpen && (
-        <div className="border-b border-gray-200 bg-white p-4 md:hidden">
-          <form onSubmit={(e) => handleSearch(e, mobileSearchQuery)} className="relative">
+        <div className="border-b border-gray-200 bg-white p-4 lg:hidden">
+          <div className="relative">
             <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <Input
               type="search"
               placeholder="Szukaj produktów..."
-              value={mobileSearchQuery}
-              onChange={(e) => setMobileSearchQuery(e.target.value)}
               className="w-full pr-10 pl-10"
               autoFocus
             />
             <Button
-              type="button"
               variant="ghost"
               size="icon"
               className="absolute top-1/2 right-1 -translate-y-1/2"
@@ -314,74 +293,40 @@ export function Header() {
             >
               <X className="h-4 w-4" />
             </Button>
-          </form>
+          </div>
         </div>
       )}
 
-      {/* Categories Navigation - Desktop */}
-      <div className="hidden md:block border-b border-gray-200 bg-gray-50">
+      {/* Categories Navigation */}
+      <div className="hidden border-b border-gray-200 bg-gray-50 lg:block">
         <div className="container mx-auto px-4">
-          <nav className="flex h-12 items-center gap-2">
-            {/* Categories Dropdown */}
-            <div className="relative">
-              <Button
-                variant="ghost"
-                className="gap-2 font-semibold text-gray-900 hover:bg-white hover:text-blue-600"
-                onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
-              >
-                <Menu className="h-4 w-4" />
-                Wszystkie kategorie
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-
-              {isCategoriesOpen && (
-                <>
-                  <div
-                    className="fixed inset-0 z-40"
-                    onClick={() => setIsCategoriesOpen(false)}
-                  />
-                  <div className="absolute left-0 z-50 mt-1 w-64 rounded-lg border border-gray-200 bg-white py-2 shadow-xl">
-                    {categories.map(category => {
-                      const CategoryIcon = getIconForCategory(category.name)
-                      return (
-                        <a
-                          key={category.id}
-                          href={`/category/${category.id}`}
-                          className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                          onClick={() => setIsCategoriesOpen(false)}
-                        >
-                          <CategoryIcon className="h-5 w-5" />
-                          <div>
-                            <div>{category.name}</div>
-                            {category.description && (
-                              <div className="text-xs text-gray-500">{category.description}</div>
-                            )}
-                          </div>
-                        </a>
-                      )
-                    })}
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Quick Links */}
-            <Link
-              to="/promocje"
-              className="rounded-md px-3 py-2 text-sm font-medium text-red-600 hover:bg-white hover:text-red-700 transition-colors"
-            >
-              🔥 Promocje
-            </Link>
+          <nav className="flex h-12 items-center gap-1">
+            <Button variant="ghost" className="gap-2 font-semibold">
+              Wszystkie kategorie
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+            {categories.map(category => {
+              const CategoryIcon = getIconForCategory(category.name)
+              return (
+                <a
+                  key={category.id}
+                  href={`/category/${category.id}`}
+                  className="flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-white hover:text-gray-900"
+                >
+                  <CategoryIcon className="h-4 w-4" />
+                  {category.name}
+                </a>
+              )
+            })}
           </nav>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="border-b border-gray-200 bg-white md:hidden">
+        <div className="border-b border-gray-200 bg-white lg:hidden">
           <nav className="container mx-auto px-4 py-4">
             <div className="space-y-1">
-              <div className="mb-3 font-bold text-gray-900">Kategorie</div>
               {categories.map(category => {
                 const CategoryIcon = getIconForCategory(category.name)
                 return (
@@ -389,9 +334,8 @@ export function Header() {
                     key={category.id}
                     href={`/category/${category.id}`}
                     className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                    onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <CategoryIcon className="h-5 w-5 text-blue-500" />
+                    <CategoryIcon className="h-5 w-5" />
                     {category.name}
                   </a>
                 )
@@ -400,25 +344,22 @@ export function Header() {
                 <a
                   href="/logowanie"
                   className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <User className="h-5 w-5 text-blue-500" />
+                  <User className="h-5 w-5" />
                   Moje konto
                 </a>
                 <a
                   href="/wishlist"
                   className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <Heart className="h-5 w-5 text-blue-500" />
+                  <Heart className="h-5 w-5" />
                   Lista życzeń
                 </a>
                 <a
                   href="/orders"
                   className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <Package className="h-5 w-5 text-blue-500" />
+                  <Package className="h-5 w-5" />
                   Moje zamówienia
                 </a>
               </div>

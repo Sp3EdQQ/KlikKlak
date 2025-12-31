@@ -1,4 +1,16 @@
 {
+	"name": "klikklak-root",
+	"private": true,
+	"scripts": {
+		"dev": "pnpm --filter backend dev & pnpm --filter frontend dev",
+		"build": "pnpm --filter backend build && pnpm --filter frontend build",
+		"docker:build": "docker-compose build --parallel",
+		"docker:up": "docker-compose up -d",
+		"docker:down": "docker-compose down",
+		"docker:logs": "docker-compose logs -f",
+		"docker:restart": "docker-compose restart",
+		"db:optimize": "docker-compose exec postgres psql -U postgres -d klikklakdb < backend/db-indexes.sql"
+	},
 	"dependencies": {
 		"drizzle-orm": "^0.44.2",
 		"pg": "^8.16.0"

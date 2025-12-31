@@ -114,6 +114,10 @@ class ApiService {
     return this.request<any>(`/products/${id}`)
   }
 
+  async getRandomProducts(limit: number = 8) {
+    return this.request<any[]>(`/products/random/list?limit=${limit}`)
+  }
+
   async createProduct(data: any) {
     return this.request<any>("/products", {
       method: "POST",
@@ -323,6 +327,27 @@ class ApiService {
   // Wishlists
   async getWishlists() {
     return this.request<any[]>("/wishlist")
+  }
+
+  async getWishlistItems() {
+    return this.request<any[]>("/wishlist")
+  }
+
+  async addToWishlist(productId: string) {
+    return this.request("/wishlist/add", {
+      method: "POST",
+      body: JSON.stringify({ productId })
+    })
+  }
+
+  async removeFromWishlist(productId: string) {
+    return this.request(`/wishlist/remove/${productId}`, {
+      method: "DELETE"
+    })
+  }
+
+  async checkWishlistStatus(productId: string) {
+    return this.request<{ isInWishlist: boolean }>(`/wishlist/check/${productId}`)
   }
 
   // Statistics

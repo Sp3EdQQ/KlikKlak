@@ -175,6 +175,19 @@ export class ProductsService {
     };
   }
 
+  /**
+   * Zwraca losowe produkty
+   */
+  async findRandom(limit: number = 8) {
+    const items = await this.drizzle
+      .select()
+      .from(products)
+      .orderBy(sql`RANDOM()`)
+      .limit(limit);
+
+    return items;
+  }
+
   async create(data: any) {
     const [product] = await this.drizzle
       .insert(products)

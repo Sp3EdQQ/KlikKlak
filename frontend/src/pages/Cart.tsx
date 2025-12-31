@@ -29,7 +29,7 @@ export default function Cart() {
         <ShoppingBag className="w-24 h-24 text-gray-300 mb-4" />
         <h2 className="text-2xl font-bold mb-2">Twój koszyk jest pusty</h2>
         <p className="text-gray-600 mb-8">Dodaj produkty, aby kontynuować zakupy</p>
-        <Link to="/products">cz
+        <Link to="/">
           <Button>Przejdź do sklepu</Button>
         </Link>
       </div>
@@ -150,7 +150,7 @@ export default function Cart() {
               Przejdź do płatności
             </Button>
 
-            <Link to="/products">
+            <Link to="/">
               <Button variant="outline" className="w-full">
                 Kontynuuj zakupy
               </Button>

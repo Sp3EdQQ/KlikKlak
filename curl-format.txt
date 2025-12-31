@@ -1,0 +1,8 @@
+# Skrypt do testowania wydajności
+url="http://localhost:3000/products?page=1&limit=20"
+
+time_total: %{time_total}s
+time_connect: %{time_connect}s
+time_starttransfer: %{time_starttransfer}s
+size_download: %{size_download} bytes
+speed_download: %{speed_download} bytes/s

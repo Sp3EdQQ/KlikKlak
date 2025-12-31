@@ -33,13 +33,13 @@ export default function Category() {
     const { id } = useParams<{ id: string }>()
     const [page, setPage] = useState(1)
     const [limit] = useState(20)
-    
+
     const { data: category, isLoading: categoryLoading } = useCategory(id)
     // Fetch products filtered by categoryId directly from API with pagination
-    const { data: productsResponse, isLoading: productsLoading } = useProducts({ 
-        categoryId: id, 
-        page, 
-        limit 
+    const { data: productsResponse, isLoading: productsLoading } = useProducts({
+        categoryId: id,
+        page,
+        limit
     })
 
     const products = productsResponse?.data || []
@@ -152,7 +152,7 @@ export default function Category() {
     }
 
     return (
-        <div className="flex min-h-screen flex-col bg-gray-50">
+        <div className="flex min-h-screen flex-col bg-gradient-to-br from-blue-50 via-white to-blue-50">
             <Header />
 
             <main className="flex-1">
@@ -167,15 +167,17 @@ export default function Category() {
                     </nav>
 
                     {/* Category Header */}
-                    <div className="mb-6 rounded-lg bg-white p-6 shadow-sm">
-                        <h1 className="mb-2 text-3xl font-bold text-gray-900">{category.name}</h1>
+                    <div className="mb-8 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 p-8 shadow-lg">
+                        <h1 className="mb-3 text-4xl font-bold text-white">{category.name}</h1>
                         {category.description && (
-                            <p className="text-gray-600">{category.description}</p>
+                            <p className="text-blue-50 text-lg">{category.description}</p>
                         )}
-                        <p className="mt-2 text-sm text-gray-500">
-                            Znaleziono {filteredProducts.length}{" "}
-                            {filteredProducts.length === 1 ? "produkt" : "produktów"}
-                        </p>
+                        <div className="mt-4 inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-4 py-2">
+                            <span className="text-sm font-medium text-white">
+                                {filteredProducts.length}{" "}
+                                {filteredProducts.length === 1 ? "produkt" : "produktów"} dostępnych
+                            </span>
+                        </div>
                     </div>
 
                     <div className="flex gap-6">
@@ -183,14 +185,14 @@ export default function Category() {
                         <aside
                             className={`${showFilters ? "block" : "hidden"} w-full shrink-0 lg:block lg:w-64`}
                         >
-                            <div className="sticky top-24 rounded-lg bg-white p-6 shadow-sm">
-                                <div className="mb-4 flex items-center justify-between">
-                                    <h2 className="text-lg font-bold text-gray-900">Filtry</h2>
+                            <div className="sticky top-24 rounded-2xl bg-white p-6 shadow-lg border border-gray-200">
+                                <div className="mb-6 flex items-center justify-between">
+                                    <h2 className="text-xl font-bold text-gray-900">Filtry</h2>
                                     <Button
                                         variant="ghost"
                                         size="sm"
                                         onClick={resetFilters}
-                                        className="text-blue-600 hover:text-blue-700"
+                                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                                     >
                                         Wyczyść
                                     </Button>
@@ -199,19 +201,20 @@ export default function Category() {
                                 <div className="space-y-6">
                                     {/* Search */}
                                     <div>
-                                        <label className="mb-2 block text-sm font-medium text-gray-700">
+                                        <label className="mb-2 block text-sm font-semibold text-gray-700">
                                             Szukaj w kategorii
                                         </label>
                                         <Input
                                             placeholder="Nazwa produktu..."
                                             value={searchTerm}
                                             onChange={e => setSearchTerm(e.target.value)}
+                                            className="border-gray-300 focus-visible:ring-blue-500"
                                         />
                                     </div>
 
                                     {/* Price Range */}
                                     <div>
-                                        <label className="mb-3 block text-sm font-medium text-gray-700">
+                                        <label className="mb-3 block text-sm font-semibold text-gray-700">
                                             Cena
                                         </label>
                                         <Slider
@@ -222,7 +225,7 @@ export default function Category() {
                                             onValueChange={value => setPriceRange(value as [number, number])}
                                             className="mb-3"
                                         />
-                                        <div className="flex items-center justify-between text-sm text-gray-600">
+                                        <div className="flex items-center justify-between text-sm font-medium text-blue-600">
                                             <span>{priceRange[0]} zł</span>
                                             <span>{priceRange[1]} zł</span>
                                         </div>
@@ -230,18 +233,19 @@ export default function Category() {
 
                                     {/* Availability */}
                                     <div>
-                                        <label className="mb-3 block text-sm font-medium text-gray-700">
+                                        <label className="mb-3 block text-sm font-semibold text-gray-700">
                                             Dostępność
                                         </label>
-                                        <div className="flex items-center space-x-2">
+                                        <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-blue-50 transition-colors">
                                             <Checkbox
                                                 id="in-stock"
                                                 checked={inStock}
                                                 onCheckedChange={checked => setInStock(checked as boolean)}
+                                                className="border-blue-500 data-[state=checked]:bg-blue-500"
                                             />
                                             <label
                                                 htmlFor="in-stock"
-                                                className="cursor-pointer text-sm text-gray-700"
+                                                className="cursor-pointer text-sm font-medium text-gray-700"
                                             >
                                                 Tylko dostępne
                                             </label>
@@ -254,23 +258,23 @@ export default function Category() {
                         {/* Products Grid */}
                         <div className="flex-1">
                             {/* Toolbar */}
-                            <div className="mb-6 rounded-lg bg-white p-4 shadow-sm">
+                            <div className="mb-6 rounded-2xl bg-white p-5 shadow-lg border border-gray-200">
                                 <div className="flex flex-wrap items-center justify-between gap-4">
                                     <Button
                                         variant="outline"
-                                        className="lg:hidden"
+                                        className="lg:hidden border-blue-500 text-blue-600 hover:bg-blue-50"
                                         onClick={() => setShowFilters(!showFilters)}
                                     >
                                         <SlidersHorizontal className="mr-2 h-4 w-4" />
                                         {showFilters ? "Ukryj filtry" : "Pokaż filtry"}
                                     </Button>
 
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm text-gray-600">Sortuj:</span>
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-sm font-semibold text-gray-700">Sortuj:</span>
                                         <select
                                             value={sortBy}
                                             onChange={e => setSortBy(e.target.value as SortOption)}
-                                            className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                            className="rounded-lg border-2 border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 focus:outline-none hover:border-blue-400"
                                         >
                                             <option value="name-asc">Nazwa A-Z</option>
                                             <option value="name-desc">Nazwa Z-A</option>
@@ -283,11 +287,17 @@ export default function Category() {
 
                             {/* Products */}
                             {filteredProducts.length === 0 ? (
-                                <div className="rounded-lg bg-white p-12 text-center shadow-sm">
-                                    <p className="text-lg text-gray-600">
-                                        Nie znaleziono produktów spełniających kryteria
+                                <div className="rounded-2xl bg-white p-16 text-center shadow-lg border border-gray-200">
+                                    <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-blue-100">
+                                        <SlidersHorizontal className="h-10 w-10 text-blue-500" />
+                                    </div>
+                                    <p className="text-xl font-semibold text-gray-900 mb-2">
+                                        Nie znaleziono produktów
                                     </p>
-                                    <Button className="mt-4" onClick={resetFilters}>
+                                    <p className="text-gray-600 mb-6">
+                                        Spróbuj zmienić kryteria wyszukiwania
+                                    </p>
+                                    <Button className="bg-blue-500 hover:bg-blue-600" onClick={resetFilters}>
                                         Wyczyść filtry
                                     </Button>
                                 </div>

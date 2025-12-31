@@ -1,11 +1,8 @@
 import { ProductCard } from "./ProductCard"
-import { useAllComponents } from "@/hooks/useQueries"
+import { useRandomProducts } from "@/hooks/useQueries"
 
 export function FeaturedProductsSection() {
-  const { data: allProducts = [], isLoading: loading } = useAllComponents()
-
-  // Pobieramy pierwsze 8 produktów jako wyróżnione
-  const products = allProducts.slice(0, 8)
+  const { data: products = [], isLoading: loading } = useRandomProducts(8)
 
   if (loading) {
     return (
@@ -24,21 +21,23 @@ export function FeaturedProductsSection() {
   }
 
   return (
-    <section className="bg-gray-50 py-16 md:py-24">
+    <section className="bg-gradient-to-br from-blue-50 via-white to-blue-50 py-16 md:py-24">
       <div className="container mx-auto px-4">
-        <div className="mb-12">
-          <h2 className="mb-2 text-3xl font-bold text-gray-900">Wyróżnione produkty</h2>
-          <p className="text-gray-500">
+        <div className="mb-12 text-center">
+          <h2 className="mb-4 text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">Wyróżnione produkty</h2>
+          <div className="h-1 w-24 mx-auto bg-gradient-to-r from-blue-600 to-blue-400 rounded-full mb-4"></div>
+          <p className="text-gray-600 text-lg">
             Najwyżej oceniane komponenty wybrane przez naszych klientów
           </p>
         </div>
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-6">
           {products.map(product => (
             <div
               key={product.id}
-              className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(25%-0.75rem)] max-w-xs min-w-[11.25rem]"
+              className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)] max-w-xs min-w-[11.25rem]"
             >
               <ProductCard
+                id={product.id}
                 name={product.name}
                 price={parseFloat(product.price)}
                 imageUrl={

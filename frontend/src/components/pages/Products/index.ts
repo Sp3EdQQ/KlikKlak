@@ -1,5 +1,0 @@
-export { ProductsHeader } from "./ProductsHeader"
-export { CategoryCard } from "./CategoryCard"
-export { CategoriesGrid } from "./CategoriesGrid"
-export { categories } from "./categories"
-export type { Category } from "./categories"

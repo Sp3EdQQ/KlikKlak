@@ -21,6 +21,7 @@ interface Category {
   id: string
   name: string
   description: string | null
+  productsCount?: number
 }
 
 // Mapowanie ikon dla kategorii
@@ -54,8 +55,28 @@ export function CategoriesSection() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const data = await apiService.getCategories()
-        setCategories(data)
+        const categoriesData = await apiService.getCategories()
+
+        // Pobierz liczbę produktów dla każdej kategorii
+        const categoriesWithCounts = await Promise.all(
+          categoriesData.map(async (category: Category) => {
+            try {
+              const products = await apiService.getProducts({ categoryId: category.id })
+              return {
+                ...category,
+                productsCount: products.pagination?.total || products.data?.length || 0
+              }
+            } catch (error) {
+              console.error(`Błąd pobierania produktów dla kategorii ${category.name}:`, error)
+              return {
+                ...category,
+                productsCount: 0
+              }
+            }
+          })
+        )
+
+        setCategories(categoriesWithCounts)
       } catch (error) {
         console.error("Błąd pobierania kategorii:", error)
       } finally {
@@ -83,13 +104,14 @@ export function CategoriesSection() {
   }
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4">
-        <div className="mb-12">
-          <h2 className="mb-2 text-3xl font-bold text-gray-900">Kategorie produktów</h2>
-          <p className="text-gray-500">Znajdź idealne komponenty do swojego zestawu</p>
+        <div className="mb-12 text-center">
+          <h2 className="mb-4 text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">Kategorie produktów</h2>
+          <div className="h-1 w-24 mx-auto bg-gradient-to-r from-blue-600 to-blue-400 rounded-full mb-4"></div>
+          <p className="text-gray-600 text-lg">Znajdź idealne komponenty do swojego zestawu</p>
         </div>
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div className="flex gap-6 overflow-x-auto pb-4">
           {categories.map(category => (
             <CategoryCard
               key={category.id}
@@ -97,7 +119,7 @@ export function CategoriesSection() {
               title={category.name}
               description={category.description || ""}
               icon={getIconForCategory(category.name)}
-              productsCount={0}
+              productsCount={category.productsCount || 0}
             />
           ))}
         </div>

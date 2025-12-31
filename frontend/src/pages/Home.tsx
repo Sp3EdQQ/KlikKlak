@@ -79,7 +79,7 @@ export default function Home() {
 
   // Otherwise show regular home page
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-blue-50 via-white to-blue-50">
       <Header />
       <BannerCarousel banners={banners} autoPlayInterval={5000} />
 

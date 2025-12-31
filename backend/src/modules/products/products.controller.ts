@@ -7,10 +7,13 @@ import {
   Param,
   Body,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
+import { CacheInterceptor } from '../../utils/cache.interceptor';
 
 @Controller('products')
+@UseInterceptors(CacheInterceptor)
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
 
@@ -37,6 +40,15 @@ export class ProductsController {
       return this.productsService.findByCategory(categoryId, pageNum, limitNum);
     }
     return this.productsService.findAll(pageNum, limitNum);
+  }
+
+  /**
+   * GET /products/random/list - losowe produkty
+   */
+  @Get('random/list')
+  async findRandom(@Query('limit') limit?: string) {
+    const limitNum = parseInt(limit || '8');
+    return this.productsService.findRandom(limitNum);
   }
 
   /**

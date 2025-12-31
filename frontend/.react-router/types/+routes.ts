@@ -13,9 +13,6 @@ type Pages = {
   "/": {
     params: {};
   };
-  "/products": {
-    params: {};
-  };
   "/products/:slug": {
     params: {
       "slug": string;
@@ -25,6 +22,12 @@ type Pages = {
     params: {
       "id": string;
     };
+  };
+  "/search": {
+    params: {};
+  };
+  "/wishlist": {
+    params: {};
   };
   "/login": {
     params: {};
@@ -64,15 +67,11 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/products" | "/products/:slug" | "/category/:id" | "/login" | "/logowanie" | "/rejestracja" | "/cart" | "/AdminLogin" | "/AdminUsers" | "/AdminCategories" | "/AdminProducts" | "/AdminTags" | "/AdminOrders" | "/AdminSettings";
+    page: "/" | "/products/:slug" | "/category/:id" | "/search" | "/wishlist" | "/login" | "/logowanie" | "/rejestracja" | "/cart" | "/AdminLogin" | "/AdminUsers" | "/AdminCategories" | "/AdminProducts" | "/AdminTags" | "/AdminOrders" | "/AdminSettings";
   };
   "./pages/Home.tsx": {
     id: "pages/Home";
     page: "/";
-  };
-  "./pages/Products.tsx": {
-    id: "pages/Products";
-    page: "/products";
   };
   "./pages/ProductDetail.tsx": {
     id: "pages/ProductDetail";
@@ -81,6 +80,14 @@ type RouteFiles = {
   "./pages/Category.tsx": {
     id: "pages/Category";
     page: "/category/:id";
+  };
+  "./pages/Search.tsx": {
+    id: "pages/Search";
+    page: "/search";
+  };
+  "./pages/Wishlist.tsx": {
+    id: "pages/Wishlist";
+    page: "/wishlist";
   };
   "./pages/Login.tsx": {
     id: "pages/Login";

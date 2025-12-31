@@ -19,6 +19,13 @@ export const useProduct = (id: string | undefined) => {
     })
 }
 
+export const useRandomProducts = (limit: number = 8) => {
+    return useQuery({
+        queryKey: ["products", "random", limit],
+        queryFn: () => apiService.getRandomProducts(limit)
+    })
+}
+
 // All Components Combined
 export const useAllComponents = () => {
     return useQuery({

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { HealthController } from './health.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import database from './database/database';
 import * as schema from './database/index';
@@ -115,7 +116,7 @@ import { ChatbotModule } from './modules/chatbot/chatbot.module';
 
     ChatbotModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, HealthController],
   providers: [AppService],
 })
 export class AppModule { }
