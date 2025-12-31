@@ -4,7 +4,7 @@ import { apiService } from "@/services/api.service"
 // ============= QUERIES =============
 
 // Products (Unified table with filters)
-export const useProducts = (params?: { categoryId?: string; type?: string }) => {
+export const useProducts = (params?: { categoryId?: string; type?: string; page?: number; limit?: number }) => {
     return useQuery({
         queryKey: ["products", params],
         queryFn: () => apiService.getProducts(params)

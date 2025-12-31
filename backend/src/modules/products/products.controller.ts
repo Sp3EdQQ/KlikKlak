@@ -18,19 +18,25 @@ export class ProductsController {
    * GET /products - wszystkie produkty
    * GET /products?type=cpu - produkty po typie komponentu
    * GET /products?categoryId=xxx - produkty po kategorii
+   * GET /products?page=1&limit=20 - paginacja
    */
   @Get()
   async findAll(
     @Query('type') type?: string,
     @Query('categoryId') categoryId?: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
   ) {
+    const pageNum = parseInt(page || '1');
+    const limitNum = parseInt(limit || '20');
+    
     if (type) {
-      return this.productsService.findByComponentType(type);
+      return this.productsService.findByComponentType(type, pageNum, limitNum);
     }
     if (categoryId) {
-      return this.productsService.findByCategory(categoryId);
+      return this.productsService.findByCategory(categoryId, pageNum, limitNum);
     }
-    return this.productsService.findAll();
+    return this.productsService.findAll(pageNum, limitNum);
   }
 
   /**

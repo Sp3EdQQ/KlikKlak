@@ -99,13 +99,15 @@ class ApiService {
   }
 
   // Products (Unified table)
-  async getProducts(params?: { categoryId?: string; type?: string }) {
+  async getProducts(params?: { categoryId?: string; type?: string; page?: number; limit?: number }) {
     const queryParams = new URLSearchParams()
     if (params?.categoryId) queryParams.append('categoryId', params.categoryId)
     if (params?.type) queryParams.append('type', params.type)
+    if (params?.page) queryParams.append('page', params.page.toString())
+    if (params?.limit) queryParams.append('limit', params.limit.toString())
 
     const query = queryParams.toString()
-    return this.request<any[]>(`/products${query ? `?${query}` : ''}`)
+    return this.request<any>(`/products${query ? `?${query}` : ''}`)
   }
 
   async getProduct(id: string) {

@@ -11,19 +11,51 @@ export class ProductsService {
   ) { }
 
   /**
-   * Zwraca wszystkie produkty z unified table
+   * Zwraca wszystkie produkty z unified table z paginacją
    * Każdy produkt zawiera: component_type, component_id i wspólne dane
    */
-  async findAll() {
-    return this.drizzle.select().from(products);
+  async findAll(page: number = 1, limit: number = 20) {
+    const offset = (page - 1) * limit;
+    
+    const [items, countResult] = await Promise.all([
+      this.drizzle
+        .select()
+        .from(products)
+        .limit(limit)
+        .offset(offset),
+      this.drizzle
+        .select({ count: sql<number>`count(*)::int` })
+        .from(products)
+    ]);
+
+    const total = countResult[0]?.count || 0;
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data: items,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNext: page < totalPages,
+        hasPrev: page > 1,
+      },
+    };
   }
 
   /**
    * Zwraca produkt z dodatkowymi szczegółami z odpowiedniej tabeli komponentu
+   * Obsługuje zarówno UUID jak i slug
    */
-  async findOne(id: string) {
+  async findOne(idOrSlug: string) {
+    // Sprawdź, czy przekazano UUID czy slug
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrSlug);
+    
     const product = await this.drizzle.query.products.findFirst({
-      where: eq(products.id, id),
+      where: isUuid 
+        ? eq(products.id, idOrSlug)
+        : eq(products.slug, idOrSlug),
     });
 
     if (!product) {
@@ -74,23 +106,73 @@ export class ProductsService {
   }
 
   /**
-   * Filtrowanie produktów po typie komponentu
+   * Filtrowanie produktów po typie komponentu z paginacją
    */
-  async findByComponentType(componentType: string) {
-    return this.drizzle
-      .select()
-      .from(products)
-      .where(eq(products.componentType, componentType));
+  async findByComponentType(componentType: string, page: number = 1, limit: number = 20) {
+    const offset = (page - 1) * limit;
+    
+    const [items, countResult] = await Promise.all([
+      this.drizzle
+        .select()
+        .from(products)
+        .where(eq(products.componentType, componentType))
+        .limit(limit)
+        .offset(offset),
+      this.drizzle
+        .select({ count: sql<number>`count(*)::int` })
+        .from(products)
+        .where(eq(products.componentType, componentType))
+    ]);
+
+    const total = countResult[0]?.count || 0;
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data: items,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNext: page < totalPages,
+        hasPrev: page > 1,
+      },
+    };
   }
 
   /**
-   * Filtrowanie produktów po kategorii
+   * Filtrowanie produktów po kategorii z paginacją
    */
-  async findByCategory(categoryId: string) {
-    return this.drizzle
-      .select()
-      .from(products)
-      .where(eq(products.categoryId, categoryId));
+  async findByCategory(categoryId: string, page: number = 1, limit: number = 20) {
+    const offset = (page - 1) * limit;
+    
+    const [items, countResult] = await Promise.all([
+      this.drizzle
+        .select()
+        .from(products)
+        .where(eq(products.categoryId, categoryId))
+        .limit(limit)
+        .offset(offset),
+      this.drizzle
+        .select({ count: sql<number>`count(*)::int` })
+        .from(products)
+        .where(eq(products.categoryId, categoryId))
+    ]);
+
+    const total = countResult[0]?.count || 0;
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data: items,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNext: page < totalPages,
+        hasPrev: page > 1,
+      },
+    };
   }
 
   async create(data: any) {

@@ -15,6 +15,7 @@ export const products = pgTable('products', {
 
   // Wspólne dane produktu
   name: varchar('name', { length: 255 }).notNull(),
+  slug: varchar('slug', { length: 512 }).notNull().unique(),
   price: decimal('price', { precision: 10, scale: 2 }).notNull(),
   stock: numeric('stock').notNull().default(sql`0`),
   imageUrl: varchar('image_url', { length: 512 }),

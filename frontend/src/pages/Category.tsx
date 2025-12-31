@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { Header, Footer } from "@/components/layout"
 import { ProductCard } from "@/components/ProductCard"
+import { Pagination } from "@/components/Pagination"
 import { Chatbot } from "@/components/Chatbot"
 import { useCategory, useProducts } from "@/hooks/useQueries"
 import { Button } from "@/components/ui/button"
@@ -30,9 +31,19 @@ type SortOption = "name-asc" | "name-desc" | "price-asc" | "price-desc" | "newes
 
 export default function Category() {
     const { id } = useParams<{ id: string }>()
+    const [page, setPage] = useState(1)
+    const [limit] = useState(20)
+    
     const { data: category, isLoading: categoryLoading } = useCategory(id)
-    // Fetch products filtered by categoryId directly from API
-    const { data: products = [], isLoading: productsLoading } = useProducts({ categoryId: id })
+    // Fetch products filtered by categoryId directly from API with pagination
+    const { data: productsResponse, isLoading: productsLoading } = useProducts({ 
+        categoryId: id, 
+        page, 
+        limit 
+    })
+
+    const products = productsResponse?.data || []
+    const pagination = productsResponse?.pagination
 
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
     const [showFilters, setShowFilters] = useState(true)
@@ -53,6 +64,11 @@ export default function Category() {
             setPriceRange([0, Math.ceil(max)])
         }
     }, [products])
+
+    // Scroll to top when page changes
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [page])
 
     useEffect(() => {
         let filtered = [...products]
@@ -290,6 +306,17 @@ export default function Category() {
                                         />
                                     ))}
                                 </div>
+                            )}
+
+                            {/* Pagination */}
+                            {pagination && pagination.totalPages > 1 && (
+                                <Pagination
+                                    currentPage={pagination.page}
+                                    totalPages={pagination.totalPages}
+                                    onPageChange={setPage}
+                                    total={pagination.total}
+                                    limit={pagination.limit}
+                                />
                             )}
                         </div>
                     </div>

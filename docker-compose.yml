@@ -34,8 +34,11 @@ services:
       JWT_REFRESH_SECRET: klikklak-refresh-secret-key-2025
       JWT_REFRESH_EXPIRES_IN: 7d
       OPENAI_API_KEY: ${OPENAI_API_KEY}
-    env_file:
-      - ./backend/.env
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: adminadmin
+      POSTGRES_DB: klikklakdb
     depends_on:
       postgres:
         condition: service_healthy
