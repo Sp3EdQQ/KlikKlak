@@ -17,6 +17,8 @@ import { ChatMessageDto } from './chatbot.dto';
 export class ChatbotService {
   private readonly logger = new Logger(ChatbotService.name);
   private openai: OpenAI;
+  private model: string;
+  private useLocalAI: boolean;
 
   constructor(
     private configService: ConfigService,
@@ -31,15 +33,37 @@ export class ChatbotService {
     private monitorsService: MonitorsService,
     private casesService: CasesService,
   ) {
-    const apiKey = this.configService.get<string>('OPENAI_API_KEY');
-    if (!apiKey) {
-      this.logger.warn(
-        'OPENAI_API_KEY not found in environment variables. Chatbot will not work.',
-      );
+    // Sprawdź czy używamy lokalnego API czy OpenAI
+    this.useLocalAI = this.configService.get<string>('USE_LOCAL_AI') === 'true';
+
+    if (this.useLocalAI) {
+      // Konfiguracja dla lokalnego API (Ollama, LM Studio, LocalAI)
+      const localApiUrl = this.configService.get<string>('LOCAL_AI_URL') || 'http://localhost:11434/v1';
+      this.model = this.configService.get<string>('LOCAL_AI_MODEL') || 'llama3.2';
+
+      this.logger.log(`Using LOCAL AI: ${localApiUrl} with model: ${this.model}`);
+
+      this.openai = new OpenAI({
+        apiKey: 'dummy-key', // Lokalne API często nie wymaga klucza
+        baseURL: localApiUrl,
+      });
+    } else {
+      // Konfiguracja dla OpenAI
+      const apiKey = this.configService.get<string>('OPENAI_API_KEY');
+      this.model = this.configService.get<string>('OPENAI_MODEL') || 'gpt-4o';
+
+      if (!apiKey) {
+        this.logger.warn(
+          'OPENAI_API_KEY not found in environment variables. Chatbot will not work.',
+        );
+      }
+
+      this.logger.log(`Using OpenAI with model: ${this.model}`);
+
+      this.openai = new OpenAI({
+        apiKey: apiKey || 'dummy-key',
+      });
     }
-    this.openai = new OpenAI({
-      apiKey: apiKey || 'dummy-key',
-    });
   }
 
   // Definicja narzędzi (tools) dla GPT-4o
@@ -251,7 +275,7 @@ export class ChatbotService {
             if (args.minCores && cpu.cores && parseInt(cpu.cores) < args.minCores) return false;
             return true;
           }).slice(0, 20); // Max 20 wyników
-          
+
           return JSON.stringify(
             results.map((cpu) => ({
               id: cpu.id,
@@ -277,7 +301,7 @@ export class ChatbotService {
             if (args.minVram && gpu.vram && !gpu.vram.includes(args.minVram)) return false;
             return true;
           }).slice(0, 20);
-          
+
           return JSON.stringify(
             results.map((gpu) => ({
               id: gpu.id,
@@ -301,7 +325,7 @@ export class ChatbotService {
             if (args.size && ram.size !== args.size) return false;
             return true;
           }).slice(0, 20);
-          
+
           return JSON.stringify(
             results.map((ram) => ({
               id: ram.id,
@@ -326,7 +350,7 @@ export class ChatbotService {
             if (args.formFactor && mb.formFactor !== args.formFactor) return false;
             return true;
           }).slice(0, 20);
-          
+
           return JSON.stringify(
             results.map((mb) => ({
               id: mb.id,
@@ -350,7 +374,7 @@ export class ChatbotService {
             if (args.efficiencyRating && !psu.efficiencyRating?.includes(args.efficiencyRating)) return false;
             return true;
           }).slice(0, 20);
-          
+
           return JSON.stringify(
             results.map((psu) => ({
               id: psu.id,
@@ -372,7 +396,7 @@ export class ChatbotService {
             if (args.size && ssd.size !== args.size) return false;
             return true;
           }).slice(0, 20);
-          
+
           return JSON.stringify(
             results.map((ssd) => ({
               id: ssd.id,
@@ -410,9 +434,9 @@ export class ChatbotService {
         { role: 'user', content: message },
       ];
 
-      // Pierwsza odpowiedź z GPT (może wywołać funkcje)
+      // Pierwsza odpowiedź z modelu (może wywołać funkcje)
       let response = await this.openai.chat.completions.create({
-        model: 'gpt-4o',
+        model: this.model,
         messages: messages,
         tools: this.getTools(),
         tool_choice: 'auto',
@@ -422,7 +446,7 @@ export class ChatbotService {
 
       let assistantMessage = response.choices[0]?.message;
 
-      // Jeśli GPT chce wywołać funkcje
+      // Jeśli model chce wywołać funkcje
       while (assistantMessage?.tool_calls && assistantMessage.tool_calls.length > 0) {
         // Dodaj wiadomość asystenta z tool_calls do historii
         messages.push(assistantMessage);
@@ -448,9 +472,9 @@ export class ChatbotService {
           });
         }
 
-        // Poproś GPT o finalną odpowiedź na podstawie wyników funkcji
+        // Poproś model o finalną odpowiedź na podstawie wyników funkcji
         response = await this.openai.chat.completions.create({
-          model: 'gpt-4o',
+          model: this.model,
           messages: messages,
           temperature: 0.7,
           max_tokens: 500,
@@ -477,12 +501,12 @@ export class ChatbotService {
       };
     } catch (error) {
       this.logger.error('Error in chatbot service:', error);
-      
+
       // Obsługa błędu braku środków na koncie OpenAI
       if (error.status === 429 && error.code === 'insufficient_quota') {
         throw new Error('Chatbot jest tymczasowo niedostępny. Skontaktuj się z administratorem.');
       }
-      
+
       throw new Error('Nie udało się przetworzyć wiadomości');
     }
   }
